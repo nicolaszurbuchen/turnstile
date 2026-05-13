@@ -5,14 +5,15 @@ import io.nicolaszurbuchen.turnstile.core.mvi.Command
 import io.nicolaszurbuchen.turnstile.core.mvi.Event
 import io.nicolaszurbuchen.turnstile.core.mvi.Intent
 import io.nicolaszurbuchen.turnstile.core.mvi.State
+import org.jetbrains.compose.resources.StringResource
 
 data class SignUpState(
     val fullName: String = "",
     val email: String = "",
     val password: String = "",
-    val fullNameError: String? = null,
-    val emailError: String? = null,
-    val passwordError: String? = null,
+    val fullNameError: StringResource? = null,
+    val emailError: StringResource? = null,
+    val passwordError: StringResource? = null,
     val loading: Boolean = false,
     val submitError: String? = null,
 ) : State {

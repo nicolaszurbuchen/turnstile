@@ -2,6 +2,11 @@ package io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.signup
 
 import io.nicolaszurbuchen.turnstile.core.mvi.Next
 import io.nicolaszurbuchen.turnstile.core.mvi.Reducer
+import org.jetbrains.compose.resources.StringResource
+import turnstile.composeapp.generated.resources.Res
+import turnstile.composeapp.generated.resources.auth_error_email_invalid
+import turnstile.composeapp.generated.resources.auth_error_name_too_short
+import turnstile.composeapp.generated.resources.auth_error_password_too_short
 
 object SignUpReducer : Reducer<SignUpState, SignUpTrigger, SignUpCommand, SignUpEvent> {
 
@@ -74,21 +79,21 @@ object SignUpReducer : Reducer<SignUpState, SignUpTrigger, SignUpCommand, SignUp
         )
     }
 
-    private fun validateFullName(name: String): String? = when {
+    private fun validateFullName(name: String): StringResource? = when {
         name.isEmpty() -> null
-        name.length < 2 -> "Name is too short"
+        name.length < 2 -> Res.string.auth_error_name_too_short
         else -> null
     }
 
-    private fun validateEmail(email: String): String? = when {
+    private fun validateEmail(email: String): StringResource? = when {
         email.isEmpty() -> null
-        !email.contains("@") -> "Invalid email"
+        !email.contains("@") -> Res.string.auth_error_email_invalid
         else -> null
     }
 
-    private fun validatePassword(password: String): String? = when {
+    private fun validatePassword(password: String): StringResource? = when {
         password.isEmpty() -> null
-        password.length < 8 -> "Password must be at least 8 characters"
+        password.length < 8 -> Res.string.auth_error_password_too_short
         else -> null
     }
 }

@@ -2,6 +2,9 @@ package io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.forgotpas
 
 import io.nicolaszurbuchen.turnstile.core.mvi.Next
 import io.nicolaszurbuchen.turnstile.core.mvi.Reducer
+import org.jetbrains.compose.resources.StringResource
+import turnstile.composeapp.generated.resources.Res
+import turnstile.composeapp.generated.resources.auth_error_email_invalid
 
 object ForgotPasswordReducer :
     Reducer<ForgotPasswordState, ForgotPasswordTrigger, ForgotPasswordCommand, ForgotPasswordEvent> {
@@ -51,9 +54,9 @@ object ForgotPasswordReducer :
         )
     }
 
-    private fun validateEmail(email: String): String? = when {
+    private fun validateEmail(email: String): StringResource? = when {
         email.isEmpty() -> null
-        !email.contains("@") -> "Invalid email"
+        !email.contains("@") -> Res.string.auth_error_email_invalid
         else -> null
     }
 }
