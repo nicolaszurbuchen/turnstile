@@ -11,6 +11,6 @@ package io.nicolaszurbuchen.turnstile.core.mvi
  * @param C The screen's command type.
  * @param E The screen's event type.
  */
-fun interface Reducer<S : State, T , C : Command, E : Event> {
+fun interface Reducer<S, T , C : Command, E : Event> {
     fun reduce(state: S, trigger: T): Next<S, C, E>
 }

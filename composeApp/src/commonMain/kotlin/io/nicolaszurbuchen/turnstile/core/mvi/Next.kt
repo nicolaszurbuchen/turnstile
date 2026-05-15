@@ -11,7 +11,7 @@ package io.nicolaszurbuchen.turnstile.core.mvi
  * @param commands Async work descriptions to execute. The base ViewModel will hand each to executeCommand().
  * @param events One-shot UI events to emit.
  */
-data class Next<S : State, C : Command, E : Event>(
+data class Next<S, C : Command, E : Event>(
     val state: S,
     val commands: List<C> = emptyList(),
     val events: List<E> = emptyList(),

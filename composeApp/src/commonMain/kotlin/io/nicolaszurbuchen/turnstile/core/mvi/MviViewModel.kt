@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
-abstract class MviViewModel<S : State, T, I : Intent, A : Action, C : Command, E : Event>(
+abstract class MviViewModel<S, T, I : Intent, A : Action, C : Command, E : Event>(
     initialState: S,
     private val reducer: Reducer<S, T, C, E>,
 ) : ViewModel() {
