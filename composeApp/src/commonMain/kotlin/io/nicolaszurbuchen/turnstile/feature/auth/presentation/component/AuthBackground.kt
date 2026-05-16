@@ -3,9 +3,7 @@ package io.nicolaszurbuchen.turnstile.feature.auth.presentation.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -13,19 +11,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import org.jetbrains.compose.resources.painterResource
 import turnstile.composeapp.generated.resources.Res
-import turnstile.composeapp.generated.resources.background
+import turnstile.composeapp.generated.resources.background2
 
 @Composable
 fun AuthBackground(
     modifier: Modifier = Modifier,
-    content: @Composable BoxScope.() -> Unit,
 ) {
-    Box(modifier.fillMaxSize()) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+    ) {
         Image(
-            painter = painterResource(Res.drawable.background),
+            painter = painterResource(Res.drawable.background2),
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize(),
         )
         Box(
             modifier = Modifier
@@ -33,20 +34,11 @@ fun AuthBackground(
                 .background(
                     Brush.verticalGradient(
                         colorStops = arrayOf(
-                            0.0f to Color.Transparent,
-                            0.45f to Color(0x22000000),
-                            1.0f to Color(0xCC000000),
+                            0.45f to Color.Transparent,
+                            0.8f to Color.Black.copy(alpha = 0.8f),
                         )
                     )
                 )
-        )
-        // Only reserve space for the status bar at top — the card intentionally
-        // extends behind the navigation bar at the bottom.
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .statusBarsPadding(),
-            content = content,
         )
     }
 }

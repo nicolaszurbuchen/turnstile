@@ -19,6 +19,8 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,21 +28,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.material3.Text
-
-private val FieldBackground = Color(0xFFF0F0F3)
-private val FieldErrorBackground = Color(0xFFFFF0F0)
-private val HintGrey = Color(0xFFAAAAAA)
-private val IconGrey = Color(0xFF8E8E93)
-private val ErrorRed = Color(0xFFB00020)
-private val TextDark = Color(0xFF1C1C1E)
+import io.nicolaszurbuchen.turnstile.core.design.theme.spacing
+import io.nicolaszurbuchen.turnstile.core.design.theme.turnstileColors
 
 @Composable
 fun AuthTextField(
@@ -55,6 +50,9 @@ fun AuthTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
 ) {
+    val turnstileColors = MaterialTheme.turnstileColors
+    val spacing = MaterialTheme.spacing
+
     var passwordVisible by remember { mutableStateOf(false) }
     val visualTransformation = if (isPassword && !passwordVisible) {
         PasswordVisualTransformation()
@@ -67,10 +65,10 @@ fun AuthTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
-                    color = if (isError) FieldErrorBackground else FieldBackground,
+                    color = if (isError) turnstileColors.danger else turnstileColors.surface,
                     shape = RoundedCornerShape(12.dp),
                 )
-                .padding(horizontal = 16.dp, vertical = 14.dp),
+                .padding(horizontal = spacing.md, vertical = 14.dp),
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -79,13 +77,13 @@ fun AuthTextField(
                 Icon(
                     imageVector = leadingIcon,
                     contentDescription = null,
-                    tint = if (isError) ErrorRed else IconGrey,
+                    tint = if (isError) turnstileColors.danger else turnstileColors.textSecondary,
                     modifier = Modifier.size(20.dp),
                 )
                 Spacer(Modifier.width(12.dp))
                 Box(Modifier.weight(1f)) {
                     if (value.isEmpty()) {
-                        Text(text = hint, color = HintGrey, fontSize = 15.sp)
+                        Text(text = hint, color = turnstileColors.textTertiary, fontSize = 15.sp)
                     }
                     BasicTextField(
                         value = value,
@@ -96,19 +94,19 @@ fun AuthTextField(
                         singleLine = true,
                         textStyle = LocalTextStyle.current.copy(
                             fontSize = 15.sp,
-                            color = TextDark,
+                            color = turnstileColors.textPrimary,
                         ),
-                        cursorBrush = SolidColor(TextDark),
+                        cursorBrush = SolidColor(turnstileColors.textPrimary),
                         modifier = Modifier.fillMaxWidth(),
                     )
                 }
                 if (isPassword) {
-                    Spacer(Modifier.width(8.dp))
+                    Spacer(Modifier.width(spacing.sm))
                     Icon(
                         imageVector = if (passwordVisible) Icons.Filled.VisibilityOff
                                       else Icons.Filled.Visibility,
                         contentDescription = null,
-                        tint = IconGrey,
+                        tint = turnstileColors.textSecondary,
                         modifier = Modifier
                             .size(20.dp)
                             .clickable { passwordVisible = !passwordVisible },
@@ -119,9 +117,9 @@ fun AuthTextField(
         if (isError && errorMessage != null) {
             Text(
                 text = errorMessage,
-                color = ErrorRed,
+                color = turnstileColors.danger,
                 fontSize = 12.sp,
-                modifier = Modifier.padding(start = 4.dp, top = 4.dp),
+                modifier = Modifier.padding(start = spacing.xs, top = spacing.xs),
             )
         }
     }
