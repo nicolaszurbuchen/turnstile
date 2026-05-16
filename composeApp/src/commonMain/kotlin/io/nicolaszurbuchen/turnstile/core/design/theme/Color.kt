@@ -160,7 +160,7 @@ internal val LocalTurnstileColors = staticCompositionLocalOf { DarkTurnstileColo
  *   MaterialTheme.colors.accent
  *   MaterialTheme.colors.textSecondary
  */
-val MaterialTheme.colors: TurnstileColors
+val MaterialTheme.turnstileColors: TurnstileColors
     @Composable
     @ReadOnlyComposable
     get() = LocalTurnstileColors.current

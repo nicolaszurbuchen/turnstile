@@ -40,6 +40,14 @@
     <!-- Social login -->
     <string name="auth_or_continue_with">Or continue with</string>
 
+    <!-- Dashboard -->
+    <string name="dashboard_title">My Passwords</string>
+    <string name="dashboard_empty_title">No passwords saved yet</string>
+    <string name="dashboard_empty_subtitle">Tap + to add your first entry</string>
+    <string name="dashboard_error_generic">Something went wrong</string>
+    <string name="dashboard_retry">Try again</string>
+    <string name="dashboard_banner_retry">Retry</string>
+
     <!-- Validation errors -->
     <string name="auth_error_email_invalid">Invalid email</string>
     <string name="auth_error_password_too_short">Password must be at least 8 characters</string>
