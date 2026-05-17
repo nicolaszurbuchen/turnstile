@@ -23,8 +23,8 @@ fun SignUpRoute(
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
-                SignUpEvent.NavigateHome -> onSignedUpUpdated
-                SignUpEvent.NavigateToSignIn -> onNavigateToSignInUpdated
+                SignUpEvent.NavigateHome -> onSignedUpUpdated()
+                SignUpEvent.NavigateToSignIn -> onNavigateToSignInUpdated()
             }
         }
     }

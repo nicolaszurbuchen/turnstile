@@ -4,7 +4,6 @@ import io.nicolaszurbuchen.turnstile.feature.auth.domain.AuthRepository
 import io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.forgotpassword.ForgotPasswordViewModel
 import io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.signin.SignInViewModel
 import io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.signup.SignUpViewModel
-import io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.welcome.WelcomeViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -20,7 +19,6 @@ val authModule =
             }
         }
 
-        viewModel { WelcomeViewModel() }
         viewModel { SignInViewModel(get()) }
         viewModel { SignUpViewModel() }
         viewModel { ForgotPasswordViewModel() }
