@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 
 class SignInViewModel(
     private val auth: AuthRepository,
-) : MviViewModel<SignInState, SignInTrigger, SignInIntent, SignInAction, SignInCommand, SignEvent>(
+) : MviViewModel<SignInState, SignInTrigger, SignInIntent, SignInAction, SignInCommand, SignInEvent>(
         initialState = SignInState(),
         reducer = SignInReducer,
     ) {

@@ -25,9 +25,9 @@ fun SignInRoute(
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
-                SignEvent.NavigateHome -> onSignedInUpdated
-                SignEvent.NavigateToSignUp -> onNavigateToSignUpUpdated
-                SignEvent.NavigateToForgotPassword -> onNavigateToForgotPasswordUpdated
+                SignInEvent.NavigateHome -> onSignedInUpdated
+                SignInEvent.NavigateToSignUp -> onNavigateToSignUpUpdated
+                SignInEvent.NavigateToForgotPassword -> onNavigateToForgotPasswordUpdated
             }
         }
     }

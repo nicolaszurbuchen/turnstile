@@ -5,6 +5,7 @@ import io.nicolaszurbuchen.turnstile.core.mvi.Command
 import io.nicolaszurbuchen.turnstile.core.mvi.Event
 import io.nicolaszurbuchen.turnstile.core.mvi.Intent
 import io.nicolaszurbuchen.turnstile.core.mvi.State
+import io.nicolaszurbuchen.turnstile.core.mvi.Trigger
 import org.jetbrains.compose.resources.StringResource
 
 data class SignUpState(
@@ -28,7 +29,7 @@ data class SignUpState(
                 !loading
 }
 
-sealed interface SignUpTrigger
+sealed interface SignUpTrigger : Trigger
 
 sealed interface SignUpIntent :
     SignUpTrigger,

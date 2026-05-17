@@ -5,6 +5,7 @@ import io.nicolaszurbuchen.turnstile.core.mvi.Command
 import io.nicolaszurbuchen.turnstile.core.mvi.Event
 import io.nicolaszurbuchen.turnstile.core.mvi.Intent
 import io.nicolaszurbuchen.turnstile.core.mvi.State
+import io.nicolaszurbuchen.turnstile.core.mvi.Trigger
 import org.jetbrains.compose.resources.StringResource
 
 data class SignInState(
@@ -25,7 +26,7 @@ data class SignInState(
                 !loading
 }
 
-sealed interface SignInTrigger
+sealed interface SignInTrigger : Trigger
 
 sealed interface SignInIntent :
     SignInTrigger,
@@ -66,10 +67,10 @@ sealed interface SignInCommand : Command {
     ) : SignInCommand
 }
 
-sealed interface SignEvent : Event {
-    data object NavigateHome : SignEvent
+sealed interface SignInEvent : Event {
+    data object NavigateHome : SignInEvent
 
-    data object NavigateToSignUp : SignEvent
+    data object NavigateToSignUp : SignInEvent
 
-    data object NavigateToForgotPassword : SignEvent
+    data object NavigateToForgotPassword : SignInEvent
 }

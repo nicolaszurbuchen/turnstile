@@ -3,6 +3,9 @@ package io.nicolaszurbuchen.turnstile.core.mvi
 /** Marker for per-screen state classes. */
 interface State
 
+/** Marker for a per-screen trigger hierarchy. */
+interface Trigger
+
 /** Marker for a user-originated trigger (sent from the UI). */
 interface Intent
 

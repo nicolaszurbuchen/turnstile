@@ -5,6 +5,7 @@ import io.nicolaszurbuchen.turnstile.core.mvi.Command
 import io.nicolaszurbuchen.turnstile.core.mvi.Event
 import io.nicolaszurbuchen.turnstile.core.mvi.Intent
 import io.nicolaszurbuchen.turnstile.core.mvi.State
+import io.nicolaszurbuchen.turnstile.core.mvi.Trigger
 import org.jetbrains.compose.resources.StringResource
 
 data class ForgotPasswordState(
@@ -22,7 +23,7 @@ data class ForgotPasswordState(
                 !submitted
 }
 
-sealed interface ForgotPasswordTrigger
+sealed interface ForgotPasswordTrigger : Trigger
 
 sealed interface ForgotPasswordIntent :
     ForgotPasswordTrigger,

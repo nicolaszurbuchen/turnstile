@@ -7,11 +7,11 @@ import turnstile.shared.generated.resources.Res
 import turnstile.shared.generated.resources.auth_error_email_invalid
 import turnstile.shared.generated.resources.auth_error_password_too_short
 
-object SignInReducer : Reducer<SignInState, SignInTrigger, SignInCommand, SignEvent> {
+object SignInReducer : Reducer<SignInState, SignInTrigger, SignInCommand, SignInEvent> {
     override fun reduce(
         state: SignInState,
         trigger: SignInTrigger,
-    ): Next<SignInState, SignInCommand, SignEvent> =
+    ): Next<SignInState, SignInCommand, SignInEvent> =
         when (trigger) {
             is SignInIntent -> reduceIntent(state, trigger)
             is SignInAction -> reduceAction(state, trigger)
@@ -20,7 +20,7 @@ object SignInReducer : Reducer<SignInState, SignInTrigger, SignInCommand, SignEv
     private fun reduceIntent(
         state: SignInState,
         intent: SignInIntent,
-    ): Next<SignInState, SignInCommand, SignEvent> =
+    ): Next<SignInState, SignInCommand, SignInEvent> =
         when (intent) {
             is SignInIntent.EmailChanged -> {
                 Next(
@@ -64,14 +64,14 @@ object SignInReducer : Reducer<SignInState, SignInTrigger, SignInCommand, SignEv
             SignInIntent.SignUpClicked -> {
                 Next(
                     state = state,
-                    events = listOf(SignEvent.NavigateToSignUp),
+                    events = listOf(SignInEvent.NavigateToSignUp),
                 )
             }
 
             SignInIntent.ForgotPasswordClicked -> {
                 Next(
                     state = state,
-                    events = listOf(SignEvent.NavigateToForgotPassword),
+                    events = listOf(SignInEvent.NavigateToForgotPassword),
                 )
             }
         }
@@ -79,12 +79,12 @@ object SignInReducer : Reducer<SignInState, SignInTrigger, SignInCommand, SignEv
     private fun reduceAction(
         state: SignInState,
         action: SignInAction,
-    ): Next<SignInState, SignInCommand, SignEvent> =
+    ): Next<SignInState, SignInCommand, SignInEvent> =
         when (action) {
             is SignInAction.LoginSucceeded -> {
                 Next(
                     state = state.copy(loading = false),
-                    events = listOf(SignEvent.NavigateHome),
+                    events = listOf(SignInEvent.NavigateHome),
                 )
             }
 

@@ -5,6 +5,7 @@ import io.nicolaszurbuchen.turnstile.core.mvi.Command
 import io.nicolaszurbuchen.turnstile.core.mvi.Event
 import io.nicolaszurbuchen.turnstile.core.mvi.Intent
 import io.nicolaszurbuchen.turnstile.core.mvi.State
+import io.nicolaszurbuchen.turnstile.core.mvi.Trigger
 import io.nicolaszurbuchen.turnstile.core.ui.AppError
 import io.nicolaszurbuchen.turnstile.feature.home.domain.model.PasswordEntry
 
@@ -28,7 +29,7 @@ data class DashboardState(
     val isEmpty: Boolean get() = entries.isEmpty()
 }
 
-sealed interface DashboardTrigger
+sealed interface DashboardTrigger : Trigger
 
 sealed interface DashboardIntent :
     DashboardTrigger,

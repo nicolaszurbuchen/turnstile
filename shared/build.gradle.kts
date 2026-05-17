@@ -76,11 +76,6 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
         }
-        val jvmTest by getting {
-            dependencies {
-                implementation(libs.konsist)
-            }
-        }
     }
 }
 

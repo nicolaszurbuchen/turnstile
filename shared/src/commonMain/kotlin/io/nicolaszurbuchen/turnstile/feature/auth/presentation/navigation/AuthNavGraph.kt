@@ -16,7 +16,6 @@ fun NavGraphBuilder.authGraph(
 ) {
     composable<WelcomeDestination> {
         WelcomeRoute(
-            viewModel = koinViewModel(),
             onNavigateToSignIn = { navController.navigate(SignInDestination) },
             onNavigateToSignUp = { navController.navigate(SignUpDestination) },
         )
