@@ -14,9 +14,9 @@ data class ForgotPasswordState(
     val submitted: Boolean = false,
     val submitError: String? = null,
 ) : State {
-
     val canSubmit: Boolean
-        get() = email.isNotBlank() &&
+        get() =
+            email.isNotBlank() &&
                 emailError == null &&
                 !loading &&
                 !submitted
@@ -24,18 +24,30 @@ data class ForgotPasswordState(
 
 sealed interface ForgotPasswordTrigger
 
-sealed interface ForgotPasswordIntent : ForgotPasswordTrigger, Intent {
-    data class EmailChanged(val value: String) : ForgotPasswordIntent
+sealed interface ForgotPasswordIntent :
+    ForgotPasswordTrigger,
+    Intent {
+    data class EmailChanged(
+        val value: String,
+    ) : ForgotPasswordIntent
+
     data object Submit : ForgotPasswordIntent
 }
 
-sealed interface ForgotPasswordAction : ForgotPasswordTrigger, Action {
+sealed interface ForgotPasswordAction :
+    ForgotPasswordTrigger,
+    Action {
     data object ResetEmailSent : ForgotPasswordAction
-    data class ResetFailedWith(val message: String) : ForgotPasswordAction
+
+    data class ResetFailedWith(
+        val message: String,
+    ) : ForgotPasswordAction
 }
 
 sealed interface ForgotPasswordCommand : Command {
-    data class CallRequestReset(val email: String) : ForgotPasswordCommand
+    data class CallRequestReset(
+        val email: String,
+    ) : ForgotPasswordCommand
 }
 
 sealed interface ForgotPasswordEvent : Event

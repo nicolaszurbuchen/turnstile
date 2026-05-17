@@ -2,6 +2,8 @@ package io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.welcome
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 
 @Composable
@@ -11,18 +13,21 @@ fun WelcomeRoute(
     onNavigateToSignUp: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val onNavigateToSignInUpdated by rememberUpdatedState(onNavigateToSignIn)
+    val onNavigateToSignUpUpdated by rememberUpdatedState(onNavigateToSignUp)
+
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
-                WelcomeEvent.NavigateToSignIn -> onNavigateToSignIn()
-                WelcomeEvent.NavigateToSignUp -> onNavigateToSignUp()
+                WelcomeEvent.NavigateToSignIn -> onNavigateToSignInUpdated
+                WelcomeEvent.NavigateToSignUp -> onNavigateToSignUpUpdated
             }
         }
     }
 
     WelcomeScreen(
-        onSignInClicked = { viewModel.sendIntent(WelcomeIntent.SignInClicked) },
-        onSignUpClicked = { viewModel.sendIntent(WelcomeIntent.SignUpClicked) },
+        onSignInClick = { viewModel.sendIntent(WelcomeIntent.SignInClicked) },
+        onSignUpClick = { viewModel.sendIntent(WelcomeIntent.SignUpClicked) },
         modifier = modifier,
     )
 }

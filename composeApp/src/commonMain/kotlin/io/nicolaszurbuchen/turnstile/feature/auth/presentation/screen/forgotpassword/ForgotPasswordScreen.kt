@@ -13,21 +13,23 @@ import io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.forgotpass
 @Composable
 fun ForgotPasswordScreen(
     state: ForgotPasswordState,
-    onEmailChanged: (String) -> Unit,
-    onSubmitted: () -> Unit,
+    onEmailChange: (String) -> Unit,
+    onSubmit: () -> Unit,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxSize()
+        modifier =
+            modifier
+                .fillMaxSize(),
     ) {
         AuthBackButton(
             onNavigateBack = onNavigateBack,
         )
         Spacer(
-            modifier = Modifier
-                .weight(1f),
+            modifier =
+                Modifier
+                    .weight(1f),
         )
         AuthModalView {
             if (state.submitted) {
@@ -35,8 +37,8 @@ fun ForgotPasswordScreen(
             } else {
                 FormContent(
                     state = state,
-                    onEmailChanged = onEmailChanged,
-                    onSubmitted = onSubmitted,
+                    onEmailChange = onEmailChange,
+                    onSubmit = onSubmit,
                 )
             }
         }

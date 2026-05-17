@@ -14,31 +14,33 @@ import turnstile.composeapp.generated.resources.Res
 import turnstile.composeapp.generated.resources.background2
 
 @Composable
-fun AuthBackground(
-    modifier: Modifier = Modifier,
-) {
+fun AuthBackground(modifier: Modifier = Modifier) {
     Box(
-        modifier = modifier
-            .fillMaxSize()
+        modifier =
+            modifier
+                .fillMaxSize(),
     ) {
         Image(
             painter = painterResource(Res.drawable.background2),
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxSize(),
+            modifier =
+                Modifier
+                    .fillMaxSize(),
         )
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    Brush.verticalGradient(
-                        colorStops = arrayOf(
-                            0.45f to Color.Transparent,
-                            0.8f to Color.Black.copy(alpha = 0.8f),
-                        )
-                    )
-                )
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(
+                        Brush.verticalGradient(
+                            colorStops =
+                                arrayOf(
+                                    0.45f to Color.Transparent,
+                                    0.8f to Color.Black.copy(alpha = 0.8f),
+                                ),
+                        ),
+                    ),
         )
     }
 }

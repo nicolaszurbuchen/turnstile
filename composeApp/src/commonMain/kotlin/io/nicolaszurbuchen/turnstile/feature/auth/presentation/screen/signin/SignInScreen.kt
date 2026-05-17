@@ -51,12 +51,12 @@ import turnstile.composeapp.generated.resources.common_password
 @Composable
 fun SignInScreen(
     state: SignInState,
-    onEmailChanged: (String) -> Unit,
-    onPasswordChanged: (String) -> Unit,
-    onRememberMeToggled: () -> Unit,
-    onSubmitted: () -> Unit,
-    onForgotPasswordClicked: () -> Unit,
-    onSignUpClicked: () -> Unit,
+    onEmailChang: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onRememberMeToggle: () -> Unit,
+    onSubmit: () -> Unit,
+    onForgotPasswordClick: () -> Unit,
+    onSignUpClick: () -> Unit,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -72,8 +72,9 @@ fun SignInScreen(
             onNavigateBack = onNavigateBack,
         )
         Spacer(
-            modifier = Modifier
-                .weight(1f),
+            modifier =
+                Modifier
+                    .weight(1f),
         )
         AuthModalView {
             AuthHeading(
@@ -84,15 +85,16 @@ fun SignInScreen(
 
             AuthTextField(
                 value = state.email,
-                onValueChange = onEmailChanged,
+                onValueChange = onEmailChang,
                 hint = stringResource(Res.string.common_email),
                 leadingIcon = Icons.Filled.Email,
                 isError = state.emailError != null,
                 errorMessage = state.emailError?.let { stringResource(it) },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Email,
-                    imeAction = ImeAction.Next,
-                ),
+                keyboardOptions =
+                    KeyboardOptions(
+                        keyboardType = KeyboardType.Email,
+                        imeAction = ImeAction.Next,
+                    ),
                 keyboardActions = KeyboardActions(onNext = { passwordFocus.requestFocus() }),
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -100,19 +102,24 @@ fun SignInScreen(
 
             AuthTextField(
                 value = state.password,
-                onValueChange = onPasswordChanged,
+                onValueChange = onPasswordChange,
                 hint = stringResource(Res.string.common_password),
                 leadingIcon = Icons.Filled.Lock,
                 isError = state.passwordError != null,
                 errorMessage = state.passwordError?.let { stringResource(it) },
                 isPassword = true,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(
-                    onDone = { focusManager.clearFocus(); onSubmitted() }
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .focusRequester(passwordFocus),
+                keyboardActions =
+                    KeyboardActions(
+                        onDone = {
+                            focusManager.clearFocus()
+                            onSubmit()
+                        },
+                    ),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .focusRequester(passwordFocus),
             )
 
             state.submitError?.let { error ->
@@ -130,16 +137,25 @@ fun SignInScreen(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Checkbox(
                         checked = state.rememberMe,
-                        onCheckedChange = { onRememberMeToggled() },
-                        colors = CheckboxDefaults.colors(
-                            checkedColor = turnstileColors.accent,
-                            checkmarkColor = turnstileColors.onAccent,
-                        ),
+                        onCheckedChange = { onRememberMeToggle() },
+                        colors =
+                            CheckboxDefaults.colors(
+                                checkedColor = turnstileColors.accent,
+                                checkmarkColor = turnstileColors.onAccent,
+                            ),
                     )
-                    Text(text = stringResource(Res.string.auth_signin_remember_me), fontSize = 13.sp, color = turnstileColors.textSecondary)
+                    Text(
+                        text = stringResource(Res.string.auth_signin_remember_me),
+                        fontSize = 13.sp,
+                        color = turnstileColors.textSecondary,
+                    )
                 }
-                TextButton(onClick = onForgotPasswordClicked) {
-                    Text(text = stringResource(Res.string.auth_forgot_password), fontSize = 13.sp, color = turnstileColors.textSecondary)
+                TextButton(onClick = onForgotPasswordClick) {
+                    Text(
+                        text = stringResource(Res.string.auth_forgot_password),
+                        fontSize = 13.sp,
+                        color = turnstileColors.textSecondary,
+                    )
                 }
             }
 
@@ -147,7 +163,7 @@ fun SignInScreen(
 
             TurnstilePrimaryButton(
                 text = UiText.Resource(id = Res.string.auth_signin_submit),
-                onClick = onSubmitted,
+                onClick = onSubmit,
                 enabled = state.canSubmit,
                 loading = state.loading,
             )
@@ -161,8 +177,12 @@ fun SignInScreen(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(text = stringResource(Res.string.auth_signin_no_account), fontSize = 14.sp, color = turnstileColors.textSecondary)
-                TextButton(onClick = onSignUpClicked) {
+                Text(
+                    text = stringResource(Res.string.auth_signin_no_account),
+                    fontSize = 14.sp,
+                    color = turnstileColors.textSecondary,
+                )
+                TextButton(onClick = onSignUpClick) {
                     Text(
                         text = stringResource(Res.string.auth_sign_up),
                         fontSize = 14.sp,

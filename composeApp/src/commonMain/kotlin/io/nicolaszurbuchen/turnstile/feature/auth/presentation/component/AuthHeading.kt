@@ -31,20 +31,23 @@ fun AuthHeading(
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.turnstileColors.textPrimary,
             textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier =
+                Modifier
+                    .fillMaxWidth(),
         )
         Spacer(
-            modifier = Modifier
-                .height(MaterialTheme.spacing.xs),
+            modifier =
+                Modifier
+                    .height(MaterialTheme.spacing.xs),
         )
         Text(
             text = subtitle.asString(),
             fontSize = 14.sp,
             color = MaterialTheme.turnstileColors.textSecondary,
             textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier =
+                Modifier
+                    .fillMaxWidth(),
         )
     }
 }

@@ -11,7 +11,7 @@ class TurnstileApplication : Application() {
             additionalModules = listOf(platformModule),
             appDeclaration = {
                 androidContext(this@TurnstileApplication)
-            }
+            },
         )
     }
 }

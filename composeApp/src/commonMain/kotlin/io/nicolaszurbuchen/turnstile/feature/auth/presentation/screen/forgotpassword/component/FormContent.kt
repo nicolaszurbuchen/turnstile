@@ -1,5 +1,6 @@
 package io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.forgotpassword.component
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -37,73 +38,84 @@ import turnstile.composeapp.generated.resources.common_email
 @Composable
 internal fun FormContent(
     state: ForgotPasswordState,
-    onEmailChanged: (String) -> Unit,
-    onSubmitted: () -> Unit,
+    onEmailChange: (String) -> Unit,
+    onSubmit: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val focusManager = LocalFocusManager.current
     val turnstileColors = MaterialTheme.turnstileColors
     val spacing = MaterialTheme.spacing
 
-    Text(
-        text = stringResource(Res.string.auth_forgot_password),
-        fontSize = 28.sp,
-        fontWeight = FontWeight.Bold,
-        color = turnstileColors.textPrimary,
-        textAlign = TextAlign.Center,
-        modifier = Modifier.fillMaxWidth(),
-    )
-    Spacer(Modifier.height(spacing.xs))
-    Text(
-        text = stringResource(Res.string.auth_forgot_subtitle),
-        fontSize = 14.sp,
-        color = turnstileColors.textSecondary,
-        textAlign = TextAlign.Center,
-        modifier = Modifier.fillMaxWidth(),
-    )
-    Spacer(Modifier.height(28.dp))
-
-    AuthTextField(
-        value = state.email,
-        onValueChange = onEmailChanged,
-        hint = stringResource(Res.string.common_email),
-        leadingIcon = Icons.Filled.Email,
-        isError = state.emailError != null,
-        errorMessage = state.emailError?.let { stringResource(it) },
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Email,
-            imeAction = ImeAction.Done,
-        ),
-        keyboardActions = KeyboardActions(
-            onDone = { focusManager.clearFocus(); onSubmitted() }
-        ),
-        modifier = Modifier.fillMaxWidth(),
-    )
-
-    state.submitError?.let { error ->
-        Spacer(Modifier.height(spacing.sm))
-        Text(text = error, color = MaterialTheme.colorScheme.error, fontSize = 13.sp)
-    }
-
-    Spacer(Modifier.height(spacing.lg))
-
-    Button(
-        onClick = onSubmitted,
-        enabled = state.canSubmit,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(52.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = turnstileColors.accent),
-        shape = RoundedCornerShape(12.dp),
+    Column(
+        modifier = modifier,
     ) {
-        if (state.loading) {
-            CircularProgressIndicator(modifier = Modifier.size(20.dp), color = turnstileColors.onAccent)
-        } else {
-            Text(
-                text = stringResource(Res.string.auth_forgot_submit),
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = turnstileColors.onAccent,
-            )
+        Text(
+            text = stringResource(Res.string.auth_forgot_password),
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold,
+            color = turnstileColors.textPrimary,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth(),
+        )
+        Spacer(Modifier.height(spacing.xs))
+        Text(
+            text = stringResource(Res.string.auth_forgot_subtitle),
+            fontSize = 14.sp,
+            color = turnstileColors.textSecondary,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth(),
+        )
+        Spacer(Modifier.height(28.dp))
+
+        AuthTextField(
+            value = state.email,
+            onValueChange = onEmailChange,
+            hint = stringResource(Res.string.common_email),
+            leadingIcon = Icons.Filled.Email,
+            isError = state.emailError != null,
+            errorMessage = state.emailError?.let { stringResource(it) },
+            keyboardOptions =
+                KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Done,
+                ),
+            keyboardActions =
+                KeyboardActions(
+                    onDone = {
+                        focusManager.clearFocus()
+                        onSubmit()
+                    },
+                ),
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        state.submitError?.let { error ->
+            Spacer(Modifier.height(spacing.sm))
+            Text(text = error, color = MaterialTheme.colorScheme.error, fontSize = 13.sp)
+        }
+
+        Spacer(Modifier.height(spacing.lg))
+
+        Button(
+            onClick = onSubmit,
+            enabled = state.canSubmit,
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(52.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = turnstileColors.accent),
+            shape = RoundedCornerShape(12.dp),
+        ) {
+            if (state.loading) {
+                CircularProgressIndicator(modifier = Modifier.size(20.dp), color = turnstileColors.onAccent)
+            } else {
+                Text(
+                    text = stringResource(Res.string.auth_forgot_submit),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = turnstileColors.onAccent,
+                )
+            }
         }
     }
 }

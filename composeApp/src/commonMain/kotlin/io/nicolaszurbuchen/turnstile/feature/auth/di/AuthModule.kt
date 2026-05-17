@@ -8,16 +8,20 @@ import io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.welcome.We
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-val authModule = module {
-    // TODO: replace with real implementation once the data layer is ready
-    single<AuthRepository> {
-        object : AuthRepository {
-            override suspend fun login(email: String, password: String): String = "stub_token"
+val authModule =
+    module {
+        // TODO: replace with real implementation once the data layer is ready
+        single<AuthRepository> {
+            object : AuthRepository {
+                override suspend fun login(
+                    email: String,
+                    password: String,
+                ): String = "stub_token"
+            }
         }
-    }
 
-    viewModel { WelcomeViewModel() }
-    viewModel { SignInViewModel(get()) }
-    viewModel { SignUpViewModel() }
-    viewModel { ForgotPasswordViewModel() }
-}
+        viewModel { WelcomeViewModel() }
+        viewModel { SignInViewModel(get()) }
+        viewModel { SignUpViewModel() }
+        viewModel { ForgotPasswordViewModel() }
+    }

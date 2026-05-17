@@ -11,9 +11,7 @@ import io.nicolaszurbuchen.turnstile.feature.home.presentation.navigation.HomeGr
 import io.nicolaszurbuchen.turnstile.feature.home.presentation.navigation.homeGraph
 
 @Composable
-fun NavGraph(
-    navController: NavHostController = rememberNavController(),
-) {
+fun NavGraph(navController: NavHostController = rememberNavController()) {
     NavHost(
         navController = navController,
         startDestination = AuthGraph,
@@ -24,7 +22,7 @@ fun NavGraph(
                     navController.navigate(HomeGraph) {
                         popUpTo(AuthGraph) { inclusive = true }
                     }
-                }
+                },
             )
         }
 

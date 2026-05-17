@@ -7,7 +7,7 @@ import io.nicolaszurbuchen.turnstile.core.navigation.NavGraph
 
 @Composable
 @Preview
-fun App() {
+private fun AppPreview() {
     TurnstileTheme {
         NavGraph()
     }

@@ -17,9 +17,9 @@ data class SignUpState(
     val loading: Boolean = false,
     val submitError: String? = null,
 ) : State {
-
     val canSubmit: Boolean
-        get() = fullName.isNotBlank() &&
+        get() =
+            fullName.isNotBlank() &&
                 email.isNotBlank() &&
                 password.isNotBlank() &&
                 fullNameError == null &&
@@ -30,17 +30,36 @@ data class SignUpState(
 
 sealed interface SignUpTrigger
 
-sealed interface SignUpIntent : SignUpTrigger, Intent {
-    data class FullNameChanged(val value: String) : SignUpIntent
-    data class EmailChanged(val value: String) : SignUpIntent
-    data class PasswordChanged(val value: String) : SignUpIntent
+sealed interface SignUpIntent :
+    SignUpTrigger,
+    Intent {
+    data class FullNameChanged(
+        val value: String,
+    ) : SignUpIntent
+
+    data class EmailChanged(
+        val value: String,
+    ) : SignUpIntent
+
+    data class PasswordChanged(
+        val value: String,
+    ) : SignUpIntent
+
     data object Submit : SignUpIntent
+
     data object SignInClicked : SignUpIntent
 }
 
-sealed interface SignUpAction : SignUpTrigger, Action {
-    data class RegisterSucceeded(val token: String) : SignUpAction
-    data class RegisterFailedWith(val message: String) : SignUpAction
+sealed interface SignUpAction :
+    SignUpTrigger,
+    Action {
+    data class RegisterSucceeded(
+        val token: String,
+    ) : SignUpAction
+
+    data class RegisterFailedWith(
+        val message: String,
+    ) : SignUpAction
 }
 
 sealed interface SignUpCommand : Command {
@@ -53,5 +72,6 @@ sealed interface SignUpCommand : Command {
 
 sealed interface SignUpEvent : Event {
     data object NavigateHome : SignUpEvent
+
     data object NavigateToSignIn : SignUpEvent
 }

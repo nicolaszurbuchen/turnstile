@@ -1,5 +1,6 @@
 package io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.forgotpassword.component
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,42 +26,48 @@ import turnstile.composeapp.generated.resources.auth_forgot_success_title
 @Composable
 internal fun SuccessContent(
     onNavigateBack: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val turnstileColors = MaterialTheme.turnstileColors
     val spacing = MaterialTheme.spacing
 
-    Text(
-        text = stringResource(Res.string.auth_forgot_success_title),
-        fontSize = 28.sp,
-        fontWeight = FontWeight.Bold,
-        color = turnstileColors.textPrimary,
-        textAlign = TextAlign.Center,
-        modifier = Modifier.fillMaxWidth(),
-    )
-    Spacer(Modifier.height(spacing.md))
-    Text(
-        text = stringResource(Res.string.auth_forgot_success_body),
-        fontSize = 15.sp,
-        color = turnstileColors.textSecondary,
-        lineHeight = 22.sp,
-        textAlign = TextAlign.Center,
-        modifier = Modifier.fillMaxWidth(),
-    )
-    Spacer(Modifier.height(spacing.xl))
-    Button(
-        onClick = onNavigateBack,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(52.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = turnstileColors.accent),
-        shape = RoundedCornerShape(12.dp),
+    Column(
+        modifier = modifier,
     ) {
         Text(
-            text = stringResource(Res.string.auth_forgot_back_to_signin),
-            fontSize = 16.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = turnstileColors.onAccent,
+            text = stringResource(Res.string.auth_forgot_success_title),
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold,
+            color = turnstileColors.textPrimary,
             textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth(),
         )
+        Spacer(Modifier.height(spacing.md))
+        Text(
+            text = stringResource(Res.string.auth_forgot_success_body),
+            fontSize = 15.sp,
+            color = turnstileColors.textSecondary,
+            lineHeight = 22.sp,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth(),
+        )
+        Spacer(Modifier.height(spacing.xl))
+        Button(
+            onClick = onNavigateBack,
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(52.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = turnstileColors.accent),
+            shape = RoundedCornerShape(12.dp),
+        ) {
+            Text(
+                text = stringResource(Res.string.auth_forgot_back_to_signin),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = turnstileColors.onAccent,
+                textAlign = TextAlign.Center,
+            )
+        }
     }
 }

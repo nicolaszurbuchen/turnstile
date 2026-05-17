@@ -54,21 +54,22 @@ fun AuthTextField(
     val spacing = MaterialTheme.spacing
 
     var passwordVisible by remember { mutableStateOf(false) }
-    val visualTransformation = if (isPassword && !passwordVisible) {
-        PasswordVisualTransformation()
-    } else {
-        VisualTransformation.None
-    }
+    val visualTransformation =
+        if (isPassword && !passwordVisible) {
+            PasswordVisualTransformation()
+        } else {
+            VisualTransformation.None
+        }
 
     Column(modifier = modifier) {
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    color = if (isError) turnstileColors.danger else turnstileColors.surface,
-                    shape = RoundedCornerShape(12.dp),
-                )
-                .padding(horizontal = spacing.md, vertical = 14.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .background(
+                        color = if (isError) turnstileColors.danger else turnstileColors.surface,
+                        shape = RoundedCornerShape(12.dp),
+                    ).padding(horizontal = spacing.md, vertical = 14.dp),
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -92,10 +93,11 @@ fun AuthTextField(
                         keyboardOptions = keyboardOptions,
                         keyboardActions = keyboardActions,
                         singleLine = true,
-                        textStyle = LocalTextStyle.current.copy(
-                            fontSize = 15.sp,
-                            color = turnstileColors.textPrimary,
-                        ),
+                        textStyle =
+                            LocalTextStyle.current.copy(
+                                fontSize = 15.sp,
+                                color = turnstileColors.textPrimary,
+                            ),
                         cursorBrush = SolidColor(turnstileColors.textPrimary),
                         modifier = Modifier.fillMaxWidth(),
                     )
@@ -103,13 +105,18 @@ fun AuthTextField(
                 if (isPassword) {
                     Spacer(Modifier.width(spacing.sm))
                     Icon(
-                        imageVector = if (passwordVisible) Icons.Filled.VisibilityOff
-                                      else Icons.Filled.Visibility,
+                        imageVector =
+                            if (passwordVisible) {
+                                Icons.Filled.VisibilityOff
+                            } else {
+                                Icons.Filled.Visibility
+                            },
                         contentDescription = null,
                         tint = turnstileColors.textSecondary,
-                        modifier = Modifier
-                            .size(20.dp)
-                            .clickable { passwordVisible = !passwordVisible },
+                        modifier =
+                            Modifier
+                                .size(20.dp)
+                                .clickable { passwordVisible = !passwordVisible },
                     )
                 }
             }

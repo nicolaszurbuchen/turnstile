@@ -19,32 +19,34 @@ import turnstile.composeapp.generated.resources.auth_sign_in
 
 @Composable
 fun WelcomeScreen(
-    onSignInClicked: () -> Unit,
-    onSignUpClicked: () -> Unit,
+    onSignInClick: () -> Unit,
+    onSignUpClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md),
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-            .fillMaxWidth()
-            .navigationBarsPadding()
-            .padding(
-                horizontal = MaterialTheme.spacing.xl,
-                vertical = MaterialTheme.spacing.xxl
-            ),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .navigationBarsPadding()
+                .padding(
+                    horizontal = MaterialTheme.spacing.xl,
+                    vertical = MaterialTheme.spacing.xxl,
+                ),
     ) {
         Spacer(
-            modifier = Modifier
-                .weight(1f),
+            modifier =
+                Modifier
+                    .weight(1f),
         )
         TurnstilePrimaryButton(
             text = UiText.Resource(Res.string.auth_sign_in),
-            onClick = onSignInClicked,
+            onClick = onSignInClick,
         )
         TurnstileSecondaryButton(
             text = UiText.Resource(Res.string.auth_sign_in),
-            onClick = onSignUpClicked,
+            onClick = onSignUpClick,
         )
     }
 }

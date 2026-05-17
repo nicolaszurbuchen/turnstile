@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:filename")
+
 package io.nicolaszurbuchen.turnstile
 
 import androidx.compose.ui.ExperimentalComposeUiApi

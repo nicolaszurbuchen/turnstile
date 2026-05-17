@@ -8,9 +8,7 @@ import io.nicolaszurbuchen.turnstile.feature.auth.presentation.navigation.Welcom
 import io.nicolaszurbuchen.turnstile.feature.auth.presentation.navigation.authGraph
 
 @Composable
-fun AuthFlow(
-    onAuthenticated: () -> Unit,
-) {
+fun AuthFlow(onAuthenticated: () -> Unit) {
     val navController = rememberNavController()
 
     AuthContainer {

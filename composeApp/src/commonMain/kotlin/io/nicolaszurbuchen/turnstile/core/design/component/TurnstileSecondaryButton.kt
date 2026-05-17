@@ -25,16 +25,18 @@ fun TurnstileSecondaryButton(
     OutlinedButton(
         onClick = onClick,
         enabled = enabled,
-        colors = ButtonDefaults.outlinedButtonColors(
-            contentColor = MaterialTheme.turnstileColors.accent,
-        ),
-//        border = BorderStroke(
+        colors =
+            ButtonDefaults.outlinedButtonColors(
+                contentColor = MaterialTheme.turnstileColors.accent,
+            ),
+        //        border = BorderStroke(
 //            width = OutlineWidth,
 //            color = if (enabled) MaterialTheme.turnstileColors.accent
 //            else MaterialTheme.turnstileColors.borderDefault,
 //        ),
-        modifier = modifier
-            .fillMaxWidth(),
+        modifier =
+            modifier
+                .fillMaxWidth(),
     ) {
         Text(
             text = text.asString(),

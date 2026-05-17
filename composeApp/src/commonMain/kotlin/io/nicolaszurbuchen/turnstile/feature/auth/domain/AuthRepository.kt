@@ -7,5 +7,8 @@ package io.nicolaszurbuchen.turnstile.feature.auth.domain
  * implementation in data). Stubbed here so the example compiles.
  */
 interface AuthRepository {
-    suspend fun login(email: String, password: String): String
+    suspend fun login(
+        email: String,
+        password: String,
+    ): String
 }

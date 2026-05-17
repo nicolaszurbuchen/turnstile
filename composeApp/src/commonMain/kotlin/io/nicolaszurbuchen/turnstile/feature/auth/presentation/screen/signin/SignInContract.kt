@@ -16,9 +16,9 @@ data class SignInState(
     val loading: Boolean = false,
     val submitError: String? = null,
 ) : State {
-
     val canSubmit: Boolean
-        get() = email.isNotBlank() &&
+        get() =
+            email.isNotBlank() &&
                 password.isNotBlank() &&
                 emailError == null &&
                 passwordError == null &&
@@ -27,26 +27,49 @@ data class SignInState(
 
 sealed interface SignInTrigger
 
-sealed interface SignInIntent : SignInTrigger, Intent {
-    data class EmailChanged(val value: String) : SignInIntent
-    data class PasswordChanged(val value: String) : SignInIntent
+sealed interface SignInIntent :
+    SignInTrigger,
+    Intent {
+    data class EmailChanged(
+        val value: String,
+    ) : SignInIntent
+
+    data class PasswordChanged(
+        val value: String,
+    ) : SignInIntent
+
     data object Submit : SignInIntent
+
     data object RememberMeToggled : SignInIntent
+
     data object SignUpClicked : SignInIntent
+
     data object ForgotPasswordClicked : SignInIntent
 }
 
-sealed interface SignInAction : SignInTrigger, Action {
-    data class LoginSucceeded(val token: String) : SignInAction
-    data class LoginFailedWith(val message: String) : SignInAction
+sealed interface SignInAction :
+    SignInTrigger,
+    Action {
+    data class LoginSucceeded(
+        val token: String,
+    ) : SignInAction
+
+    data class LoginFailedWith(
+        val message: String,
+    ) : SignInAction
 }
 
 sealed interface SignInCommand : Command {
-    data class CallLogin(val email: String, val password: String) : SignInCommand
+    data class CallLogin(
+        val email: String,
+        val password: String,
+    ) : SignInCommand
 }
 
 sealed interface SignEvent : Event {
     data object NavigateHome : SignEvent
+
     data object NavigateToSignUp : SignEvent
+
     data object NavigateToForgotPassword : SignEvent
 }

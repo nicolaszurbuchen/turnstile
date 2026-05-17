@@ -8,18 +8,21 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun AuthContainer(
+    modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxSize(),
+        modifier =
+            modifier
+                .fillMaxSize(),
     ) {
         AuthBackground()
 
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .statusBarsPadding(),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .statusBarsPadding(),
         ) {
             content()
         }

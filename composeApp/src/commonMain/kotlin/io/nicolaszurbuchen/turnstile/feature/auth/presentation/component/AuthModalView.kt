@@ -33,19 +33,21 @@ fun AuthModalView(
     Surface(
         shape = InvertedArchShape(72.dp),
         color = MaterialTheme.turnstileColors.surface,
-        modifier = modifier
-            .fillMaxWidth()
-            .fillMaxHeight(0.88f),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.88f),
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = MaterialTheme.spacing.xl)
-                .padding(top = 88.dp)
-                .navigationBarsPadding()
-                .padding(bottom = MaterialTheme.spacing.xl),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = MaterialTheme.spacing.xl)
+                    .padding(top = 88.dp)
+                    .navigationBarsPadding()
+                    .padding(bottom = MaterialTheme.spacing.xl),
         ) {
             content()
         }
@@ -61,17 +63,21 @@ private class InvertedArchShape(
         density: Density,
     ): Outline {
         val depth = with(density) { archDepth.toPx() }
-        val path = Path().apply {
-            moveTo(0f, 0f)
-            cubicTo(
-                x1 = size.width * 0.3f, y1 = depth,
-                x2 = size.width * 0.7f, y2 = depth,
-                x3 = size.width, y3 = 0f,
-            )
-            lineTo(size.width, size.height)
-            lineTo(0f, size.height)
-            close()
-        }
+        val path =
+            Path().apply {
+                moveTo(0f, 0f)
+                cubicTo(
+                    x1 = size.width * 0.3f,
+                    y1 = depth,
+                    x2 = size.width * 0.7f,
+                    y2 = depth,
+                    x3 = size.width,
+                    y3 = 0f,
+                )
+                lineTo(size.width, size.height)
+                lineTo(0f, size.height)
+                close()
+            }
         return Outline.Generic(path)
     }
 }

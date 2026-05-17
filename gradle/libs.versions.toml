@@ -11,11 +11,15 @@ androidx-lifecycle = "2.10.0"
 androidx-testExt = "1.3.0"
 composeHotReload = "1.1.1"
 composeMultiplatform = "1.10.3"
+compose-rules = "0.5.8"
 junit = "4.13.2"
 koin = "4.2.1"
 kotlin = "2.3.21"
 kotlinx-coroutines = "1.11.0"
 kotlinx-serialization = "1.11.0"
+konsist = "0.17.3"
+ktlint-engine = "1.8.0"
+ktlint-gradle = "14.2.0"
 material3 = "1.9.0"
 materialIconsExtended = "1.7.3"
 navigation = "2.9.2"
@@ -23,6 +27,9 @@ navigation = "2.9.2"
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-testJunit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+konsist = { module = "com.lemonappdev:konsist", version.ref = "konsist" }
+ktlint-compose-rules = { module = "io.nlopez.compose.rules:ktlint", version.ref = "compose-rules" }
+ktlint-engine = { module = "com.pinterest.ktlint:ktlint-cli", version.ref = "ktlint-engine" }
 junit = { module = "junit:junit", version.ref = "junit" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
 androidx-testExt-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-testExt" }
@@ -54,3 +61,4 @@ composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMul
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-gradle" }

@@ -23,20 +23,23 @@ fun AuthBackButton(
 ) {
     FilledIconButton(
         onClick = onNavigateBack,
-        colors = IconButtonDefaults.filledIconButtonColors(
-            containerColor = MaterialTheme.turnstileColors.surface,
-            contentColor = MaterialTheme.turnstileColors.textPrimary,
-        ),
-        modifier = Modifier
-            //.align(Alignment.TopStart)
-            .padding(12.dp)
-            .then(modifier),
+        colors =
+            IconButtonDefaults.filledIconButtonColors(
+                containerColor = MaterialTheme.turnstileColors.surface,
+                contentColor = MaterialTheme.turnstileColors.textPrimary,
+            ),
+        modifier =
+            Modifier
+                // .align(Alignment.TopStart)
+                .padding(12.dp)
+                .then(modifier),
     ) {
         Icon(
             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
             contentDescription = stringResource(Res.string.common_back),
-            modifier = Modifier
-                .size(20.dp),
+            modifier =
+                Modifier
+                    .size(20.dp),
         )
     }
 }

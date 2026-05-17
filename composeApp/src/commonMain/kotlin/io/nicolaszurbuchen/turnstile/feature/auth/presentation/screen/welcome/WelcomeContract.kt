@@ -10,16 +10,22 @@ object WelcomeState : State
 
 sealed interface WelcomeTrigger
 
-sealed interface WelcomeIntent : WelcomeTrigger, Intent {
+sealed interface WelcomeIntent :
+    WelcomeTrigger,
+    Intent {
     data object SignInClicked : WelcomeIntent
+
     data object SignUpClicked : WelcomeIntent
 }
 
-sealed interface WelcomeAction : WelcomeTrigger, Action
+sealed interface WelcomeAction :
+    WelcomeTrigger,
+    Action
 
 sealed interface WelcomeCommand : Command
 
 sealed interface WelcomeEvent : Event {
     data object NavigateToSignIn : WelcomeEvent
+
     data object NavigateToSignUp : WelcomeEvent
 }

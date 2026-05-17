@@ -24,11 +24,14 @@ fun NavGraphBuilder.authGraph(
     composable<SignInDestination> {
         SignInRoute(
             viewModel = koinViewModel(),
-            onLoggedIn = onAuthenticated,
+            onSignedIn = onAuthenticated,
             onNavigateToSignUp = {
-                navController.navigate(SignUpDestination, navOptions {
-                    popUpTo(SignInDestination) { inclusive = true }
-                })
+                navController.navigate(
+                    SignUpDestination,
+                    navOptions {
+                        popUpTo(SignInDestination) { inclusive = true }
+                    },
+                )
             },
             onNavigateToForgotPassword = { navController.navigate(ForgotPasswordDestination) },
             onNavigateBack = { navController.navigateUp() },
@@ -37,11 +40,14 @@ fun NavGraphBuilder.authGraph(
     composable<SignUpDestination> {
         SignUpRoute(
             viewModel = koinViewModel(),
-            onRegistered = onAuthenticated,
+            onSignedUp = onAuthenticated,
             onNavigateToSignIn = {
-                navController.navigate(SignInDestination, navOptions {
-                    popUpTo(SignUpDestination) { inclusive = true }
-                })
+                navController.navigate(
+                    SignInDestination,
+                    navOptions {
+                        popUpTo(SignUpDestination) { inclusive = true }
+                    },
+                )
             },
             onNavigateBack = { navController.navigateUp() },
         )

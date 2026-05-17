@@ -37,12 +37,14 @@ fun TurnstilePrimaryButton(
     Button(
         onClick = onClick,
         enabled = enabled && !loading,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.turnstileColors.accent,
-            contentColor = MaterialTheme.turnstileColors.onAccent,
-        ),
-        modifier = modifier
-            .fillMaxWidth()
+        colors =
+            ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.turnstileColors.accent,
+                contentColor = MaterialTheme.turnstileColors.onAccent,
+            ),
+        modifier =
+            modifier
+                .fillMaxWidth(),
     ) {
         Box(
             contentAlignment = Alignment.Center,
@@ -67,20 +69,19 @@ fun TurnstilePrimaryButton(
                 CircularProgressIndicator(
                     color = MaterialTheme.turnstileColors.onAccent,
                     strokeWidth = SpinnerStrokeWidth,
-                    modifier = Modifier
-                        .size(SpinnerSize),
+                    modifier =
+                        Modifier
+                            .size(SpinnerSize),
                 )
             }
         }
     }
 }
 
-
-
-internal val ButtonHeight        = 52.dp
+internal val ButtonHeight = 52.dp
 internal val ButtonContentPadding = PaddingValues(horizontal = 24.dp)
-internal val ButtonFontSize      = 14.sp
+internal val ButtonFontSize = 14.sp
 internal val ButtonLetterSpacing = 0.01.sp
-internal val OutlineWidth        = 0.5.dp
-internal val SpinnerSize         = 20.dp
-internal val SpinnerStrokeWidth  = 2.dp
+internal val OutlineWidth = 0.5.dp
+internal val SpinnerSize = 20.dp
+internal val SpinnerStrokeWidth = 2.dp

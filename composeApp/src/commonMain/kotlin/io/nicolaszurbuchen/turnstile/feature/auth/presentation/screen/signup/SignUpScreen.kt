@@ -49,11 +49,11 @@ import turnstile.composeapp.generated.resources.common_password
 @Composable
 fun SignUpScreen(
     state: SignUpState,
-    onFullNameChanged: (String) -> Unit,
-    onEmailChanged: (String) -> Unit,
-    onPasswordChanged: (String) -> Unit,
-    onSubmitted: () -> Unit,
-    onSignInClicked: () -> Unit,
+    onFullNameChange: (String) -> Unit,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onSubmit: () -> Unit,
+    onSignInClick: () -> Unit,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -70,8 +70,9 @@ fun SignUpScreen(
             onNavigateBack = onNavigateBack,
         )
         Spacer(
-            modifier = Modifier
-                .weight(1f),
+            modifier =
+                Modifier
+                    .weight(1f),
         )
         AuthModalView {
             AuthHeading(
@@ -82,55 +83,62 @@ fun SignUpScreen(
 
             AuthTextField(
                 value = state.fullName,
-                onValueChange = onFullNameChanged,
+                onValueChange = onFullNameChange,
                 hint = stringResource(Res.string.auth_full_name),
                 leadingIcon = Icons.Filled.Person,
                 isError = state.fullNameError != null,
                 errorMessage = state.fullNameError?.let { stringResource(it) },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 keyboardActions = KeyboardActions(onNext = { emailFocus.requestFocus() }),
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier =
+                    Modifier
+                        .fillMaxWidth(),
             )
             Spacer(Modifier.height(12.dp))
 
             AuthTextField(
                 value = state.email,
-                onValueChange = onEmailChanged,
+                onValueChange = onEmailChange,
                 hint = stringResource(Res.string.common_email),
                 leadingIcon = Icons.Filled.Email,
                 isError = state.emailError != null,
                 errorMessage = state.emailError?.let { stringResource(it) },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Email,
-                    imeAction = ImeAction.Next,
-                ),
-                keyboardActions = KeyboardActions(
-                    onNext = { passwordFocus.requestFocus() }
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .focusRequester(emailFocus),
+                keyboardOptions =
+                    KeyboardOptions(
+                        keyboardType = KeyboardType.Email,
+                        imeAction = ImeAction.Next,
+                    ),
+                keyboardActions =
+                    KeyboardActions(
+                        onNext = { passwordFocus.requestFocus() },
+                    ),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .focusRequester(emailFocus),
             )
             Spacer(Modifier.height(12.dp))
 
             AuthTextField(
                 value = state.password,
-                onValueChange = onPasswordChanged,
+                onValueChange = onPasswordChange,
                 hint = stringResource(Res.string.common_password),
                 leadingIcon = Icons.Filled.Lock,
                 isError = state.passwordError != null,
                 errorMessage = state.passwordError?.let { stringResource(it) },
                 isPassword = true,
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Done
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = { focusManager.clearFocus() }
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .focusRequester(passwordFocus),
+                keyboardOptions =
+                    KeyboardOptions(
+                        imeAction = ImeAction.Done,
+                    ),
+                keyboardActions =
+                    KeyboardActions(
+                        onDone = { focusManager.clearFocus() },
+                    ),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .focusRequester(passwordFocus),
             )
 
             state.submitError?.let { error ->
@@ -142,7 +150,7 @@ fun SignUpScreen(
 
             TurnstilePrimaryButton(
                 text = UiText.Resource(id = Res.string.auth_sign_up),
-                onClick = onSubmitted,
+                onClick = onSubmit,
                 enabled = state.canSubmit,
                 loading = state.loading,
             )
@@ -162,7 +170,7 @@ fun SignUpScreen(
                     color = turnstileColors.textSecondary,
                 )
                 TextButton(
-                    onClick = onSignInClicked,
+                    onClick = onSignInClick,
                 ) {
                     Text(
                         text = stringResource(Res.string.auth_sign_in),

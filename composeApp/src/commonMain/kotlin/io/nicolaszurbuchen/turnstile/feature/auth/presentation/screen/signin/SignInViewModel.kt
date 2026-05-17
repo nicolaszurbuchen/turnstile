@@ -9,10 +9,9 @@ import kotlinx.coroutines.launch
 class SignInViewModel(
     private val auth: AuthRepository,
 ) : MviViewModel<SignInState, SignInTrigger, SignInIntent, SignInAction, SignInCommand, SignEvent>(
-    initialState = SignInState(),
-    reducer = SignInReducer,
-) {
-
+        initialState = SignInState(),
+        reducer = SignInReducer,
+    ) {
     private var loginJob: Job? = null
 
     override suspend fun executeCommand(command: SignInCommand) {
@@ -20,15 +19,15 @@ class SignInViewModel(
             is SignInCommand.CallLogin -> {
                 // Cancel any in-flight login if the user submits again.
                 loginJob?.cancel()
-                loginJob = viewModelScope.launch {
-                    runCatching { auth.login(command.email, command.password) }
-                        .onSuccess { token ->
-                            dispatchAction(SignInAction.LoginSucceeded(token))
-                        }
-                        .onFailure { e ->
-                            dispatchAction(SignInAction.LoginFailedWith(e.message ?: "Unknown error"))
-                        }
-                }
+                loginJob =
+                    viewModelScope.launch {
+                        runCatching { auth.login(command.email, command.password) }
+                            .onSuccess { token ->
+                                dispatchAction(SignInAction.LoginSucceeded(token))
+                            }.onFailure { e ->
+                                dispatchAction(SignInAction.LoginFailedWith(e.message ?: "Unknown error"))
+                            }
+                    }
             }
         }
     }

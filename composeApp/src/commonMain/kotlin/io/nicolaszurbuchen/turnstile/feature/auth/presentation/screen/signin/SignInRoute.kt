@@ -3,13 +3,14 @@ package io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.signin
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun SignInRoute(
     viewModel: SignInViewModel,
-    onLoggedIn: () -> Unit,
+    onSignedIn: () -> Unit,
     onNavigateToSignUp: () -> Unit,
     onNavigateToForgotPassword: () -> Unit,
     onNavigateBack: () -> Unit,
@@ -17,24 +18,28 @@ fun SignInRoute(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    val onSignedInUpdated by rememberUpdatedState(onSignedIn)
+    val onNavigateToSignUpUpdated by rememberUpdatedState(onNavigateToSignUp)
+    val onNavigateToForgotPasswordUpdated by rememberUpdatedState(onNavigateToForgotPassword)
+
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
-                SignEvent.NavigateHome -> onLoggedIn()
-                SignEvent.NavigateToSignUp -> onNavigateToSignUp()
-                SignEvent.NavigateToForgotPassword -> onNavigateToForgotPassword()
+                SignEvent.NavigateHome -> onSignedInUpdated
+                SignEvent.NavigateToSignUp -> onNavigateToSignUpUpdated
+                SignEvent.NavigateToForgotPassword -> onNavigateToForgotPasswordUpdated
             }
         }
     }
 
     SignInScreen(
         state = state,
-        onEmailChanged = { viewModel.sendIntent(SignInIntent.EmailChanged(it)) },
-        onPasswordChanged = { viewModel.sendIntent(SignInIntent.PasswordChanged(it)) },
-        onRememberMeToggled = { viewModel.sendIntent(SignInIntent.RememberMeToggled) },
-        onSubmitted = { viewModel.sendIntent(SignInIntent.Submit) },
-        onForgotPasswordClicked = { viewModel.sendIntent(SignInIntent.ForgotPasswordClicked) },
-        onSignUpClicked = { viewModel.sendIntent(SignInIntent.SignUpClicked) },
+        onEmailChang = { viewModel.sendIntent(SignInIntent.EmailChanged(it)) },
+        onPasswordChange = { viewModel.sendIntent(SignInIntent.PasswordChanged(it)) },
+        onRememberMeToggle = { viewModel.sendIntent(SignInIntent.RememberMeToggled) },
+        onSubmit = { viewModel.sendIntent(SignInIntent.Submit) },
+        onForgotPasswordClick = { viewModel.sendIntent(SignInIntent.ForgotPasswordClicked) },
+        onSignUpClick = { viewModel.sendIntent(SignInIntent.SignUpClicked) },
         onNavigateBack = onNavigateBack,
         modifier = modifier,
     )

@@ -13,7 +13,7 @@ object CharcoalPalette {
     val charcoal300 = Color(0xFF8E8E8E)
     val charcoal200 = Color(0xFFB4B4B4)
     val charcoal100 = Color(0xFFD4D4D4)
-    val charcoal50  = Color(0xFFF0EEEA)
+    val charcoal50 = Color(0xFFF0EEEA)
 }
 
 object AmberPalette {
@@ -27,7 +27,7 @@ object AmberPalette {
     val amber300 = Color(0xFFD9B38E)
     val amber200 = Color(0xFFE8CDB0)
     val amber100 = Color(0xFFF2E4D0)
-    val amber50  = Color(0xFFF8F1E8)
+    val amber50 = Color(0xFFF8F1E8)
 }
 
 object OrangePalette {
@@ -41,7 +41,7 @@ object OrangePalette {
     val orange300 = Color(0xFFE2A480)
     val orange200 = Color(0xFFEDC4A8)
     val orange100 = Color(0xFFF5DECE)
-    val orange50  = Color(0xFFFAF0E8)
+    val orange50 = Color(0xFFFAF0E8)
 }
 
 object GreenPalette {
@@ -55,7 +55,7 @@ object GreenPalette {
     val green300 = Color(0xFF8EC49D)
     val green200 = Color(0xFFB4D9BE)
     val green100 = Color(0xFFD6EDD9)
-    val green50  = Color(0xFFEEF7F0)
+    val green50 = Color(0xFFEEF7F0)
 }
 
 object RedPalette {
@@ -69,5 +69,5 @@ object RedPalette {
     val red300 = Color(0xFFD08484)
     val red200 = Color(0xFFE2AAAA)
     val red100 = Color(0xFFF0CECD)
-    val red50  = Color(0xFFF8ECEC)
+    val red50 = Color(0xFFF8ECEC)
 }
