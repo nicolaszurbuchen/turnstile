@@ -3,15 +3,16 @@ import com.android.build.api.dsl.ApplicationExtension
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.googleServices)
     alias(libs.plugins.kotlinAndroid)
 }
 
 configure<ApplicationExtension> {
-    namespace = "io.nicolaszurbuchen.turnstile.android"
+    namespace = "io.nicolaszurbuchen.turnstile"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "io.nicolaszurbuchen.turnstile.android"
+        applicationId = "io.nicolaszurbuchen.turnstile"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1

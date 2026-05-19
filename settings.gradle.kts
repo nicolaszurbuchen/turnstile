@@ -8,6 +8,7 @@ pluginManagement {
                 includeGroupAndSubgroups("androidx")
                 includeGroupAndSubgroups("com.android")
                 includeGroupAndSubgroups("com.google")
+                includeGroupAndSubgroups("com.firebase")
             }
         }
         mavenCentral()
@@ -22,6 +23,7 @@ dependencyResolutionManagement {
                 includeGroupAndSubgroups("androidx")
                 includeGroupAndSubgroups("com.android")
                 includeGroupAndSubgroups("com.google")
+                includeGroupAndSubgroups("com.firebase")
             }
         }
         mavenCentral()
@@ -34,4 +36,6 @@ plugins {
 
 include(":shared")
 include(":androidApp")
+include(":desktopApp")
+include(":webApp")
 include(":konsistTest")

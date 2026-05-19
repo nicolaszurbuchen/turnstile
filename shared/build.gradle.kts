@@ -1,4 +1,3 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -24,7 +23,7 @@ kotlin {
     }
 
     android {
-        namespace = "io.nicolaszurbuchen.turnstile"
+        namespace = "io.nicolaszurbuchen.turnstile.shared"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
@@ -40,13 +39,11 @@ kotlin {
 
     js {
         browser()
-        binaries.executable()
     }
 
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         browser()
-        binaries.executable()
     }
 
     sourceSets {
@@ -73,8 +70,6 @@ kotlin {
             implementation(libs.kotlin.test)
         }
         jvmMain.dependencies {
-            implementation(compose.desktop.currentOs)
-            implementation(libs.kotlinx.coroutinesSwing)
         }
     }
 }
@@ -100,17 +95,5 @@ ktlint {
 
     dependencies {
         add("ktlintRuleset", libs.ktlint.compose.rules)
-    }
-}
-
-compose.desktop {
-    application {
-        mainClass = "io.nicolaszurbuchen.turnstile.MainKt"
-
-        nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "io.nicolaszurbuchen.turnstile"
-            packageVersion = "1.0.0"
-        }
     }
 }
