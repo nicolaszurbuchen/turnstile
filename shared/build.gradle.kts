@@ -1,7 +1,6 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.androidMultiplatformLibrary)
+    alias(libs.plugins.androidLibrary)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeHotReload)
     alias(libs.plugins.composeMultiplatform)
@@ -11,6 +10,9 @@ plugins {
 }
 
 kotlin {
+    jvmToolchain(11)
+    androidTarget()
+
     listOf(
         iosArm64(),
         iosSimulatorArm64(),
@@ -21,35 +23,25 @@ kotlin {
         }
     }
 
-    android {
-        namespace = "io.nicolaszurbuchen.turnstile.shared"
-        compileSdk = libs.versions.android.compileSdk.get().toInt()
-        minSdk = libs.versions.android.minSdk.get().toInt()
-
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
-        }
-        androidResources {
-            enable = true
-        }
-    }
-
     sourceSets {
         androidMain.dependencies {
-            implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.compose.uiToolingPreview)
+            implementation(libs.compose.uiTooling)
         }
         commonMain.dependencies {
-            implementation(libs.compose.runtime)
+            implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation(libs.androidx.lifecycle.viewmodelCompose)
+            implementation(libs.compose.components.resources)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
+            implementation(libs.compose.runtime)
             implementation(libs.compose.ui)
-            implementation(libs.compose.components.resources)
             implementation(libs.compose.uiToolingPreview)
-            implementation(libs.androidx.lifecycle.viewmodelCompose)
-            implementation(libs.androidx.lifecycle.runtimeCompose)
-            implementation(libs.koin.core)
+            implementation(libs.firebase.auth)
+            implementation(libs.firebase.firestore)
             implementation(libs.koin.compose.viewmodel)
+            implementation(libs.koin.core)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.material.icons.extended)
             implementation(libs.navigation.compose)
@@ -60,8 +52,13 @@ kotlin {
     }
 }
 
-dependencies {
-    androidRuntimeClasspath(libs.compose.uiTooling)
+configure<com.android.build.api.dsl.LibraryExtension> {
+    namespace = "io.nicolaszurbuchen.turnstile.shared"
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
+
+    defaultConfig {
+        minSdk = libs.versions.android.minSdk.get().toInt()
+    }
 }
 
 ktlint {
