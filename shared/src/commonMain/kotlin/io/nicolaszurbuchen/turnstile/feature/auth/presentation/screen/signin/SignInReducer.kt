@@ -1,7 +1,7 @@
 package io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.signin
 
-import io.nicolaszurbuchen.turnstile.core.mvi.Next
-import io.nicolaszurbuchen.turnstile.core.mvi.Reducer
+import io.nicolaszurbuchen.turnstile.infra.mvi.Next
+import io.nicolaszurbuchen.turnstile.infra.mvi.Reducer
 import org.jetbrains.compose.resources.StringResource
 import turnstile.shared.generated.resources.Res
 import turnstile.shared.generated.resources.auth_error_email_invalid

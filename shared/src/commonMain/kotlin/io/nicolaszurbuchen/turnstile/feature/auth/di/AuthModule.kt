@@ -5,7 +5,10 @@ import dev.gitlive.firebase.auth.FirebaseAuth
 import dev.gitlive.firebase.auth.auth
 import dev.gitlive.firebase.firestore.FirebaseFirestore
 import dev.gitlive.firebase.firestore.firestore
-import io.nicolaszurbuchen.turnstile.feature.auth.data.datasource.remote.*
+import io.nicolaszurbuchen.turnstile.feature.auth.data.datasource.remote.AuthRemoteDataSource
+import io.nicolaszurbuchen.turnstile.feature.auth.data.datasource.remote.AuthRemoteDataSourceImpl
+import io.nicolaszurbuchen.turnstile.feature.auth.data.datasource.remote.UserRemoteDataSource
+import io.nicolaszurbuchen.turnstile.feature.auth.data.datasource.remote.UserRemoteDataSourceImpl
 import io.nicolaszurbuchen.turnstile.feature.auth.data.repository.UserIdentityRepositoryImpl
 import io.nicolaszurbuchen.turnstile.feature.auth.domain.repository.UserIdentityRepository
 import io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.forgotpassword.ForgotPasswordViewModel

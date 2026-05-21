@@ -10,10 +10,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import io.nicolaszurbuchen.turnstile.core.design.component.TurnstilePrimaryButton
-import io.nicolaszurbuchen.turnstile.core.design.component.TurnstileSecondaryButton
-import io.nicolaszurbuchen.turnstile.core.design.theme.spacing
-import io.nicolaszurbuchen.turnstile.core.ui.UiText
+import io.nicolaszurbuchen.turnstile.infra.design.component.TurnstilePrimaryButton
+import io.nicolaszurbuchen.turnstile.infra.design.component.TurnstileSecondaryButton
+import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
+import io.nicolaszurbuchen.turnstile.infra.ui.UiText
 import turnstile.shared.generated.resources.Res
 import turnstile.shared.generated.resources.auth_sign_in
 

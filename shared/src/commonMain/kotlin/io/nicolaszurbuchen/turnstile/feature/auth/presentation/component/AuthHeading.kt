@@ -11,15 +11,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
-import io.nicolaszurbuchen.turnstile.core.design.theme.spacing
-import io.nicolaszurbuchen.turnstile.core.design.theme.turnstileColors
-import io.nicolaszurbuchen.turnstile.core.ui.UiText
-import io.nicolaszurbuchen.turnstile.core.ui.asString
+import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
+import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
+import io.nicolaszurbuchen.turnstile.infra.ui.asString
 
 @Composable
 fun AuthHeading(
-    title: UiText,
-    subtitle: UiText,
+    title: io.nicolaszurbuchen.turnstile.infra.ui.UiText,
+    subtitle: io.nicolaszurbuchen.turnstile.infra.ui.UiText,
     modifier: Modifier = Modifier,
 ) {
     Column(

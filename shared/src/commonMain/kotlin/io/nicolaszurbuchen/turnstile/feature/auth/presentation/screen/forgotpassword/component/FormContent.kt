@@ -24,10 +24,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.nicolaszurbuchen.turnstile.core.design.theme.spacing
-import io.nicolaszurbuchen.turnstile.core.design.theme.turnstileColors
 import io.nicolaszurbuchen.turnstile.feature.auth.presentation.component.AuthTextField
 import io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.forgotpassword.ForgotPasswordState
+import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
+import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
 import org.jetbrains.compose.resources.stringResource
 import turnstile.shared.generated.resources.Res
 import turnstile.shared.generated.resources.auth_forgot_password

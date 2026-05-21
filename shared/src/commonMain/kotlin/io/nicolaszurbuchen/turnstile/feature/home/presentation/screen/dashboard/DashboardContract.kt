@@ -1,13 +1,13 @@
 package io.nicolaszurbuchen.turnstile.feature.home.presentation.screen.dashboard
 
-import io.nicolaszurbuchen.turnstile.core.mvi.Action
-import io.nicolaszurbuchen.turnstile.core.mvi.Command
-import io.nicolaszurbuchen.turnstile.core.mvi.Event
-import io.nicolaszurbuchen.turnstile.core.mvi.Intent
-import io.nicolaszurbuchen.turnstile.core.mvi.State
-import io.nicolaszurbuchen.turnstile.core.mvi.Trigger
-import io.nicolaszurbuchen.turnstile.core.ui.AppError
 import io.nicolaszurbuchen.turnstile.feature.home.domain.model.Credential
+import io.nicolaszurbuchen.turnstile.infra.mvi.Action
+import io.nicolaszurbuchen.turnstile.infra.mvi.Command
+import io.nicolaszurbuchen.turnstile.infra.mvi.Event
+import io.nicolaszurbuchen.turnstile.infra.mvi.Intent
+import io.nicolaszurbuchen.turnstile.infra.mvi.State
+import io.nicolaszurbuchen.turnstile.infra.mvi.Trigger
+import io.nicolaszurbuchen.turnstile.infra.ui.AppError
 
 // ─── UI model ─────────────────────────────────────────────────────────────────
 

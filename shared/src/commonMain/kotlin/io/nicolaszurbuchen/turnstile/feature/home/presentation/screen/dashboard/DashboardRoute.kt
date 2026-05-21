@@ -6,8 +6,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.nicolaszurbuchen.turnstile.core.design.component.AppErrorView
-import io.nicolaszurbuchen.turnstile.core.ui.Loadable
+import io.nicolaszurbuchen.turnstile.infra.design.component.AppErrorView
+import io.nicolaszurbuchen.turnstile.infra.ui.Loadable
 
 @Composable
 fun DashboardRoute(

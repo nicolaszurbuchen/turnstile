@@ -40,12 +40,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.nicolaszurbuchen.turnstile.core.design.component.AppBanner
-import io.nicolaszurbuchen.turnstile.core.design.component.AppEmptyView
-import io.nicolaszurbuchen.turnstile.core.design.component.BannerSeverity
-import io.nicolaszurbuchen.turnstile.core.design.component.BannerStyle
-import io.nicolaszurbuchen.turnstile.core.design.theme.spacing
-import io.nicolaszurbuchen.turnstile.core.design.theme.turnstileColors
+import io.nicolaszurbuchen.turnstile.infra.design.component.AppBanner
+import io.nicolaszurbuchen.turnstile.infra.design.component.AppEmptyView
+import io.nicolaszurbuchen.turnstile.infra.design.component.BannerSeverity
+import io.nicolaszurbuchen.turnstile.infra.design.component.BannerStyle
+import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
+import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

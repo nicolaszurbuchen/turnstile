@@ -7,5 +7,5 @@ data class Credential(
     val id: String,
     val name: String,
     val type: String,
-    val data: String
+    val data: String,
 )

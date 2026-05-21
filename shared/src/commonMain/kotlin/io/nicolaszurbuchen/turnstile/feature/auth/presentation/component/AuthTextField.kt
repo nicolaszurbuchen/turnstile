@@ -34,8 +34,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.nicolaszurbuchen.turnstile.core.design.theme.spacing
-import io.nicolaszurbuchen.turnstile.core.design.theme.turnstileColors
+import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
+import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
 
 @Composable
 fun AuthTextField(

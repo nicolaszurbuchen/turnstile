@@ -1,11 +1,5 @@
 package io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.forgotpassword
 
-import io.nicolaszurbuchen.turnstile.core.mvi.Action
-import io.nicolaszurbuchen.turnstile.core.mvi.Command
-import io.nicolaszurbuchen.turnstile.core.mvi.Event
-import io.nicolaszurbuchen.turnstile.core.mvi.Intent
-import io.nicolaszurbuchen.turnstile.core.mvi.State
-import io.nicolaszurbuchen.turnstile.core.mvi.Trigger
 import org.jetbrains.compose.resources.StringResource
 
 data class ForgotPasswordState(
@@ -14,7 +8,7 @@ data class ForgotPasswordState(
     val loading: Boolean = false,
     val submitted: Boolean = false,
     val submitError: String? = null,
-) : State {
+) : io.nicolaszurbuchen.turnstile.infra.mvi.State {
     val canSubmit: Boolean
         get() =
             email.isNotBlank() &&
@@ -23,11 +17,11 @@ data class ForgotPasswordState(
                 !submitted
 }
 
-sealed interface ForgotPasswordTrigger : Trigger
+sealed interface ForgotPasswordTrigger : io.nicolaszurbuchen.turnstile.infra.mvi.Trigger
 
 sealed interface ForgotPasswordIntent :
     ForgotPasswordTrigger,
-    Intent {
+    io.nicolaszurbuchen.turnstile.infra.mvi.Intent {
     data class EmailChanged(
         val value: String,
     ) : ForgotPasswordIntent
@@ -37,7 +31,7 @@ sealed interface ForgotPasswordIntent :
 
 sealed interface ForgotPasswordAction :
     ForgotPasswordTrigger,
-    Action {
+    io.nicolaszurbuchen.turnstile.infra.mvi.Action {
     data object ResetEmailSent : ForgotPasswordAction
 
     data class ResetFailedWith(
@@ -45,10 +39,10 @@ sealed interface ForgotPasswordAction :
     ) : ForgotPasswordAction
 }
 
-sealed interface ForgotPasswordCommand : Command {
+sealed interface ForgotPasswordCommand : io.nicolaszurbuchen.turnstile.infra.mvi.Command {
     data class CallRequestReset(
         val email: String,
     ) : ForgotPasswordCommand
 }
 
-sealed interface ForgotPasswordEvent : Event
+sealed interface ForgotPasswordEvent : io.nicolaszurbuchen.turnstile.infra.mvi.Event

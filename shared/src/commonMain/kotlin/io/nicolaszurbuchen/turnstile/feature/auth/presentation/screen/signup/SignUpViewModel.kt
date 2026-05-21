@@ -1,8 +1,8 @@
 package io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.signup
 
 import androidx.lifecycle.viewModelScope
-import io.nicolaszurbuchen.turnstile.core.mvi.MviViewModel
 import io.nicolaszurbuchen.turnstile.feature.auth.domain.repository.UserIdentityRepository
+import io.nicolaszurbuchen.turnstile.infra.mvi.MviViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 

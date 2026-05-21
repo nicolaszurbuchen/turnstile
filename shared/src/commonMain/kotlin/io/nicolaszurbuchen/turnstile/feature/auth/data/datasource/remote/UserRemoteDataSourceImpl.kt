@@ -4,9 +4,8 @@ import dev.gitlive.firebase.firestore.FirebaseFirestore
 import io.nicolaszurbuchen.turnstile.feature.auth.domain.model.User
 
 class UserRemoteDataSourceImpl(
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
 ) : UserRemoteDataSource {
-
     override suspend fun createUser(user: User) {
         firestore.collection("users").document(user.id).set(user)
     }

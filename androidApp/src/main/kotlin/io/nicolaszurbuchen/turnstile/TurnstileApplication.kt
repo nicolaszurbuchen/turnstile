@@ -1,7 +1,7 @@
 package io.nicolaszurbuchen.turnstile
 
 import android.app.Application
-import io.nicolaszurbuchen.turnstile.core.di.initKoin
+import io.nicolaszurbuchen.turnstile.infra.di.initKoin
 import org.koin.android.ext.koin.androidContext
 
 class TurnstileApplication : Application() {

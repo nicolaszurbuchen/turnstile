@@ -1,9 +1,9 @@
 package io.nicolaszurbuchen.turnstile.feature.home.presentation.screen.dashboard
 
-import io.nicolaszurbuchen.turnstile.core.mvi.Next
-import io.nicolaszurbuchen.turnstile.core.mvi.Reducer
-import io.nicolaszurbuchen.turnstile.core.ui.Loadable
-import io.nicolaszurbuchen.turnstile.core.ui.onSuccess
+import io.nicolaszurbuchen.turnstile.infra.mvi.Next
+import io.nicolaszurbuchen.turnstile.infra.mvi.Reducer
+import io.nicolaszurbuchen.turnstile.infra.ui.Loadable
+import io.nicolaszurbuchen.turnstile.infra.ui.onSuccess
 
 object DashboardReducer : Reducer<Loadable<DashboardState>, DashboardTrigger, DashboardCommand, DashboardEvent> {
     override fun reduce(

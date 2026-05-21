@@ -1,6 +1,6 @@
 package io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.forgotpassword
 
-import io.nicolaszurbuchen.turnstile.core.mvi.MviViewModel
+import io.nicolaszurbuchen.turnstile.infra.mvi.MviViewModel
 
 class ForgotPasswordViewModel :
     MviViewModel<

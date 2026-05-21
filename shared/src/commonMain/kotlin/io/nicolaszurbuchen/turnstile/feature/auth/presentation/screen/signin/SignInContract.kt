@@ -1,11 +1,11 @@
 package io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.signin
 
-import io.nicolaszurbuchen.turnstile.core.mvi.Action
-import io.nicolaszurbuchen.turnstile.core.mvi.Command
-import io.nicolaszurbuchen.turnstile.core.mvi.Event
-import io.nicolaszurbuchen.turnstile.core.mvi.Intent
-import io.nicolaszurbuchen.turnstile.core.mvi.State
-import io.nicolaszurbuchen.turnstile.core.mvi.Trigger
+import io.nicolaszurbuchen.turnstile.infra.mvi.Action
+import io.nicolaszurbuchen.turnstile.infra.mvi.Command
+import io.nicolaszurbuchen.turnstile.infra.mvi.Event
+import io.nicolaszurbuchen.turnstile.infra.mvi.Intent
+import io.nicolaszurbuchen.turnstile.infra.mvi.State
+import io.nicolaszurbuchen.turnstile.infra.mvi.Trigger
 import org.jetbrains.compose.resources.StringResource
 
 data class SignInState(

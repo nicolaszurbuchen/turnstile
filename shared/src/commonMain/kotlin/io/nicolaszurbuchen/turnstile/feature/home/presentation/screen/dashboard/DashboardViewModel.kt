@@ -1,11 +1,11 @@
 package io.nicolaszurbuchen.turnstile.feature.home.presentation.screen.dashboard
 
 import androidx.lifecycle.viewModelScope
-import io.nicolaszurbuchen.turnstile.core.mvi.MviViewModel
-import io.nicolaszurbuchen.turnstile.core.ui.AppError
-import io.nicolaszurbuchen.turnstile.core.ui.Loadable
 import io.nicolaszurbuchen.turnstile.feature.home.domain.usecase.DeleteCredentialUseCase
 import io.nicolaszurbuchen.turnstile.feature.home.domain.usecase.GetCredentialsUseCase
+import io.nicolaszurbuchen.turnstile.infra.mvi.MviViewModel
+import io.nicolaszurbuchen.turnstile.infra.ui.AppError
+import io.nicolaszurbuchen.turnstile.infra.ui.Loadable
 import kotlinx.coroutines.launch
 
 class DashboardViewModel(
