@@ -1,14 +1,13 @@
 package io.nicolaszurbuchen.turnstile.common.session.data.repository
 
-import io.nicolaszurbuchen.turnstile.common.session.data.datasource.memory.SessionMemoryDataSource
+import io.nicolaszurbuchen.turnstile.common.session.data.datasource.memory.SessionLocalDataSource
 import io.nicolaszurbuchen.turnstile.common.session.domain.repository.SessionRepository
 
 class SessionRepositoryImpl(
-    private val memoryDataSource: SessionMemoryDataSource,
+    private val localDataSource: SessionLocalDataSource,
 ) : SessionRepository {
-    override fun currentUserId(): String? = memoryDataSource.userId
 
-    fun setCurrentUserId(userId: String?) {
-        memoryDataSource.userId = userId
+    override fun getCurrentUserId(): String? {
+        return localDataSource.getCurrentUserId()
     }
 }

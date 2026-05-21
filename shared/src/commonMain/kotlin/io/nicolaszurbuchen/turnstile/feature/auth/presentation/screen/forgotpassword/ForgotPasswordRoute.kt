@@ -4,13 +4,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ForgotPasswordRoute(
-    viewModel: ForgotPasswordViewModel,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val viewModel = koinViewModel<ForgotPasswordViewModel>()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     ForgotPasswordScreen(

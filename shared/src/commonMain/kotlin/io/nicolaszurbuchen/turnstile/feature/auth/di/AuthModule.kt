@@ -21,9 +21,6 @@ import org.koin.dsl.module
 
 val authModule =
     module {
-        single<FirebaseAuth> { Firebase.auth }
-        single<FirebaseFirestore> { Firebase.firestore }
-
         // Data Sources
         singleOf(::AuthRemoteDataSourceImpl) bind AuthRemoteDataSource::class
         singleOf(::UserRemoteDataSourceImpl) bind UserRemoteDataSource::class

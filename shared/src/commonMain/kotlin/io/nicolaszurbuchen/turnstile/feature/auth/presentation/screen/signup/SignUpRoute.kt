@@ -6,15 +6,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun SignUpRoute(
-    viewModel: SignUpViewModel,
     onSignedUp: () -> Unit,
     onNavigateToSignIn: () -> Unit,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val viewModel = koinViewModel<SignUpViewModel>()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     val onSignedUpUpdated by rememberUpdatedState(onSignedUp)

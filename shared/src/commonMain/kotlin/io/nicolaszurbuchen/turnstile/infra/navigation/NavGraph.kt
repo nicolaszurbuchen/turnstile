@@ -7,25 +7,44 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.nicolaszurbuchen.turnstile.feature.auth.presentation.AuthFlow
 import io.nicolaszurbuchen.turnstile.feature.auth.presentation.navigation.AuthGraph
-import io.nicolaszurbuchen.turnstile.feature.home.presentation.navigation.HomeGraph
-import io.nicolaszurbuchen.turnstile.feature.home.presentation.navigation.homeGraph
+import io.nicolaszurbuchen.turnstile.feature.splash.presentation.navigation.SplashDestination
+import io.nicolaszurbuchen.turnstile.feature.splash.presentation.screen.SplashRoute
+import io.nicolaszurbuchen.turnstile.feature.vault.presentation.navigation.VaultGraph
+import io.nicolaszurbuchen.turnstile.feature.vault.presentation.navigation.vaultGraph
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun NavGraph(navController: NavHostController = rememberNavController()) {
     NavHost(
         navController = navController,
-        startDestination = AuthGraph,
+        startDestination = SplashDestination,
     ) {
+        composable<SplashDestination> {
+            SplashRoute(
+                viewModel = koinViewModel(),
+                onNavigateToAuth = {
+                    navController.navigate(AuthGraph) {
+                        popUpTo(SplashDestination) { inclusive = true }
+                    }
+                },
+                onNavigateToVault = {
+                    navController.navigate(VaultGraph) {
+                        popUpTo(SplashDestination) { inclusive = true }
+                    }
+                }
+            )
+        }
+
         composable<AuthGraph> {
             AuthFlow(
                 onAuthenticated = {
-                    navController.navigate(HomeGraph) {
+                    navController.navigate(VaultGraph) {
                         popUpTo(AuthGraph) { inclusive = true }
                     }
                 },
             )
         }
 
-        homeGraph(navController = navController)
+        vaultGraph(navController = navController)
     }
 }

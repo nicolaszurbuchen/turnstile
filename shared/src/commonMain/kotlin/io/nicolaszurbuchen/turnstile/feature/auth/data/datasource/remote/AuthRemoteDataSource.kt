@@ -13,13 +13,7 @@ interface AuthRemoteDataSource {
         password: String,
     ): FirebaseUser
 
-    suspend fun signInWithGoogle(): FirebaseUser
-
-    suspend fun signInWithApple(): FirebaseUser
-
     suspend fun signOut()
 
     suspend fun deleteAccount()
-
-    fun getCurrentUserId(): String?
 }

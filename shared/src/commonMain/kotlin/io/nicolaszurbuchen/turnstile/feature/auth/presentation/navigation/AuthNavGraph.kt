@@ -8,7 +8,6 @@ import io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.forgotpass
 import io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.signin.SignInRoute
 import io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.signup.SignUpRoute
 import io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.welcome.WelcomeRoute
-import org.koin.compose.viewmodel.koinViewModel
 
 fun NavGraphBuilder.authGraph(
     navController: NavController,
@@ -22,7 +21,6 @@ fun NavGraphBuilder.authGraph(
     }
     composable<SignInDestination> {
         SignInRoute(
-            viewModel = koinViewModel(),
             onSignedIn = onAuthenticated,
             onNavigateToSignUp = {
                 navController.navigate(
@@ -38,7 +36,6 @@ fun NavGraphBuilder.authGraph(
     }
     composable<SignUpDestination> {
         SignUpRoute(
-            viewModel = koinViewModel(),
             onSignedUp = onAuthenticated,
             onNavigateToSignIn = {
                 navController.navigate(
@@ -53,7 +50,6 @@ fun NavGraphBuilder.authGraph(
     }
     composable<ForgotPasswordDestination> {
         ForgotPasswordRoute(
-            viewModel = koinViewModel(),
             onNavigateBack = { navController.navigateUp() },
         )
     }

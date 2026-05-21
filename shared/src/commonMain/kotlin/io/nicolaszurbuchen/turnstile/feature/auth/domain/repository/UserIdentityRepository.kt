@@ -14,9 +14,5 @@ interface UserIdentityRepository {
         password: String,
     ): User
 
-    suspend fun signInWithGoogle(): User
-
-    suspend fun signInWithApple(): User
-
     suspend fun signOut()
 }

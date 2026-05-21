@@ -22,12 +22,6 @@ class AuthRemoteDataSourceImpl(
         return result.user ?: throw Exception("Sign up failed: User is null")
     }
 
-    override suspend fun signInWithGoogle(): FirebaseUser =
-        throw UnsupportedOperationException("Google Sign-In not yet implemented in commonMain")
-
-    override suspend fun signInWithApple(): FirebaseUser =
-        throw UnsupportedOperationException("Apple Sign-In not yet implemented in commonMain")
-
     override suspend fun signOut() {
         auth.signOut()
     }
@@ -35,6 +29,4 @@ class AuthRemoteDataSourceImpl(
     override suspend fun deleteAccount() {
         auth.currentUser?.delete()
     }
-
-    override fun getCurrentUserId(): String? = auth.currentUser?.uid
 }
