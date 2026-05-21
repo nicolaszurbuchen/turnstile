@@ -31,7 +31,7 @@ fun SignUpRoute(
 
     SignUpScreen(
         state = state,
-        onFullNameChange = { viewModel.sendIntent(SignUpIntent.FullNameChanged(it)) },
+        onUsernameChange = { viewModel.sendIntent(SignUpIntent.UsernameChanged(it)) },
         onEmailChange = { viewModel.sendIntent(SignUpIntent.EmailChanged(it)) },
         onPasswordChange = { viewModel.sendIntent(SignUpIntent.PasswordChanged(it)) },
         onSubmit = { viewModel.sendIntent(SignUpIntent.Submit) },

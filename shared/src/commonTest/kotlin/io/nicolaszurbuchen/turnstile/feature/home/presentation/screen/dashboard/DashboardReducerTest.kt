@@ -2,7 +2,7 @@ package io.nicolaszurbuchen.turnstile.feature.home.presentation.screen.dashboard
 
 import io.nicolaszurbuchen.turnstile.core.ui.AppError
 import io.nicolaszurbuchen.turnstile.core.ui.Loadable
-import io.nicolaszurbuchen.turnstile.feature.home.domain.model.PasswordEntry
+import io.nicolaszurbuchen.turnstile.feature.home.domain.model.Credential
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -14,14 +14,14 @@ class DashboardReducerTest {
 
     // ── Helpers ───────────────────────────────────────────────────────────────
 
-    private fun fakeEntry(id: String) = PasswordEntry(id, "Name $id", "user$id@test.com", "pw$id")
+    private fun fakeEntry(id: String) = Credential(id, "Name $id", "Password", "pw$id")
 
-    private fun fakeEntryUi(id: String) = PasswordEntryUiModel(id, "Name $id", "user$id@test.com")
+    private fun fakeEntryUi(id: String) = CredentialUiModel(id, "Name $id", "Password")
 
     private fun fakeError(msg: String = "Test error") = AppError(msg)
 
     private fun loadedState(
-        entries: List<PasswordEntryUiModel> = listOf(fakeEntryUi("1")),
+        entries: List<CredentialUiModel> = listOf(fakeEntryUi("1")),
         refreshing: Boolean = false,
         refreshError: AppError? = null,
     ) = Loadable.Success(DashboardState(entries, refreshing, refreshError))

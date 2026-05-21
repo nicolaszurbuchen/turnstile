@@ -37,19 +37,19 @@ import io.nicolaszurbuchen.turnstile.feature.auth.presentation.component.AuthSoc
 import io.nicolaszurbuchen.turnstile.feature.auth.presentation.component.AuthTextField
 import org.jetbrains.compose.resources.stringResource
 import turnstile.shared.generated.resources.Res
-import turnstile.shared.generated.resources.auth_full_name
 import turnstile.shared.generated.resources.auth_sign_in
 import turnstile.shared.generated.resources.auth_sign_up
 import turnstile.shared.generated.resources.auth_signup_has_account
 import turnstile.shared.generated.resources.auth_signup_subtitle
 import turnstile.shared.generated.resources.auth_signup_title
+import turnstile.shared.generated.resources.auth_username
 import turnstile.shared.generated.resources.common_email
 import turnstile.shared.generated.resources.common_password
 
 @Composable
 fun SignUpScreen(
     state: SignUpState,
-    onFullNameChange: (String) -> Unit,
+    onUsernameChange: (String) -> Unit,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onSubmit: () -> Unit,
@@ -82,12 +82,12 @@ fun SignUpScreen(
             Spacer(Modifier.height(28.dp))
 
             AuthTextField(
-                value = state.fullName,
-                onValueChange = onFullNameChange,
-                hint = stringResource(Res.string.auth_full_name),
+                value = state.username,
+                onValueChange = onUsernameChange,
+                hint = stringResource(Res.string.auth_username),
                 leadingIcon = Icons.Filled.Person,
-                isError = state.fullNameError != null,
-                errorMessage = state.fullNameError?.let { stringResource(it) },
+                isError = state.usernameError != null,
+                errorMessage = state.usernameError?.let { stringResource(it) },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 keyboardActions = KeyboardActions(onNext = { emailFocus.requestFocus() }),
                 modifier =

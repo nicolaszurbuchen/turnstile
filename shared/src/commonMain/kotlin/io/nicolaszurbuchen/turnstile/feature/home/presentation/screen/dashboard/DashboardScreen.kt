@@ -115,7 +115,7 @@ fun DashboardScreen(
                             .navigationBarsPadding(),
                 ) {
                     items(items = state.entries, key = { it.id }) { entry ->
-                        PasswordEntryItem(
+                        CredentialItem(
                             entry = entry,
                             onClick = { onEntryClick(entry.id) },
                             onDelete = { onEntryDelete(entry.id) },
@@ -131,8 +131,8 @@ fun DashboardScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun PasswordEntryItem(
-    entry: PasswordEntryUiModel,
+private fun CredentialItem(
+    entry: CredentialUiModel,
     onClick: () -> Unit,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
@@ -214,7 +214,7 @@ private fun PasswordEntryItem(
                     )
                     Spacer(Modifier.height(spacing.xs))
                     Text(
-                        text = entry.username,
+                        text = entry.type,
                         fontSize = 13.sp,
                         color = turnstileColors.textSecondary,
                     )

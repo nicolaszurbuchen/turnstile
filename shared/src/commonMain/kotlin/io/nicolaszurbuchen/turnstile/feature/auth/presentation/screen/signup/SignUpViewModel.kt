@@ -1,17 +1,37 @@
 package io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.signup
 
+import androidx.lifecycle.viewModelScope
 import io.nicolaszurbuchen.turnstile.core.mvi.MviViewModel
+import io.nicolaszurbuchen.turnstile.feature.auth.domain.repository.UserIdentityRepository
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
-class SignUpViewModel :
-    MviViewModel<SignUpState, SignUpTrigger, SignUpIntent, SignUpAction, SignUpCommand, SignUpEvent>(
+class SignUpViewModel(
+    private val auth: UserIdentityRepository,
+) : MviViewModel<SignUpState, SignUpTrigger, SignUpIntent, SignUpAction, SignUpCommand, SignUpEvent>(
         initialState = SignUpState(),
         reducer = SignUpReducer,
     ) {
+    private var registerJob: Job? = null
+
     override suspend fun executeCommand(command: SignUpCommand) {
         when (command) {
             is SignUpCommand.CallRegister -> {
-                // TODO: wire to AuthRepository
-                dispatchAction(SignUpAction.RegisterSucceeded("stub_token"))
+                registerJob?.cancel()
+                registerJob =
+                    viewModelScope.launch {
+                        runCatching {
+                            auth.signUpWithEmail(
+                                username = command.username,
+                                email = command.email,
+                                password = command.password,
+                            )
+                        }.onSuccess { user ->
+                            dispatchAction(SignUpAction.RegisterSucceeded(user.id))
+                        }.onFailure { e ->
+                            dispatchAction(SignUpAction.RegisterFailedWith(e.message ?: "Unknown error"))
+                        }
+                    }
             }
         }
     }

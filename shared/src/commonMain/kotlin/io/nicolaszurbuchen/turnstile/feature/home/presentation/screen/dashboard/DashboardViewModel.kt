@@ -4,11 +4,13 @@ import androidx.lifecycle.viewModelScope
 import io.nicolaszurbuchen.turnstile.core.mvi.MviViewModel
 import io.nicolaszurbuchen.turnstile.core.ui.AppError
 import io.nicolaszurbuchen.turnstile.core.ui.Loadable
-import io.nicolaszurbuchen.turnstile.feature.home.domain.repository.PasswordRepository
+import io.nicolaszurbuchen.turnstile.feature.home.domain.usecase.DeleteCredentialUseCase
+import io.nicolaszurbuchen.turnstile.feature.home.domain.usecase.GetCredentialsUseCase
 import kotlinx.coroutines.launch
 
 class DashboardViewModel(
-    private val repository: PasswordRepository,
+    private val getCredentialsUseCase: GetCredentialsUseCase,
+    private val deleteCredentialUseCase: DeleteCredentialUseCase,
 ) : MviViewModel<Loadable<DashboardState>, DashboardTrigger, DashboardIntent, DashboardAction, DashboardCommand, DashboardEvent>(
         initialState = Loadable.Loading,
         reducer = DashboardReducer,
@@ -26,19 +28,19 @@ class DashboardViewModel(
     }
 
     private suspend fun loadEntries() {
-        runCatching { repository.getEntries() }
+        runCatching { getCredentialsUseCase() }
             .onSuccess { dispatchAction(DashboardAction.EntriesLoaded(it)) }
             .onFailure { dispatchAction(DashboardAction.LoadFailed(it.toAppError())) }
     }
 
     private suspend fun refresh() {
-        runCatching { repository.getEntries() }
+        runCatching { getCredentialsUseCase() }
             .onSuccess { dispatchAction(DashboardAction.RefreshSucceeded(it)) }
             .onFailure { dispatchAction(DashboardAction.RefreshFailed(it.toAppError())) }
     }
 
     private suspend fun deleteEntry(id: String) {
-        runCatching { repository.deleteEntry(id) }
+        runCatching { deleteCredentialUseCase(id) }
             .onSuccess { dispatchAction(DashboardAction.EntryDeleted(id)) }
             .onFailure { dispatchAction(DashboardAction.DeleteFailed(it.toAppError())) }
     }

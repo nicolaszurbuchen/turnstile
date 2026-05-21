@@ -1,25 +1,34 @@
 package io.nicolaszurbuchen.turnstile.feature.auth.di
 
-import io.nicolaszurbuchen.turnstile.feature.auth.domain.AuthRepository
+import dev.gitlive.firebase.Firebase
+import dev.gitlive.firebase.auth.FirebaseAuth
+import dev.gitlive.firebase.auth.auth
+import dev.gitlive.firebase.firestore.FirebaseFirestore
+import dev.gitlive.firebase.firestore.firestore
+import io.nicolaszurbuchen.turnstile.feature.auth.data.datasource.remote.*
+import io.nicolaszurbuchen.turnstile.feature.auth.data.repository.UserIdentityRepositoryImpl
+import io.nicolaszurbuchen.turnstile.feature.auth.domain.repository.UserIdentityRepository
 import io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.forgotpassword.ForgotPasswordViewModel
 import io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.signin.SignInViewModel
 import io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.signup.SignUpViewModel
-import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModelOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val authModule =
     module {
-        // TODO: replace with real implementation once the data layer is ready
-        single<AuthRepository> {
-            object : AuthRepository {
-                override suspend fun login(
-                    email: String,
-                    password: String,
-                ): String = "stub_token"
-            }
-        }
+        single<FirebaseAuth> { Firebase.auth }
+        single<FirebaseFirestore> { Firebase.firestore }
 
-        viewModel { SignInViewModel(get()) }
-        viewModel { SignUpViewModel() }
-        viewModel { ForgotPasswordViewModel() }
+        // Data Sources
+        singleOf(::AuthRemoteDataSourceImpl) bind AuthRemoteDataSource::class
+        singleOf(::UserRemoteDataSourceImpl) bind UserRemoteDataSource::class
+
+        // Repositories
+        singleOf(::UserIdentityRepositoryImpl) bind UserIdentityRepository::class
+
+        viewModelOf(::SignInViewModel)
+        viewModelOf(::SignUpViewModel)
+        viewModelOf(::ForgotPasswordViewModel)
     }

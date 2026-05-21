@@ -7,22 +7,22 @@ import io.nicolaszurbuchen.turnstile.core.mvi.Intent
 import io.nicolaszurbuchen.turnstile.core.mvi.State
 import io.nicolaszurbuchen.turnstile.core.mvi.Trigger
 import io.nicolaszurbuchen.turnstile.core.ui.AppError
-import io.nicolaszurbuchen.turnstile.feature.home.domain.model.PasswordEntry
+import io.nicolaszurbuchen.turnstile.feature.home.domain.model.Credential
 
 // ─── UI model ─────────────────────────────────────────────────────────────────
 
-data class PasswordEntryUiModel(
+data class CredentialUiModel(
     val id: String,
     val name: String,
-    val username: String,
+    val type: String,
 )
 
-fun PasswordEntry.toUiModel() = PasswordEntryUiModel(id = id, name = name, username = username)
+fun Credential.toUiModel() = CredentialUiModel(id = id, name = name, type = type)
 
-fun List<PasswordEntry>.toDashboardState() = DashboardState(entries = map { it.toUiModel() })
+fun List<Credential>.toDashboardState() = DashboardState(entries = map { it.toUiModel() })
 
 data class DashboardState(
-    val entries: List<PasswordEntryUiModel> = emptyList(),
+    val entries: List<CredentialUiModel> = emptyList(),
     val refreshing: Boolean = false,
     val refreshError: AppError? = null,
 ) : State {
@@ -53,7 +53,7 @@ sealed interface DashboardAction :
     DashboardTrigger,
     Action {
     data class EntriesLoaded(
-        val entries: List<PasswordEntry>,
+        val entries: List<Credential>,
     ) : DashboardAction
 
     data class LoadFailed(
@@ -61,7 +61,7 @@ sealed interface DashboardAction :
     ) : DashboardAction
 
     data class RefreshSucceeded(
-        val entries: List<PasswordEntry>,
+        val entries: List<Credential>,
     ) : DashboardAction
 
     data class RefreshFailed(

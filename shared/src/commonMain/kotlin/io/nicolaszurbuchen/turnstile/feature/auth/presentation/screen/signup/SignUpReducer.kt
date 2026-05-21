@@ -5,8 +5,8 @@ import io.nicolaszurbuchen.turnstile.core.mvi.Reducer
 import org.jetbrains.compose.resources.StringResource
 import turnstile.shared.generated.resources.Res
 import turnstile.shared.generated.resources.auth_error_email_invalid
-import turnstile.shared.generated.resources.auth_error_name_too_short
 import turnstile.shared.generated.resources.auth_error_password_too_short
+import turnstile.shared.generated.resources.auth_error_username_too_short
 
 object SignUpReducer : Reducer<SignUpState, SignUpTrigger, SignUpCommand, SignUpEvent> {
     override fun reduce(
@@ -23,12 +23,12 @@ object SignUpReducer : Reducer<SignUpState, SignUpTrigger, SignUpCommand, SignUp
         intent: SignUpIntent,
     ): Next<SignUpState, SignUpCommand, SignUpEvent> =
         when (intent) {
-            is SignUpIntent.FullNameChanged -> {
+            is SignUpIntent.UsernameChanged -> {
                 Next(
                     state =
                         state.copy(
-                            fullName = intent.value,
-                            fullNameError = validateFullName(intent.value),
+                            username = intent.value,
+                            usernameError = validateUsername(intent.value),
                             submitError = null,
                         ),
                 )
@@ -62,7 +62,7 @@ object SignUpReducer : Reducer<SignUpState, SignUpTrigger, SignUpCommand, SignUp
                         state = state.copy(loading = true, submitError = null),
                         commands =
                             listOf(
-                                SignUpCommand.CallRegister(state.fullName, state.email, state.password),
+                                SignUpCommand.CallRegister(state.username, state.email, state.password),
                             ),
                     )
                 } else {
@@ -97,10 +97,10 @@ object SignUpReducer : Reducer<SignUpState, SignUpTrigger, SignUpCommand, SignUp
             }
         }
 
-    private fun validateFullName(name: String): StringResource? =
+    private fun validateUsername(name: String): StringResource? =
         when {
             name.isEmpty() -> null
-            name.length < 2 -> Res.string.auth_error_name_too_short
+            name.length < 2 -> Res.string.auth_error_username_too_short
             else -> null
         }
 

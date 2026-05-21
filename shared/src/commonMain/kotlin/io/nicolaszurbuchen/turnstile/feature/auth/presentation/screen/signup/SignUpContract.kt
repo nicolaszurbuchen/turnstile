@@ -9,10 +9,10 @@ import io.nicolaszurbuchen.turnstile.core.mvi.Trigger
 import org.jetbrains.compose.resources.StringResource
 
 data class SignUpState(
-    val fullName: String = "",
+    val username: String = "",
     val email: String = "",
     val password: String = "",
-    val fullNameError: StringResource? = null,
+    val usernameError: StringResource? = null,
     val emailError: StringResource? = null,
     val passwordError: StringResource? = null,
     val loading: Boolean = false,
@@ -20,10 +20,10 @@ data class SignUpState(
 ) : State {
     val canSubmit: Boolean
         get() =
-            fullName.isNotBlank() &&
+            username.isNotBlank() &&
                 email.isNotBlank() &&
                 password.isNotBlank() &&
-                fullNameError == null &&
+                usernameError == null &&
                 emailError == null &&
                 passwordError == null &&
                 !loading
@@ -34,7 +34,7 @@ sealed interface SignUpTrigger : Trigger
 sealed interface SignUpIntent :
     SignUpTrigger,
     Intent {
-    data class FullNameChanged(
+    data class UsernameChanged(
         val value: String,
     ) : SignUpIntent
 
@@ -65,7 +65,7 @@ sealed interface SignUpAction :
 
 sealed interface SignUpCommand : Command {
     data class CallRegister(
-        val fullName: String,
+        val username: String,
         val email: String,
         val password: String,
     ) : SignUpCommand
