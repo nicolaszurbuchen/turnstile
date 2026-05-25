@@ -7,20 +7,20 @@ import turnstile.shared.generated.resources.Res
 import turnstile.shared.generated.resources.auth_error_email_invalid
 
 object ForgotPasswordReducer :
-    Reducer<ForgotPasswordState, ForgotPasswordTrigger, ForgotPasswordCommand, ForgotPasswordEvent> {
+    Reducer<ForgotPasswordStateImpl, ForgotPasswordTrigger, ForgotPasswordCommand, ForgotPasswordEvent> {
     override fun reduce(
-        state: ForgotPasswordState,
+        state: ForgotPasswordStateImpl,
         trigger: ForgotPasswordTrigger,
-    ): Next<ForgotPasswordState, ForgotPasswordCommand, ForgotPasswordEvent> =
+    ): Next<ForgotPasswordStateImpl, ForgotPasswordCommand, ForgotPasswordEvent> =
         when (trigger) {
             is ForgotPasswordIntent -> reduceIntent(state, trigger)
             is ForgotPasswordAction -> reduceAction(state, trigger)
         }
 
     private fun reduceIntent(
-        state: ForgotPasswordState,
+        state: ForgotPasswordStateImpl,
         intent: ForgotPasswordIntent,
-    ): Next<ForgotPasswordState, ForgotPasswordCommand, ForgotPasswordEvent> =
+    ): Next<ForgotPasswordStateImpl, ForgotPasswordCommand, ForgotPasswordEvent> =
         when (intent) {
             is ForgotPasswordIntent.EmailChanged -> {
                 Next(
@@ -46,9 +46,9 @@ object ForgotPasswordReducer :
         }
 
     private fun reduceAction(
-        state: ForgotPasswordState,
+        state: ForgotPasswordStateImpl,
         action: ForgotPasswordAction,
-    ): Next<ForgotPasswordState, ForgotPasswordCommand, ForgotPasswordEvent> =
+    ): Next<ForgotPasswordStateImpl, ForgotPasswordCommand, ForgotPasswordEvent> =
         when (action) {
             ForgotPasswordAction.ResetEmailSent -> {
                 Next(

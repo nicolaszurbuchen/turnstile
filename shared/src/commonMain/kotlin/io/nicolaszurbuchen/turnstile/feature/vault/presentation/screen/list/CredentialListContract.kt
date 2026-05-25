@@ -9,22 +9,11 @@ import io.nicolaszurbuchen.turnstile.infra.mvi.State
 import io.nicolaszurbuchen.turnstile.infra.mvi.Trigger
 import io.nicolaszurbuchen.turnstile.infra.ui.AppError
 
-// ─── UI model ─────────────────────────────────────────────────────────────────
+// ─── Contract ─────────────────────────────────────────────────────────────────
 
-data class CredentialUiModel(
-    val id: String,
-    val title: String,
-    val username: String,
-)
-
-fun Credential.toUiModel() = CredentialUiModel(id = id, title = title, username = username)
-
-fun List<Credential>.toCredentialListState() = CredentialListState(entries = map { it.toUiModel() })
-
-data class CredentialListState(
-    val entries: List<CredentialUiModel> = emptyList(),
-) : State {
-    val isEmpty: Boolean get() = entries.isEmpty()
+sealed interface CredentialListState : State {
+    val entries: List<CredentialUiModel>
+    val isEmpty: Boolean
 }
 
 sealed interface CredentialListTrigger : Trigger
@@ -34,6 +23,7 @@ sealed interface CredentialListIntent :
     Intent {
     data class EntryClicked(val id: String) : CredentialListIntent
     data object CreateClicked : CredentialListIntent
+    data object SignOutClicked : CredentialListIntent
 }
 
 sealed interface CredentialListAction :
@@ -41,13 +31,16 @@ sealed interface CredentialListAction :
     Action {
     data class EntriesLoaded(val entries: List<Credential>) : CredentialListAction
     data class LoadFailed(val error: AppError) : CredentialListAction
+    data object SignOutSucceeded : CredentialListAction
 }
 
 sealed interface CredentialListCommand : Command {
     data object ObserveEntries : CredentialListCommand
+    data object SignOut : CredentialListCommand
 }
 
 sealed interface CredentialListEvent : Event {
     data class NavigateToDetail(val id: String) : CredentialListEvent
     data object NavigateToCreate : CredentialListEvent
+    data object NavigateToAuth : CredentialListEvent
 }

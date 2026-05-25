@@ -10,12 +10,14 @@ import io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.list.Cred
 
 fun NavGraphBuilder.vaultGraph(
     navController: NavController,
+    onSignOut: () -> Unit,
 ) {
     navigation<VaultGraph>(startDestination = ListDestination) {
         composable<ListDestination> {
             CredentialListRoute(
                 onNavigateToDetail = { id -> navController.navigate(DetailDestination(id)) },
                 onNavigateToCreate = { navController.navigate(EditorDestination()) },
+                onNavigateToAuth = onSignOut,
             )
         }
 

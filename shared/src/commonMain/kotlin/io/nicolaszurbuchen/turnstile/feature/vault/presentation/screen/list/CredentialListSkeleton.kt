@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.CredentialList
+package io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.list
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode

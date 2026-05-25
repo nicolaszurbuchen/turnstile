@@ -14,6 +14,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun CredentialListRoute(
     onNavigateToDetail: (String) -> Unit,
     onNavigateToCreate: () -> Unit,
+    onNavigateToAuth: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val viewModel = koinViewModel<CredentialListViewModel>()
@@ -21,12 +22,14 @@ fun CredentialListRoute(
 
     val onNavigateToDetailUpdated by rememberUpdatedState(onNavigateToDetail)
     val onNavigateToCreateUpdated by rememberUpdatedState(onNavigateToCreate)
+    val onNavigateToAuthUpdated by rememberUpdatedState(onNavigateToAuth)
 
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
                 is CredentialListEvent.NavigateToDetail -> onNavigateToDetailUpdated(event.id)
                 CredentialListEvent.NavigateToCreate -> onNavigateToCreateUpdated()
+                CredentialListEvent.NavigateToAuth -> onNavigateToAuthUpdated()
             }
         }
     }
@@ -49,6 +52,7 @@ fun CredentialListRoute(
                 state = loadable.data,
                 onEntryClick = { id -> viewModel.sendIntent(CredentialListIntent.EntryClicked(id)) },
                 onCreateClick = { viewModel.sendIntent(CredentialListIntent.CreateClicked) },
+                onSignOutClick = { viewModel.sendIntent(CredentialListIntent.SignOutClicked) },
                 modifier = modifier,
             )
         }

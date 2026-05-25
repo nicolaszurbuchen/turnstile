@@ -4,11 +4,11 @@ import io.nicolaszurbuchen.turnstile.feature.vault.domain.model.Credential
 import io.nicolaszurbuchen.turnstile.infra.mvi.Next
 import io.nicolaszurbuchen.turnstile.infra.mvi.Reducer
 
-object CredentialEditorReducer : Reducer<CredentialEditorState, CredentialEditorTrigger, CredentialEditorCommand, CredentialEditorEvent> {
+object CredentialEditorReducer : Reducer<CredentialEditorStateImpl, CredentialEditorTrigger, CredentialEditorCommand, CredentialEditorEvent> {
     override fun reduce(
-        state: CredentialEditorState,
+        state: CredentialEditorStateImpl,
         trigger: CredentialEditorTrigger,
-    ): Next<CredentialEditorState, CredentialEditorCommand, CredentialEditorEvent> =
+    ): Next<CredentialEditorStateImpl, CredentialEditorCommand, CredentialEditorEvent> =
         when (trigger) {
             is CredentialEditorAction.CredentialLoaded -> {
                 Next(

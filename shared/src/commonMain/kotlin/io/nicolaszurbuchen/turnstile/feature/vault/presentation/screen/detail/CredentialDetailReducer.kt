@@ -5,14 +5,14 @@ import io.nicolaszurbuchen.turnstile.infra.mvi.Reducer
 import io.nicolaszurbuchen.turnstile.infra.ui.Loadable
 import io.nicolaszurbuchen.turnstile.infra.ui.onSuccess
 
-object CredentialDetailReducer : Reducer<Loadable<CredentialDetailState>, CredentialDetailTrigger, CredentialDetailCommand, CredentialDetailEvent> {
+object CredentialDetailReducer : Reducer<Loadable<CredentialDetailStateImpl>, CredentialDetailTrigger, CredentialDetailCommand, CredentialDetailEvent> {
     override fun reduce(
-        state: Loadable<CredentialDetailState>,
+        state: Loadable<CredentialDetailStateImpl>,
         trigger: CredentialDetailTrigger,
-    ): Next<Loadable<CredentialDetailState>, CredentialDetailCommand, CredentialDetailEvent> =
+    ): Next<Loadable<CredentialDetailStateImpl>, CredentialDetailCommand, CredentialDetailEvent> =
         when (trigger) {
             is CredentialDetailAction.CredentialLoaded -> {
-                Next(state = Loadable.Success(CredentialDetailState(trigger.credential)))
+                Next(state = Loadable.Success(CredentialDetailStateImpl(trigger.credential)))
             }
 
             is CredentialDetailAction.LoadFailed -> {

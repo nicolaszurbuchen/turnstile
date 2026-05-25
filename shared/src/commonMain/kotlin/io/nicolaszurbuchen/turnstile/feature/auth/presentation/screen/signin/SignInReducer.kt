@@ -7,20 +7,20 @@ import turnstile.shared.generated.resources.Res
 import turnstile.shared.generated.resources.auth_error_email_invalid
 import turnstile.shared.generated.resources.auth_error_password_too_short
 
-object SignInReducer : Reducer<SignInState, SignInTrigger, SignInCommand, SignInEvent> {
+object SignInReducer : Reducer<SignInStateImpl, SignInTrigger, SignInCommand, SignInEvent> {
     override fun reduce(
-        state: SignInState,
+        state: SignInStateImpl,
         trigger: SignInTrigger,
-    ): Next<SignInState, SignInCommand, SignInEvent> =
+    ): Next<SignInStateImpl, SignInCommand, SignInEvent> =
         when (trigger) {
             is SignInIntent -> reduceIntent(state, trigger)
             is SignInAction -> reduceAction(state, trigger)
         }
 
     private fun reduceIntent(
-        state: SignInState,
+        state: SignInStateImpl,
         intent: SignInIntent,
-    ): Next<SignInState, SignInCommand, SignInEvent> =
+    ): Next<SignInStateImpl, SignInCommand, SignInEvent> =
         when (intent) {
             is SignInIntent.EmailChanged -> {
                 Next(
@@ -77,9 +77,9 @@ object SignInReducer : Reducer<SignInState, SignInTrigger, SignInCommand, SignIn
         }
 
     private fun reduceAction(
-        state: SignInState,
+        state: SignInStateImpl,
         action: SignInAction,
-    ): Next<SignInState, SignInCommand, SignInEvent> =
+    ): Next<SignInStateImpl, SignInCommand, SignInEvent> =
         when (action) {
             is SignInAction.LoginSucceeded -> {
                 Next(

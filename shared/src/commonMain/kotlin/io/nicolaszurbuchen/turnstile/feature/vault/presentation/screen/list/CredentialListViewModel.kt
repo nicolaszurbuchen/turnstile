@@ -1,6 +1,7 @@
 package io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.list
 
 import androidx.lifecycle.viewModelScope
+import io.nicolaszurbuchen.turnstile.feature.auth.domain.usecase.SignOutUseCase
 import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.GetCredentialsUseCase
 import io.nicolaszurbuchen.turnstile.infra.mvi.MviViewModel
 import io.nicolaszurbuchen.turnstile.infra.ui.AppError
@@ -12,7 +13,8 @@ import kotlinx.coroutines.launch
 
 class CredentialListViewModel(
     private val getCredentials: GetCredentialsUseCase,
-) : MviViewModel<Loadable<CredentialListState>, CredentialListTrigger, CredentialListIntent, CredentialListAction, CredentialListCommand, CredentialListEvent>(
+    private val signOut: SignOutUseCase,
+) : MviViewModel<Loadable<CredentialListStateImpl>, CredentialListTrigger, CredentialListIntent, CredentialListAction, CredentialListCommand, CredentialListEvent>(
         initialState = Loadable.Loading,
         reducer = CredentialListReducer,
     ) {
@@ -23,7 +25,13 @@ class CredentialListViewModel(
     override suspend fun executeCommand(command: CredentialListCommand) {
         when (command) {
             CredentialListCommand.ObserveEntries -> observeEntries()
+            CredentialListCommand.SignOut -> performSignOut()
         }
+    }
+
+    private suspend fun performSignOut() {
+        signOut()
+        dispatchAction(CredentialListAction.SignOutSucceeded)
     }
 
     private fun observeEntries() {

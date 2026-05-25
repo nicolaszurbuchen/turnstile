@@ -18,11 +18,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -38,9 +40,10 @@ import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
 
 @Composable
 fun CredentialListScreen(
-    state: CredentialListState,
+    state: CredentialListStateImpl,
     onEntryClick: (String) -> Unit,
     onCreateClick: () -> Unit,
+    onSignOutClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val turnstileColors = MaterialTheme.turnstileColors
@@ -67,16 +70,30 @@ fun CredentialListScreen(
                     .fillMaxSize()
                     .statusBarsPadding(),
         ) {
-            Text(
-                text = "My Vault",
-                fontSize = 26.sp,
-                fontWeight = FontWeight.Bold,
-                color = turnstileColors.textPrimary,
+            Row(
                 modifier =
                     Modifier
+                        .fillMaxWidth()
                         .padding(horizontal = spacing.md)
                         .padding(top = spacing.lg, bottom = spacing.md),
-            )
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = "My Vault",
+                    fontSize = 26.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = turnstileColors.textPrimary,
+                    modifier = Modifier.weight(1f),
+                )
+
+                IconButton(onClick = onSignOutClick) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.Logout,
+                        contentDescription = "Sign Out",
+                        tint = turnstileColors.textPrimary,
+                    )
+                }
+            }
 
             if (state.isEmpty) {
                 AppEmptyView(

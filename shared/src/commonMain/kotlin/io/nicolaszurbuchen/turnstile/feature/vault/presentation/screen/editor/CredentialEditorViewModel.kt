@@ -15,8 +15,8 @@ class CredentialEditorViewModel(
     savedStateHandle: SavedStateHandle,
     private val getCredential: GetCredentialUseCase,
     private val saveCredential: SaveCredentialUseCase,
-) : MviViewModel<CredentialEditorState, CredentialEditorTrigger, CredentialEditorIntent, CredentialEditorAction, CredentialEditorCommand, CredentialEditorEvent>(
-        initialState = CredentialEditorState(),
+) : MviViewModel<CredentialEditorStateImpl, CredentialEditorTrigger, CredentialEditorIntent, CredentialEditorAction, CredentialEditorCommand, CredentialEditorEvent>(
+        initialState = CredentialEditorStateImpl(),
         reducer = CredentialEditorReducer,
     ) {
     init {

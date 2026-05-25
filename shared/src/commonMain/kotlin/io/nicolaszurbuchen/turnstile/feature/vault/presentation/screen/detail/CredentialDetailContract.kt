@@ -9,9 +9,9 @@ import io.nicolaszurbuchen.turnstile.infra.mvi.State
 import io.nicolaszurbuchen.turnstile.infra.mvi.Trigger
 import io.nicolaszurbuchen.turnstile.infra.ui.AppError
 
-data class CredentialDetailState(
-    val credential: Credential? = null,
-) : State
+sealed interface CredentialDetailState : State {
+    val credential: Credential?
+}
 
 sealed interface CredentialDetailTrigger : Trigger
 

@@ -45,6 +45,13 @@ fun NavGraph(navController: NavHostController = rememberNavController()) {
             )
         }
 
-        vaultGraph(navController = navController)
+        vaultGraph(
+            navController = navController,
+            onSignOut = {
+                navController.navigate(AuthGraph) {
+                    popUpTo(VaultGraph) { inclusive = true }
+                }
+            },
+        )
     }
 }

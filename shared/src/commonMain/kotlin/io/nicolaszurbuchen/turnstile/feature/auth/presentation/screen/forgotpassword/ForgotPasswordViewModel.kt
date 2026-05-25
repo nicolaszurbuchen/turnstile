@@ -4,14 +4,14 @@ import io.nicolaszurbuchen.turnstile.infra.mvi.MviViewModel
 
 class ForgotPasswordViewModel :
     MviViewModel<
-        ForgotPasswordState,
+        ForgotPasswordStateImpl,
         ForgotPasswordTrigger,
         ForgotPasswordIntent,
         ForgotPasswordAction,
         ForgotPasswordCommand,
         ForgotPasswordEvent,
     >(
-        initialState = ForgotPasswordState(),
+        initialState = ForgotPasswordStateImpl(),
         reducer = ForgotPasswordReducer,
     ) {
     override suspend fun executeCommand(command: ForgotPasswordCommand) {

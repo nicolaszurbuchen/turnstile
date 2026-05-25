@@ -8,22 +8,15 @@ import io.nicolaszurbuchen.turnstile.infra.mvi.State
 import io.nicolaszurbuchen.turnstile.infra.mvi.Trigger
 import org.jetbrains.compose.resources.StringResource
 
-data class SignInState(
-    val email: String = "",
-    val password: String = "",
-    val emailError: StringResource? = null,
-    val passwordError: StringResource? = null,
-    val rememberMe: Boolean = false,
-    val loading: Boolean = false,
-    val submitError: String? = null,
-) : State {
+sealed interface SignInState : State {
+    val email: String
+    val password: String
+    val emailError: StringResource?
+    val passwordError: StringResource?
+    val rememberMe: Boolean
+    val loading: Boolean
+    val submitError: String?
     val canSubmit: Boolean
-        get() =
-            email.isNotBlank() &&
-                password.isNotBlank() &&
-                emailError == null &&
-                passwordError == null &&
-                !loading
 }
 
 sealed interface SignInTrigger : Trigger
@@ -31,46 +24,27 @@ sealed interface SignInTrigger : Trigger
 sealed interface SignInIntent :
     SignInTrigger,
     Intent {
-    data class EmailChanged(
-        val value: String,
-    ) : SignInIntent
-
-    data class PasswordChanged(
-        val value: String,
-    ) : SignInIntent
-
+    data class EmailChanged(val value: String) : SignInIntent
+    data class PasswordChanged(val value: String) : SignInIntent
     data object Submit : SignInIntent
-
     data object RememberMeToggled : SignInIntent
-
     data object SignUpClicked : SignInIntent
-
     data object ForgotPasswordClicked : SignInIntent
 }
 
 sealed interface SignInAction :
     SignInTrigger,
     Action {
-    data class LoginSucceeded(
-        val token: String,
-    ) : SignInAction
-
-    data class LoginFailedWith(
-        val message: String,
-    ) : SignInAction
+    data class LoginSucceeded(val token: String) : SignInAction
+    data class LoginFailedWith(val message: String) : SignInAction
 }
 
 sealed interface SignInCommand : Command {
-    data class CallLogin(
-        val email: String,
-        val password: String,
-    ) : SignInCommand
+    data class CallLogin(val email: String, val password: String) : SignInCommand
 }
 
 sealed interface SignInEvent : Event {
     data object NavigateHome : SignInEvent
-
     data object NavigateToSignUp : SignInEvent
-
     data object NavigateToForgotPassword : SignInEvent
 }

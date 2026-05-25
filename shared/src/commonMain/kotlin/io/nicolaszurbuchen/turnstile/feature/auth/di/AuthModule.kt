@@ -11,6 +11,7 @@ import io.nicolaszurbuchen.turnstile.feature.auth.data.datasource.remote.UserRem
 import io.nicolaszurbuchen.turnstile.feature.auth.data.datasource.remote.UserRemoteDataSourceImpl
 import io.nicolaszurbuchen.turnstile.feature.auth.data.repository.UserIdentityRepositoryImpl
 import io.nicolaszurbuchen.turnstile.feature.auth.domain.repository.UserIdentityRepository
+import io.nicolaszurbuchen.turnstile.feature.auth.domain.usecase.SignOutUseCase
 import io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.forgotpassword.ForgotPasswordViewModel
 import io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.signin.SignInViewModel
 import io.nicolaszurbuchen.turnstile.feature.auth.presentation.screen.signup.SignUpViewModel
@@ -27,6 +28,9 @@ val authModule =
 
         // Repositories
         singleOf(::UserIdentityRepositoryImpl) bind UserIdentityRepository::class
+
+        // Use Cases
+        singleOf(::SignOutUseCase)
 
         viewModelOf(::SignInViewModel)
         viewModelOf(::SignUpViewModel)
