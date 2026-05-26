@@ -89,4 +89,35 @@ class PackageHierarchyTest {
                 allowed.contains(segments.last())
             }
     }
+
+    @Test
+    fun `Direct children of presentation screen screenName must be in allowed list`() {
+        // Adding to this list requires a conscious architectural decision
+        val allowed = listOf("component")
+
+        Konsist.scopeFromProject()
+            .packages
+            .filter { it.name.matches(Regex(".*\\.(feature|common)\\.[^.]+\\.presentation\\.screen\\.[^.]+\\.[^.]+$")) }
+            .assertTrue { pkg ->
+                val segments = pkg.name.split(Regex("\\.(feature|common)\\.")).last().split(".")
+                allowed.contains(segments.last())
+            }
+    }
+
+    @Test
+    fun `Leaf packages must not have child packages`() {
+        val leafPackageNames = setOf("api", "cache", "component", "di", "dto", "flow", "local", "mapper", "model", "navigation", "repository", "usecase")
+
+        val allPackages = Konsist.scopeFromProject().packages
+        val allPackageNames = allPackages.map { it.name }.toSet()
+
+        allPackages
+            .filter { pkg ->
+                pkg.name.contains(Regex("\\.(feature|common)\\.")) &&
+                        pkg.name.split(".").last() in leafPackageNames
+            }
+            .assertTrue { pkg ->
+                allPackageNames.none { it.startsWith("${pkg.name}.") }
+            }
+    }
 }
