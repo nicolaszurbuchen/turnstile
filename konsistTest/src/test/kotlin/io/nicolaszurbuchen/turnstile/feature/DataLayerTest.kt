@@ -5,6 +5,7 @@ import com.lemonappdev.konsist.api.declaration.KoClassDeclaration
 import com.lemonappdev.konsist.api.declaration.KoInterfaceDeclaration
 import com.lemonappdev.konsist.api.ext.list.withNameEndingWith
 import com.lemonappdev.konsist.api.ext.list.withPackage
+import com.lemonappdev.konsist.api.verify.assertEmpty
 import com.lemonappdev.konsist.api.verify.assertTrue
 import kotlin.test.Test
 
@@ -18,8 +19,7 @@ class DataLayerTest {
 
     @Test // ok
     fun `files in data repository package must be suffixed with RepositoryImpl`() {
-        scope
-            .files
+        scope.files
             .withPackage("..data.repository")
             .assertTrue { it.name.endsWith("RepositoryImpl") }
     }
@@ -72,8 +72,7 @@ class DataLayerTest {
 
     @Test // ok
     fun `files suffixed with RepositoryImpl must reside in repository package`() {
-        scope
-            .files
+        scope.files
             .withNameEndingWith("RepositoryImpl")
             .assertTrue { it.hasPackage("..data.repository") }
     }
@@ -137,76 +136,313 @@ class DataLayerTest {
     @Test // ok
     fun `files suffixed with Mapper must reside in remote mapper package`() {
         scope.files
+            .withPackage("..data..")
             .withNameEndingWith("Mapper")
             .assertTrue { it.hasPackage("..data.datasource.remote.mapper") }
     }
 
     // endregion
 
+    // region type enforcement
 
-    @Test
-    fun `class and interface type enforcement`() {
-        val scope = Konsist.scopeFromProject()
-        
-        scope.classes().filter { it.name.endsWith("RepositoryImpl") }.assertTrue { !it.hasDataModifier }
-        scope.interfaces().filter { it.name.endsWith("RemoteDataSource") }.assertTrue { true }
-        scope.classes().filter { it.name.endsWith("RemoteDataSourceImpl") }.assertTrue { true }
-        scope.interfaces().filter { it.name.endsWith("LocalDataSource") }.assertTrue { true }
-        scope.classes().filter { it.name.endsWith("LocalDataSourceImpl") }.assertTrue { true }
-        scope.interfaces().filter { it.name.endsWith("CacheDataSource") }.assertTrue { true }
-        scope.classes().filter { it.name.endsWith("CacheDataSourceImpl") }.assertTrue { true }
-        scope.classes().filter { it.name.endsWith("Dto") }.assertTrue { it.hasDataModifier }
-        scope.interfaces().filter { it.name.endsWith("Api") }.assertTrue { true }
-        scope.classes().filter { it.name.endsWith("Mapper") }.assertTrue { !it.hasDataModifier }
+    private fun KoClassDeclaration.isPlainClass() =
+        !hasDataModifier && !hasSealedModifier && !hasAbstractModifier && !hasEnumModifier && !hasValueModifier && hasPublicOrDefaultModifier
+
+    private fun KoInterfaceDeclaration.isPlainInterface() =
+        !hasSealedModifier && !hasFunModifier && hasPublicOrDefaultModifier
+
+    @Test // ok
+    fun `declarations suffixed with RepositoryImpl must not be interfaces`() {
+        scope.interfaces()
+            .withNameEndingWith("RepositoryImpl")
+            .assertEmpty()
     }
 
-    @Test
-    fun `top-level class or interface name must match file name`() {
-        Konsist.scopeFromProject()
-            .files
-            .filter { it.hasPackage("..data..") }
+    @Test // ok
+    fun `declarations suffixed with RepositoryImpl must not be objects`() {
+        scope.objects()
+            .withNameEndingWith("RepositoryImpl")
+            .assertEmpty()
+    }
+
+    @Test // ok
+    fun `declarations suffixed with RepositoryImpl must be plain classes`() {
+        scope.classes()
+            .withNameEndingWith("RepositoryImpl")
+            .assertTrue { it.isPlainClass() }
+    }
+
+    @Test // ok
+    fun `declarations suffixed with RemoteDataSource must not be classes`() {
+        scope.classes()
+            .withNameEndingWith("RemoteDataSource")
+            .assertEmpty()
+    }
+
+    @Test // ok
+    fun `declarations suffixed with RemoteDataSource must not be objects`() {
+        scope.objects()
+            .withNameEndingWith("RemoteDataSource")
+            .assertEmpty()
+    }
+
+    @Test // ok
+    fun `declarations suffixed with RemoteDataSource must be interfaces`() {
+        scope.interfaces()
+            .withNameEndingWith("RemoteDataSource")
+            .assertTrue { it.isPlainInterface() }
+    }
+
+    @Test // ok
+    fun `declarations suffixed with RemoteDataSourceImpl must not be interfaces`() {
+        scope.interfaces()
+            .withNameEndingWith("RemoteDataSourceImpl")
+            .assertEmpty()
+    }
+
+    @Test // ok
+    fun `declarations suffixed with RemoteDataSourceImpl must not be objects`() {
+        scope.objects()
+            .withNameEndingWith("RemoteDataSourceImpl")
+            .assertEmpty()
+    }
+
+    @Test // ok
+    fun `declarations suffixed with RemoteDataSourceImpl must be plain classes`() {
+        scope.classes()
+            .withNameEndingWith("RemoteDataSourceImpl")
+            .assertTrue { it.isPlainClass() }
+    }
+
+    @Test // ok
+    fun `declarations suffixed with LocalDataSource must not be classes`() {
+        scope.classes()
+            .withNameEndingWith("LocalDataSource")
+            .assertEmpty()
+    }
+
+    @Test // ok
+    fun `declarations suffixed with LocalDataSource must not be objects`() {
+        scope.objects()
+            .withNameEndingWith("LocalDataSource")
+            .assertEmpty()
+    }
+
+    @Test // ok
+    fun `declarations suffixed with LocalDataSource must be plain interfaces`() {
+        scope.interfaces()
+            .withNameEndingWith("LocalDataSource")
+            .assertTrue { it.isPlainInterface() }
+    }
+
+    @Test // ok
+    fun `declarations suffixed with LocalDataSourceImpl must not be interfaces`() {
+        scope.interfaces()
+            .withNameEndingWith("LocalDataSourceImpl")
+            .assertEmpty()
+    }
+
+    @Test // ok
+    fun `declarations suffixed with LocalDataSourceImpl must not be objects`() {
+        scope.objects()
+            .withNameEndingWith("LocalDataSourceImpl")
+            .assertEmpty()
+    }
+
+    @Test // ok
+    fun `declarations suffixed with LocalDataSourceImpl must be plain classes`() {
+        scope.classes()
+            .withNameEndingWith("LocalDataSourceImpl")
+            .assertTrue { it.isPlainClass() }
+    }
+
+    @Test // ok
+    fun `declarations suffixed with CacheDataSource must not be classes`() {
+        scope.classes()
+            .withNameEndingWith("CacheDataSource")
+            .assertEmpty()
+    }
+
+    @Test // ok
+    fun `declarations suffixed with CacheDataSource must not be objects`() {
+        scope.objects()
+            .withNameEndingWith("CacheDataSource")
+            .assertEmpty()
+    }
+
+    @Test // ok
+    fun `declarations suffixed with CacheDataSource must be plain interfaces`() {
+        scope.interfaces()
+            .withNameEndingWith("CacheDataSource")
+            .assertTrue { it.isPlainInterface() }
+    }
+
+    @Test // ok
+    fun `declarations suffixed with CacheDataSourceImpl must not be interfaces`() {
+        scope.interfaces()
+            .withNameEndingWith("CacheDataSourceImpl")
+            .assertEmpty()
+    }
+
+    @Test // ok
+    fun `declarations suffixed with CacheDataSourceImpl must not be objects`() {
+        scope.objects()
+            .withNameEndingWith("CacheDataSourceImpl")
+            .assertEmpty()
+    }
+
+    @Test // ok
+    fun `declarations suffixed with CacheDataSourceImpl must be plain classes`() {
+        scope.classes()
+            .withNameEndingWith("CacheDataSourceImpl")
+            .assertTrue { it.isPlainClass() }
+    }
+
+    @Test // ok
+    fun `declarations suffixed with Dto must not be interfaces`() {
+        scope.interfaces()
+            .withNameEndingWith("Dto")
+            .assertEmpty()
+    }
+
+    @Test // ok
+    fun `declarations suffixed with Dto must not be objects`() {
+        scope.objects()
+            .withNameEndingWith("Dto")
+            .assertEmpty()
+    }
+
+    @Test // ok
+    fun `declarations suffixed with Dto must be data classes`() {
+        scope.classes()
+            .withNameEndingWith("Dto")
+            .assertTrue { it.hasDataModifier }
+    }
+
+    @Test // ok
+    fun `declarations suffixed with Api must not be classes`() {
+        scope.classes()
+            .withNameEndingWith("Api")
+            .assertEmpty()
+    }
+
+    @Test // ok
+    fun `declarations suffixed with Api must not be objects`() {
+        scope.objects()
+            .withNameEndingWith("Api")
+            .assertEmpty()
+    }
+
+    @Test // ok
+    fun `declarations suffixed with Api must be plain interfaces`() {
+        scope.interfaces()
+            .withNameEndingWith("Api")
+            .assertTrue { it.isPlainInterface() }
+    }
+
+    @Test // ok
+    fun `declarations suffixed with Mapper must not be interfaces`() {
+        scope.interfaces()
+            .withPackage("..data..")
+            .withNameEndingWith("Mapper")
+            .assertEmpty()
+    }
+
+    @Test // ok
+    fun `declarations suffixed with Mapper must not be objects`() {
+        scope.objects()
+            .withPackage("..data..")
+            .withNameEndingWith("Mapper")
+            .assertEmpty()
+    }
+
+    @Test // ok
+    fun `declarations suffixed with Mapper must be plain classes`() {
+        scope.classes()
+            .withPackage("..data..")
+            .withNameEndingWith("Mapper")
+            .assertTrue { it.isPlainClass() }
+    }
+
+    // endregion
+
+    // region top-level structure
+
+    @Test // ok
+    fun `top-level declaration name must match file name`() {
+        scope.files
+            .withPackage("..data..")
             .assertTrue { file ->
-                val name = file.name.substringBefore(".")
-                (file.classes(includeNested = false) + file.interfaces(includeNested = false)).any { it.name == name }
+                (file.classes(includeNested = false) +
+                        file.interfaces(includeNested = false) +
+                        file.objects(includeNested = false))
+                    .any { it.name == file.name }
             }
     }
 
-    @Test
-    fun `files must contain exactly one top-level class or interface`() {
-        Konsist.scopeFromProject()
-            .files
-            .filter { it.hasPackage("..data..") }
+    @Test // ok
+    fun `files in data layer must contain exactly one top-level declaration`() {
+        scope.files
+            .withPackage("..data..")
             .assertTrue { file ->
-                val topLevelDecls = file.declarations(includeNested = false)
-                    .filter { it is KoClassDeclaration || it is KoInterfaceDeclaration }
-                topLevelDecls.size == 1
+                val topLevelDeclarations =
+                    file.classes(includeNested = false) +
+                            file.interfaces(includeNested = false) +
+                            file.objects(includeNested = false)
+                topLevelDeclarations.size == 1
             }
     }
+
+    // endregion
+
+    // region dto rules
 
     @Test
     fun `DTO rules`() {
-        Konsist.scopeFromProject()
-            .classes()
-            .filter { it.name.endsWith("Dto") }
-            .assertTrue { it.hasDataModifier && it.numFunctions(includeNested = false) == 0 }
+        scope.classes()
+            .withNameEndingWith("Dto")
+            .assertTrue { it.numFunctions(includeNested = false) == 0 }
+    }
+
+    // endregion
+
+    // region mapper rules
+
+    @Test
+    fun `Mapper public functions must follow toX naming convention`() {
+        scope.classes()
+            .withPackage("..data..")
+            .withNameEndingWith("Mapper")
+            .assertTrue { mapper ->
+                val publicFunctions = mapper.functions(includeNested = false)
+                    .filter { it.hasPublicOrDefaultModifier }
+
+                publicFunctions.isNotEmpty() &&
+                        publicFunctions.all { it.name.matches(Regex("to.*(Domain|Entity|Dto)$")) }
+            }
     }
 
     @Test
-    fun `Mapper rules`() {
-        Konsist.scopeFromProject()
-            .classes()
-            .filter { it.name.endsWith("Mapper") }
-            .assertTrue { mapper ->
-                mapper.functions(includeNested = false)
-                    .filter { it.hasPublicModifier }
-                    .all { it.name.matches(Regex("to[a-zA-Z]*(Domain|Entity|Dto)")) }
+    fun `Mapper functions must not map Dto to Dto`() {
+        scope.classes()
+            .withNameEndingWith("Mapper")
+            .flatMap { it.functions(includeNested = false) }
+            .filter { function ->
+                function.parameters.any { it.type.name.endsWith("Dto") }
+            }
+            .assertTrue { function ->
+                function.returnType?.name?.endsWith("Dto") != true
             }
     }
+
+    // endregion
+
+
 
     @Test
     fun `Implementation contract`() {
         val scope = Konsist.scopeFromProject()
-        
+
         // RepositoryImpl
         scope.classes().filter { it.name.endsWith("RepositoryImpl") }.assertTrue { impl ->
             val interfaceName = impl.name.removeSuffix("Impl")
@@ -227,7 +463,8 @@ class DataLayerTest {
     fun `Constructor dependency scope`() {
         val scope = Konsist.scopeFromProject()
         val projectPackagePrefix = "io.nicolaszurbuchen.turnstile"
-        val classesToCheck = scope.classes().filter { it.name.endsWith("RepositoryImpl") || it.name.endsWith("DataSourceImpl") }
+        val classesToCheck = scope.classes()
+            .filter { it.name.endsWith("RepositoryImpl") || it.name.endsWith("DataSourceImpl") }
 
         classesToCheck.assertTrue { clazz ->
             val packageName = clazz.packagee?.name ?: ""
@@ -240,13 +477,15 @@ class DataLayerTest {
             clazz.constructors.all { constructor ->
                 constructor.parameters.all { param ->
                     val typeName = param.type.name
-                    val matchingImport = clazz.containingFile.imports.find { it.name.endsWith(".$typeName") }
+                    val matchingImport =
+                        clazz.containingFile.imports.find { it.name.endsWith(".$typeName") }
 
                     if (matchingImport != null) {
                         val fqn = matchingImport.name
                         if (fqn.startsWith(projectPackagePrefix)) {
                             // It's a project type
-                            val isSameFeature = currentFeature != null && fqn.contains(".feature.$currentFeature.")
+                            val isSameFeature =
+                                currentFeature != null && fqn.contains(".feature.$currentFeature.")
                             val isCommon = fqn.contains(".common.")
                             val isInfra = fqn.contains(".infra.")
 
@@ -267,7 +506,8 @@ class DataLayerTest {
     @Test
     fun `No extra public surface`() {
         val scope = Konsist.scopeFromProject()
-        val classesToCheck = scope.classes().filter { it.name.endsWith("RepositoryImpl") || it.name.endsWith("DataSourceImpl") }
+        val classesToCheck = scope.classes()
+            .filter { it.name.endsWith("RepositoryImpl") || it.name.endsWith("DataSourceImpl") }
 
         classesToCheck.assertTrue { clazz ->
             clazz.functions(includeNested = false)
