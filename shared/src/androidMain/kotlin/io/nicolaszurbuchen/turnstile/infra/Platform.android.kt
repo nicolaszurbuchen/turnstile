@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.turnstile
+package io.nicolaszurbuchen.turnstile.infra
 
 import android.os.Build
 

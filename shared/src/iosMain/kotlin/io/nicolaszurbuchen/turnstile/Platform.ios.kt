@@ -1,5 +1,6 @@
 package io.nicolaszurbuchen.turnstile
 
+import io.nicolaszurbuchen.turnstile.infra.Platform
 import platform.UIKit.UIDevice
 
 class IOSPlatform : Platform {

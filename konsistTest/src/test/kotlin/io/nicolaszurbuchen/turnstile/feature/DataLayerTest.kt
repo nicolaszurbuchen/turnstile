@@ -444,7 +444,7 @@ class DataLayerTest {
 
     // endregion
 
-
+    // region implementation contracts
 
     @Test // ok
     fun `classes suffixed with RepositoryImpl must implement interface from same feature domain repository`() {
@@ -480,9 +480,12 @@ class DataLayerTest {
             .assertTrue { it.hasParentWithName(it.name.removeSuffix("Impl")) }
     }
 
+    // endregion
+
+    // region dependency boundaries
+
     @Test // ok
     fun `project types injected into data layer classes must respect feature boundaries`() {
-        val scope = Konsist.scopeFromProject()
         val projectPackagePrefix = "io.nicolaszurbuchen.turnstile"
         val classesToCheck = scope.classes()
             .filter { it.name.endsWith("RepositoryImpl") || it.name.endsWith("DataSourceImpl") }
@@ -525,6 +528,17 @@ class DataLayerTest {
     }
 
     @Test // ok
+    fun `data layer must not import from presentation layer`() {
+        scope.files
+            .withPackage("..data..")
+            .assertTrue { !it.hasImportWithName("..presentation..") }
+    }
+
+    // endregion
+
+    // region public surface
+
+    @Test // ok
     fun `public functions in data layer implementations must be interface overrides`() {
         scope.classes()
             .filter { it.name.endsWith("RepositoryImpl") || it.name.endsWith("DataSourceImpl") }
@@ -535,10 +549,5 @@ class DataLayerTest {
             }
     }
 
-    @Test // ok
-    fun `data layer must not import from presentation layer`() {
-        scope.files
-            .withPackage("..data..")
-            .assertTrue { !it.hasImportWithName("..presentation..") }
-    }
+    // endregion
 }

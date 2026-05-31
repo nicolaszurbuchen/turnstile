@@ -6,13 +6,15 @@ import kotlin.test.Test
 
 class PackageHierarchyTest {
 
-    @Test
+    companion object {
+        private val scope = Konsist.scopeFromModule("shared")
+    }
+
+    @Test // ok
     fun `Direct children of feature or common must be in allowed list`() {
-        // Adding to this list requires a conscious architectural decision
         val allowed = listOf("presentation", "domain", "data", "di")
 
-        Konsist.scopeFromProject()
-            .packages
+        scope.packages
             .filter { it.name.matches(Regex(".*\\.(feature|common)\\.[^.]+\\.[^.]+$")) }
             .assertTrue { pkg ->
                 val segments = pkg.name.split(Regex("\\.(feature|common)\\.")).last().split(".")
@@ -20,13 +22,11 @@ class PackageHierarchyTest {
             }
     }
 
-    @Test
+    @Test // ok
     fun `Direct children of presentation must be in allowed list`() {
-        // Adding to this list requires a conscious architectural decision
         val allowed = listOf("screen", "component", "navigation", "model", "flow")
 
-        Konsist.scopeFromProject()
-            .packages
+        scope.packages
             .filter { it.name.matches(Regex(".*\\.(feature|common)\\.[^.]+\\.presentation\\.[^.]+$")) }
             .assertTrue { pkg ->
                 val segments = pkg.name.split(Regex("\\.(feature|common)\\.")).last().split(".")
@@ -34,13 +34,11 @@ class PackageHierarchyTest {
             }
     }
 
-    @Test
+    @Test // ok
     fun `Direct children of domain must be in allowed list`() {
-        // Adding to this list requires a conscious architectural decision
         val allowed = listOf("model", "repository", "usecase")
 
-        Konsist.scopeFromProject()
-            .packages
+        scope.packages
             .filter { it.name.matches(Regex(".*\\.(feature|common)\\.[^.]+\\.domain\\.[^.]+$")) }
             .assertTrue { pkg ->
                 val segments = pkg.name.split(Regex("\\.(feature|common)\\.")).last().split(".")
@@ -48,13 +46,11 @@ class PackageHierarchyTest {
             }
     }
 
-    @Test
+    @Test // ok
     fun `Direct children of data must be in allowed list`() {
-        // Adding to this list requires a conscious architectural decision
         val allowed = listOf("repository", "datasource")
 
-        Konsist.scopeFromProject()
-            .packages
+        scope.packages
             .filter { it.name.matches(Regex(".*\\.(feature|common)\\.[^.]+\\.data\\.[^.]+$")) }
             .assertTrue { pkg ->
                 val segments = pkg.name.split(Regex("\\.(feature|common)\\.")).last().split(".")
@@ -62,13 +58,11 @@ class PackageHierarchyTest {
             }
     }
 
-    @Test
+    @Test // ok
     fun `Direct children of data datasource must be in allowed list`() {
-        // Adding to this list requires a conscious architectural decision
         val allowed = listOf("remote", "local", "cache")
 
-        Konsist.scopeFromProject()
-            .packages
+        scope.packages
             .filter { it.name.matches(Regex(".*\\.(feature|common)\\.[^.]+\\.data\\.datasource\\.[^.]+$")) }
             .assertTrue { pkg ->
                 val segments = pkg.name.split(Regex("\\.(feature|common)\\.")).last().split(".")
@@ -76,13 +70,11 @@ class PackageHierarchyTest {
             }
     }
 
-    @Test
+    @Test // ok
     fun `Direct children of data datasource remote must be in allowed list`() {
-        // Adding to this list requires a conscious architectural decision
         val allowed = listOf("api", "dto", "mapper")
 
-        Konsist.scopeFromProject()
-            .packages
+        scope.packages
             .filter { it.name.matches(Regex(".*\\.(feature|common)\\.[^.]+\\.data\\.datasource\\.remote\\.[^.]+$")) }
             .assertTrue { pkg ->
                 val segments = pkg.name.split(Regex("\\.(feature|common)\\.")).last().split(".")
@@ -90,13 +82,11 @@ class PackageHierarchyTest {
             }
     }
 
-    @Test
+    @Test // ok
     fun `Direct children of presentation screen screenName must be in allowed list`() {
-        // Adding to this list requires a conscious architectural decision
         val allowed = listOf("component")
 
-        Konsist.scopeFromProject()
-            .packages
+        scope.packages
             .filter { it.name.matches(Regex(".*\\.(feature|common)\\.[^.]+\\.presentation\\.screen\\.[^.]+\\.[^.]+$")) }
             .assertTrue { pkg ->
                 val segments = pkg.name.split(Regex("\\.(feature|common)\\.")).last().split(".")
@@ -104,7 +94,26 @@ class PackageHierarchyTest {
             }
     }
 
-    @Test
+    @Test // ok
+    fun `Top level packages must be in allowed list`() {
+        val allowed = listOf("common", "feature", "infra")
+
+        val allPackages = Konsist.scopeFromDirectory("shared/src/commonMain/kotlin").packages
+        val allPackageNames = allPackages.map { it.name }
+
+        val rootPrefix = allPackageNames
+            .reduce { acc, name -> acc.commonPrefixWith(name).trimEnd('.') }
+
+        allPackages
+            .assertTrue { pkg ->
+                pkg.name
+                    .removePrefix("$rootPrefix.")
+                    .split(".")
+                    .first() in allowed
+            }
+    }
+
+    @Test // ok
     fun `Leaf packages must not have child packages`() {
         val leafPackageNames = setOf("api", "cache", "component", "di", "dto", "flow", "local", "mapper", "model", "navigation", "repository", "usecase")
 
