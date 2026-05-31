@@ -3,91 +3,146 @@ package io.nicolaszurbuchen.turnstile.feature
 import com.lemonappdev.konsist.api.Konsist
 import com.lemonappdev.konsist.api.declaration.KoClassDeclaration
 import com.lemonappdev.konsist.api.declaration.KoInterfaceDeclaration
+import com.lemonappdev.konsist.api.ext.list.withNameEndingWith
+import com.lemonappdev.konsist.api.ext.list.withPackage
 import com.lemonappdev.konsist.api.verify.assertTrue
 import kotlin.test.Test
 
 class DataLayerTest {
 
-    @Test
-    fun `package whitelists - file location implies name`() {
-        val scope = Konsist.scopeFromProject()
-        
-        scope.files
-            .filter { it.packagee?.name?.contains(".data.repository") == true }
-            .assertTrue { it.name.contains("RepositoryImpl") }
-
-        scope.files
-            .filter { it.packagee?.name?.contains(".data.datasource.remote") == true }
-            .filterNot { it.packagee?.name?.contains(".dto") == true }
-            .filterNot { it.packagee?.name?.contains(".api") == true }
-            .filterNot { it.packagee?.name?.contains(".mapper") == true }
-            .assertTrue { it.name.contains("RemoteDataSource") }
-
-        scope.files
-            .filter { it.packagee?.name?.contains(".data.datasource.local") == true }
-            .assertTrue { it.name.contains("LocalDataSource") }
-
-        scope.files
-            .filter { it.packagee?.name?.contains(".data.datasource.cache") == true }
-            .assertTrue { it.name.contains("CacheDataSource") }
-
-        scope.files
-            .filter { it.packagee?.name?.contains(".data.datasource.remote.dto") == true }
-            .assertTrue { it.name.endsWith("Dto.kt") }
-
-        scope.files
-            .filter { it.packagee?.name?.contains(".data.datasource.remote.api") == true }
-            .assertTrue { it.name.endsWith("Api.kt") }
-
-        scope.files
-            .filter { it.packagee?.name?.contains(".data.datasource.remote.mapper") == true }
-            .assertTrue { it.name.endsWith("Mapper.kt") }
+    companion object {
+        private val scope = Konsist.scopeFromModule("shared")
     }
 
-    @Test
-    fun `package whitelists - name implies location`() {
-        val scope = Konsist.scopeFromProject()
+    // region file location implies name
 
-        scope.files
-            .filter { it.name.endsWith("RepositoryImpl.kt") }
-            .assertTrue { it.hasPackage("..data.repository..") }
-
-        scope.files
-            .filter { it.name.endsWith("RemoteDataSource.kt") }
-            .assertTrue { it.hasPackage("..data.datasource.remote..") }
-
-        scope.files
-            .filter { it.name.endsWith("RemoteDataSourceImpl.kt") }
-            .assertTrue { it.hasPackage("..data.datasource.remote..") }
-
-        scope.files
-            .filter { it.name.endsWith("LocalDataSource.kt") }
-            .assertTrue { it.hasPackage("..data.datasource.local..") }
-
-        scope.files
-            .filter { it.name.endsWith("LocalDataSourceImpl.kt") }
-            .assertTrue { it.hasPackage("..data.datasource.local..") }
-
-        scope.files
-            .filter { it.name.endsWith("CacheDataSource.kt") }
-            .assertTrue { it.hasPackage("..data.datasource.cache..") }
-
-        scope.files
-            .filter { it.name.endsWith("CacheDataSourceImpl.kt") }
-            .assertTrue { it.hasPackage("..data.datasource.cache..") }
-
-        scope.files
-            .filter { it.name.endsWith("Dto.kt") }
-            .assertTrue { it.hasPackage("..data.datasource.remote.dto..") }
-
-        scope.files
-            .filter { it.name.endsWith("Api.kt") }
-            .assertTrue { it.hasPackage("..data.datasource.remote.api..") }
-
-        scope.files
-            .filter { it.name.endsWith("Mapper.kt") }
-            .assertTrue { it.hasPackage("..data.datasource.remote.mapper..") }
+    @Test // ok
+    fun `files in data repository package must be suffixed with RepositoryImpl`() {
+        scope
+            .files
+            .withPackage("..data.repository")
+            .assertTrue { it.name.endsWith("RepositoryImpl") }
     }
+
+    @Test // ok
+    fun `files in remote datasource package must be suffixed with RemoteDataSource or RemoteDataSourceImpl`() {
+        scope.files
+            .withPackage("..data.datasource.remote")
+            .assertTrue { it.name.endsWith("RemoteDataSource") || it.name.endsWith("RemoteDataSourceImpl") }
+    }
+
+    @Test // ok
+    fun `files in local datasource package must be suffixed with LocalDataSource or LocalDataSourceImpl`() {
+        scope.files
+            .withPackage("..data.datasource.local")
+            .assertTrue { it.name.endsWith("LocalDataSource") || it.name.endsWith("LocalDataSourceImpl") }
+    }
+
+    @Test // ok
+    fun `files in cache datasource package must be suffixed with CacheDataSource or CacheDataSourceImpl`() {
+        scope.files
+            .withPackage("..data.datasource.cache")
+            .assertTrue { it.name.endsWith("CacheDataSource") || it.name.endsWith("CacheDataSourceImpl") }
+    }
+
+    @Test // ok
+    fun `files in remote dto package must be suffixed with Dto`() {
+        scope.files
+            .withPackage("..data.datasource.remote.dto")
+            .assertTrue { it.name.endsWith("Dto") }
+    }
+
+    @Test // ok
+    fun `files in remote api package must be suffixed with Api`() {
+        scope.files
+            .withPackage("..data.datasource.remote.api")
+            .assertTrue { it.name.endsWith("Api") }
+    }
+
+    @Test // ok
+    fun `files in remote mapper package must be suffixed with Mapper`() {
+        scope.files
+            .withPackage("..data.datasource.remote.mapper")
+            .assertTrue { it.name.endsWith("Mapper") }
+    }
+
+    // endregion
+
+    // region name implies location
+
+    @Test // ok
+    fun `files suffixed with RepositoryImpl must reside in repository package`() {
+        scope
+            .files
+            .withNameEndingWith("RepositoryImpl")
+            .assertTrue { it.hasPackage("..data.repository") }
+    }
+
+    @Test // ok
+    fun `files suffixed with RemoteDataSource must reside in remote datasource package`() {
+        scope.files
+            .withNameEndingWith("RemoteDataSource")
+            .assertTrue { it.hasPackage("..data.datasource.remote") }
+    }
+
+    @Test // ok
+    fun `files suffixed with RemoteDataSourceImpl must reside in remote datasource package`() {
+        scope.files
+            .withNameEndingWith("RemoteDataSourceImpl")
+            .assertTrue { it.hasPackage("..data.datasource.remote") }
+    }
+
+    @Test // ok
+    fun `files suffixed with LocalDataSource must reside in local datasource package`() {
+        scope.files
+            .withNameEndingWith("LocalDataSource")
+            .assertTrue { it.hasPackage("..data.datasource.local") }
+    }
+
+    @Test // ok
+    fun `files suffixed with LocalDataSourceImpl must reside in local datasource package`() {
+        scope.files
+            .withNameEndingWith("LocalDataSourceImpl")
+            .assertTrue { it.hasPackage("..data.datasource.local") }
+    }
+
+    @Test // ok
+    fun `files suffixed with CacheDataSource must reside in cache datasource package`() {
+        scope.files
+            .withNameEndingWith("CacheDataSource")
+            .assertTrue { it.hasPackage("..data.datasource.cache") }
+    }
+
+    @Test // ok
+    fun `files suffixed with CacheDataSourceImpl must reside in cache datasource package`() {
+        scope.files
+            .withNameEndingWith("CacheDataSourceImpl")
+            .assertTrue { it.hasPackage("..data.datasource.cache") }
+    }
+
+    @Test // ok
+    fun `files suffixed with Dto must reside in remote dto package`() {
+        scope.files
+            .withNameEndingWith("Dto")
+            .assertTrue { it.hasPackage("..data.datasource.remote.dto") }
+    }
+
+    @Test // ok
+    fun `files suffixed with Api must reside in remote api package`() {
+        scope.files
+            .withNameEndingWith("Api")
+            .assertTrue { it.hasPackage("..data.datasource.remote.api") }
+    }
+
+    @Test // ok
+    fun `files suffixed with Mapper must reside in remote mapper package`() {
+        scope.files
+            .withNameEndingWith("Mapper")
+            .assertTrue { it.hasPackage("..data.datasource.remote.mapper") }
+    }
+
+    // endregion
+
 
     @Test
     fun `class and interface type enforcement`() {
