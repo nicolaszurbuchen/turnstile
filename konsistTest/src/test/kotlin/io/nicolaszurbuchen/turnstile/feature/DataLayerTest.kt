@@ -397,11 +397,18 @@ class DataLayerTest {
 
     // region dto rules
 
-    @Test
-    fun `DTO rules`() {
+    @Test // ok
+    fun `Dto classes must not have any function`() {
         scope.classes()
             .withNameEndingWith("Dto")
             .assertTrue { it.numFunctions(includeNested = false) == 0 }
+    }
+
+    @Test // ok
+    fun `Dto classes must not implement any interface`() {
+        scope.classes()
+            .withNameEndingWith("Dto")
+            .assertTrue { it.parents().isEmpty() }
     }
 
     // endregion
@@ -439,28 +446,42 @@ class DataLayerTest {
 
 
 
-    @Test
-    fun `Implementation contract`() {
-        val scope = Konsist.scopeFromProject()
+    @Test // ok
+    fun `classes suffixed with RepositoryImpl must implement interface from same feature domain repository`() {
+        scope.classes()
+            .withNameEndingWith("RepositoryImpl")
+            .assertTrue { impl ->
+                val expectedInterfaceName = impl.name.removeSuffix("Impl")
+                val expectedPackage = impl.packagee?.name
+                    ?.replace(".data.repository", ".domain.repository")
 
-        // RepositoryImpl
-        scope.classes().filter { it.name.endsWith("RepositoryImpl") }.assertTrue { impl ->
-            val interfaceName = impl.name.removeSuffix("Impl")
-            impl.hasParentWithName(interfaceName)
-        }
-
-        // DataSources
-        val dsSuffixes = listOf("RemoteDataSource", "LocalDataSource", "CacheDataSource")
-        dsSuffixes.forEach { suffix ->
-            scope.classes().filter { it.name.endsWith("${suffix}Impl") }.assertTrue { impl ->
-                val interfaceName = impl.name.removeSuffix("Impl")
-                impl.hasParentWithName(interfaceName)
+                impl.containingFile.hasImportWithName("$expectedPackage.$expectedInterfaceName")
             }
-        }
     }
 
-    @Test
-    fun `Constructor dependency scope`() {
+    @Test // ok
+    fun `classes suffixed with RemoteDataSourceImpl must implement their RemoteDataSource interface`() {
+        scope.classes()
+            .withNameEndingWith("RemoteDataSourceImpl")
+            .assertTrue { it.hasParentWithName(it.name.removeSuffix("Impl")) }
+    }
+
+    @Test // ok
+    fun `classes suffixed with LocalDataSourceImpl must implement their LocalDataSource interface`() {
+        scope.classes()
+            .withNameEndingWith("LocalDataSourceImpl")
+            .assertTrue { it.hasParentWithName(it.name.removeSuffix("Impl")) }
+    }
+
+    @Test // ok
+    fun `classes suffixed with CacheDataSourceImpl must implement their CacheDataSource interface`() {
+        scope.classes()
+            .withNameEndingWith("CacheDataSourceImpl")
+            .assertTrue { it.hasParentWithName(it.name.removeSuffix("Impl")) }
+    }
+
+    @Test // ok
+    fun `project types injected into data layer classes must respect feature boundaries`() {
         val scope = Konsist.scopeFromProject()
         val projectPackagePrefix = "io.nicolaszurbuchen.turnstile"
         val classesToCheck = scope.classes()
@@ -503,16 +524,21 @@ class DataLayerTest {
         }
     }
 
-    @Test
-    fun `No extra public surface`() {
-        val scope = Konsist.scopeFromProject()
-        val classesToCheck = scope.classes()
+    @Test // ok
+    fun `public functions in data layer implementations must be interface overrides`() {
+        scope.classes()
             .filter { it.name.endsWith("RepositoryImpl") || it.name.endsWith("DataSourceImpl") }
+            .assertTrue { clazz ->
+                clazz.functions(includeNested = false)
+                    .filter { it.hasPublicOrDefaultModifier }
+                    .all { it.hasOverrideModifier }
+            }
+    }
 
-        classesToCheck.assertTrue { clazz ->
-            clazz.functions(includeNested = false)
-                .filter { it.hasPublicModifier }
-                .all { it.hasOverrideModifier && it.name != "toString" && it.name != "equals" && it.name != "hashCode" }
-        }
+    @Test // ok
+    fun `data layer must not import from presentation layer`() {
+        scope.files
+            .withPackage("..data..")
+            .assertTrue { !it.hasImportWithName("..presentation..") }
     }
 }
