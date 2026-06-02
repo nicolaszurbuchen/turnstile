@@ -3,6 +3,7 @@ package io.nicolaszurbuchen.turnstile.feature
 import com.lemonappdev.konsist.api.Konsist
 import com.lemonappdev.konsist.api.declaration.KoClassDeclaration
 import com.lemonappdev.konsist.api.declaration.KoInterfaceDeclaration
+import com.lemonappdev.konsist.api.declaration.type.KoTypeDeclaration
 import com.lemonappdev.konsist.api.ext.list.withNameEndingWith
 import com.lemonappdev.konsist.api.ext.list.withPackage
 import com.lemonappdev.konsist.api.verify.assertEmpty
@@ -390,6 +391,20 @@ class DataLayerTest {
                             file.interfaces(includeNested = false) +
                             file.objects(includeNested = false)
                 topLevelDeclarations.size == 1
+            }
+    }
+
+    // endregion
+
+    // region repository rules
+
+    @Test // ok
+    fun `DataSource interfaces must not have default function implementations`() {
+        scope.interfaces()
+            .withNameEndingWith("DataSource")
+            .assertTrue { iface ->
+                iface.functions(includeNested = false)
+                    .none { it.hasExpressionBody || it.hasBlockBody }
             }
     }
 
