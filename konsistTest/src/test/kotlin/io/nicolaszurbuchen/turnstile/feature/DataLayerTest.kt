@@ -534,6 +534,25 @@ class DataLayerTest {
             .assertTrue { !it.hasImportWithName("..presentation..") }
     }
 
+    @Test
+    fun `RequestDto types must never be used as return types`() {
+        scope.interfaces()
+            .flatMap { it.functions(includeNested = false) }
+            .assertTrue { function ->
+                extractLeafTypeNames(function.returnType)
+                    .none { it.endsWith("RequestDto") }
+            }
+    }
+
+    @Test
+    fun `RequestDto types must only be used as Api function parameters`() {
+        scope.files
+            .filterNot { it.name.endsWith("Api") }
+            .assertTrue { file ->
+                file.imports.none { it.name.endsWith("RequestDto") }
+            }
+    }
+
     // endregion
 
     // region public surface
