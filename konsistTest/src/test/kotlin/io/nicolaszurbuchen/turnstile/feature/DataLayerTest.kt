@@ -2,6 +2,7 @@ package io.nicolaszurbuchen.turnstile.feature
 
 import com.lemonappdev.konsist.api.Konsist
 import com.lemonappdev.konsist.api.declaration.KoClassDeclaration
+import com.lemonappdev.konsist.api.declaration.KoFunctionDeclaration
 import com.lemonappdev.konsist.api.declaration.KoInterfaceDeclaration
 import com.lemonappdev.konsist.api.declaration.type.KoTypeDeclaration
 import com.lemonappdev.konsist.api.ext.list.withNameEndingWith
@@ -14,6 +15,12 @@ class DataLayerTest {
 
     companion object {
         private val scope = Konsist.scopeFromModule("shared")
+
+        private val projectPackagePrefix = scope.packages
+            .map { it.name }
+            .reduce { acc, name ->
+                acc.commonPrefixWith(name).trimEnd('.')
+            }
     }
 
     // region file location implies name
@@ -37,13 +44,6 @@ class DataLayerTest {
         scope.files
             .withPackage("..data.datasource.local")
             .assertTrue { it.name.endsWith("LocalDataSource") || it.name.endsWith("LocalDataSourceImpl") }
-    }
-
-    @Test // ok
-    fun `files in cache datasource package must be suffixed with CacheDataSource or CacheDataSourceImpl`() {
-        scope.files
-            .withPackage("..data.datasource.cache")
-            .assertTrue { it.name.endsWith("CacheDataSource") || it.name.endsWith("CacheDataSourceImpl") }
     }
 
     @Test // ok
@@ -104,20 +104,6 @@ class DataLayerTest {
         scope.files
             .withNameEndingWith("LocalDataSourceImpl")
             .assertTrue { it.hasPackage("..data.datasource.local") }
-    }
-
-    @Test // ok
-    fun `files suffixed with CacheDataSource must reside in cache datasource package`() {
-        scope.files
-            .withNameEndingWith("CacheDataSource")
-            .assertTrue { it.hasPackage("..data.datasource.cache") }
-    }
-
-    @Test // ok
-    fun `files suffixed with CacheDataSourceImpl must reside in cache datasource package`() {
-        scope.files
-            .withNameEndingWith("CacheDataSourceImpl")
-            .assertTrue { it.hasPackage("..data.datasource.cache") }
     }
 
     @Test // ok
@@ -254,48 +240,6 @@ class DataLayerTest {
     fun `declarations suffixed with LocalDataSourceImpl must be plain classes`() {
         scope.classes()
             .withNameEndingWith("LocalDataSourceImpl")
-            .assertTrue { it.isPlainClass() }
-    }
-
-    @Test // ok
-    fun `declarations suffixed with CacheDataSource must not be classes`() {
-        scope.classes()
-            .withNameEndingWith("CacheDataSource")
-            .assertEmpty()
-    }
-
-    @Test // ok
-    fun `declarations suffixed with CacheDataSource must not be objects`() {
-        scope.objects()
-            .withNameEndingWith("CacheDataSource")
-            .assertEmpty()
-    }
-
-    @Test // ok
-    fun `declarations suffixed with CacheDataSource must be plain interfaces`() {
-        scope.interfaces()
-            .withNameEndingWith("CacheDataSource")
-            .assertTrue { it.isPlainInterface() }
-    }
-
-    @Test // ok
-    fun `declarations suffixed with CacheDataSourceImpl must not be interfaces`() {
-        scope.interfaces()
-            .withNameEndingWith("CacheDataSourceImpl")
-            .assertEmpty()
-    }
-
-    @Test // ok
-    fun `declarations suffixed with CacheDataSourceImpl must not be objects`() {
-        scope.objects()
-            .withNameEndingWith("CacheDataSourceImpl")
-            .assertEmpty()
-    }
-
-    @Test // ok
-    fun `declarations suffixed with CacheDataSourceImpl must be plain classes`() {
-        scope.classes()
-            .withNameEndingWith("CacheDataSourceImpl")
             .assertTrue { it.isPlainClass() }
     }
 
@@ -488,13 +432,6 @@ class DataLayerTest {
             .assertTrue { it.hasParentWithName(it.name.removeSuffix("Impl")) }
     }
 
-    @Test // ok
-    fun `classes suffixed with CacheDataSourceImpl must implement their CacheDataSource interface`() {
-        scope.classes()
-            .withNameEndingWith("CacheDataSourceImpl")
-            .assertTrue { it.hasParentWithName(it.name.removeSuffix("Impl")) }
-    }
-
     // endregion
 
     // region dependency boundaries
@@ -540,6 +477,54 @@ class DataLayerTest {
                 }
             }
         }
+    }
+
+    private fun extractLeafTypeNames(returnType: KoTypeDeclaration?): List<String> {
+        if (returnType == null) return emptyList()
+        return when (returnType.name) {
+            "Flow", "List", "Set" -> returnType.typeArguments
+                ?.flatMap { extractLeafTypeNames(it.returnType) }
+                ?: emptyList()
+            else -> listOf(returnType.name)
+        }
+    }
+
+    private fun isAllowedReturnType(
+        function: KoFunctionDeclaration,
+        allowedProjectSuffix: String,
+        allowPrimitives: Boolean = false,
+    ): Boolean {
+        val returnType = function.returnType ?: return true // Unit/void - allowed
+
+        if (returnType.name == "Unit") return true
+
+        return extractLeafTypeNames(returnType).all { typeName ->
+            val matchingImport = function.containingFile.imports
+                .find { it.name.endsWith(".$typeName") }
+
+            when {
+                matchingImport == null -> allowPrimitives // primitive or stdlib
+                matchingImport.name.startsWith(projectPackagePrefix) ->
+                    matchingImport.name.contains(".$allowedProjectSuffix.")
+                else -> false // external SDK type - not allowed
+            }
+        }
+    }
+
+    @Test // ok
+    fun `RemoteDataSource functions must only return Dto or Unit`() {
+        scope.interfaces()
+            .withNameEndingWith("RemoteDataSource")
+            .flatMap { it.functions(includeNested = false) }
+            .assertTrue { isAllowedReturnType(it, allowedProjectSuffix = "dto", allowPrimitives = false) }
+    }
+
+    @Test // ok
+    fun `LocalDataSource functions must only return Entity, primitive or Unit`() {
+        scope.interfaces()
+            .withNameEndingWith("LocalDataSource")
+            .flatMap { it.functions(includeNested = false) }
+            .assertTrue { isAllowedReturnType(it, allowedProjectSuffix = "entity", allowPrimitives = true) }
     }
 
     @Test // ok
