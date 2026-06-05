@@ -8,6 +8,7 @@ import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.DeleteCredenti
 import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.GetCredentialUseCase
 import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.GetCredentialsUseCase
 import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.SaveCredentialUseCase
+import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.SignOutUseCase
 import io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.detail.CredentialDetailViewModel
 import io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.editor.CredentialEditorViewModel
 import io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.list.CredentialListViewModel
@@ -25,10 +26,11 @@ val vaultModule =
         singleOf(::CredentialRepositoryImpl) bind CredentialRepository::class
 
         // Use Cases
+        singleOf(::DeleteCredentialUseCase)
         singleOf(::GetCredentialsUseCase)
         singleOf(::GetCredentialUseCase)
         singleOf(::SaveCredentialUseCase)
-        singleOf(::DeleteCredentialUseCase)
+        singleOf(::SignOutUseCase)
 
         // View Models
         viewModelOf(::CredentialListViewModel)

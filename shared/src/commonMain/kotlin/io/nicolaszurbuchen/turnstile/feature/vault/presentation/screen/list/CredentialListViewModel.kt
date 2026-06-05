@@ -1,8 +1,8 @@
 package io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.list
 
 import androidx.lifecycle.viewModelScope
-import io.nicolaszurbuchen.turnstile.feature.auth.domain.usecase.SignOutUseCase
 import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.GetCredentialsUseCase
+import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.SignOutUseCase
 import io.nicolaszurbuchen.turnstile.infra.mvi.MviViewModel
 import io.nicolaszurbuchen.turnstile.infra.ui.AppError
 import io.nicolaszurbuchen.turnstile.infra.ui.Loadable

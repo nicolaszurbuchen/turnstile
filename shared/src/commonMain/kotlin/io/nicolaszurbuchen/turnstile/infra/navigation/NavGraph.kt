@@ -5,8 +5,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import io.nicolaszurbuchen.turnstile.feature.auth.presentation.AuthFlow
-import io.nicolaszurbuchen.turnstile.feature.auth.presentation.navigation.AuthGraph
+import io.nicolaszurbuchen.turnstile.feature.login.presentation.LoginFlow
+import io.nicolaszurbuchen.turnstile.feature.login.presentation.navigation.LoginGraph
 import io.nicolaszurbuchen.turnstile.feature.splash.presentation.navigation.SplashDestination
 import io.nicolaszurbuchen.turnstile.feature.splash.presentation.screen.SplashRoute
 import io.nicolaszurbuchen.turnstile.feature.vault.presentation.navigation.VaultGraph
@@ -23,7 +23,7 @@ fun NavGraph(navController: NavHostController = rememberNavController()) {
             SplashRoute(
                 viewModel = koinViewModel(),
                 onNavigateToAuth = {
-                    navController.navigate(AuthGraph) {
+                    navController.navigate(LoginGraph) {
                         popUpTo(SplashDestination) { inclusive = true }
                     }
                 },
@@ -35,11 +35,11 @@ fun NavGraph(navController: NavHostController = rememberNavController()) {
             )
         }
 
-        composable<AuthGraph> {
-            AuthFlow(
+        composable<LoginGraph> {
+            LoginFlow(
                 onAuthenticated = {
                     navController.navigate(VaultGraph) {
-                        popUpTo(AuthGraph) { inclusive = true }
+                        popUpTo(LoginGraph) { inclusive = true }
                     }
                 },
             )
@@ -48,7 +48,7 @@ fun NavGraph(navController: NavHostController = rememberNavController()) {
         vaultGraph(
             navController = navController,
             onSignOut = {
-                navController.navigate(AuthGraph) {
+                navController.navigate(LoginGraph) {
                     popUpTo(VaultGraph) { inclusive = true }
                 }
             },

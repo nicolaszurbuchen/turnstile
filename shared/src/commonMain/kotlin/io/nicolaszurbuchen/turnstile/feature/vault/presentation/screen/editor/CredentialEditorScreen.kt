@@ -26,7 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import io.nicolaszurbuchen.turnstile.feature.auth.presentation.component.AuthTextField
+import io.nicolaszurbuchen.turnstile.feature.login.presentation.component.LoginTextField
 import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
 import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
 
@@ -81,7 +81,7 @@ fun CredentialEditorScreen(
         ) {
             Spacer(Modifier.height(spacing.md))
 
-            AuthTextField(
+            LoginTextField(
                 value = state.title,
                 onValueChange = onTitleChange,
                 hint = "Title",
@@ -91,7 +91,7 @@ fun CredentialEditorScreen(
 
             Spacer(Modifier.height(spacing.md))
 
-            AuthTextField(
+            LoginTextField(
                 value = state.username,
                 onValueChange = onUsernameChange,
                 hint = "Username",
@@ -101,7 +101,7 @@ fun CredentialEditorScreen(
 
             Spacer(Modifier.height(spacing.md))
 
-            AuthTextField(
+            LoginTextField(
                 value = state.password,
                 onValueChange = onPasswordChange,
                 hint = "Password",
@@ -112,7 +112,7 @@ fun CredentialEditorScreen(
 
             Spacer(Modifier.height(spacing.md))
 
-            AuthTextField(
+            LoginTextField(
                 value = state.memo,
                 onValueChange = onMemoChange,
                 hint = "Memo",
