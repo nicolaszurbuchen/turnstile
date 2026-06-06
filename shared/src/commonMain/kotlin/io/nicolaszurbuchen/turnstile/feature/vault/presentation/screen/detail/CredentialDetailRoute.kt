@@ -6,8 +6,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.nicolaszurbuchen.turnstile.infra.design.component.AppErrorView
-import io.nicolaszurbuchen.turnstile.infra.ui.Loadable
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -23,35 +21,20 @@ fun CredentialDetailRoute(
     val onNavigateBackUpdated by rememberUpdatedState(onNavigateBack)
 
     LaunchedEffect(Unit) {
-        viewModel.events.collect { event ->
-            when (event) {
-                is CredentialDetailEvent.NavigateToEdit -> onNavigateToEditUpdated(event.id)
-                CredentialDetailEvent.NavigateBack -> onNavigateBackUpdated()
+        viewModel.labels.collect { label ->
+            when (label) {
+                is CredentialDetailLabel.NavigateToEdit -> onNavigateToEditUpdated(label.id)
+                CredentialDetailLabel.NavigateBack -> onNavigateBackUpdated()
             }
         }
     }
 
-    when (val loadable = state) {
-        is Loadable.Loading -> {
-            // TODO: Detail skeleton
-        }
-
-        is Loadable.Failure -> {
-            AppErrorView(
-                message = loadable.error.message,
-                onRetry = { /* Re-load? */ },
-                modifier = modifier,
-            )
-        }
-
-        is Loadable.Success -> {
-            CredentialDetailScreen(
-                state = loadable.data,
-                onBackClick = { viewModel.sendIntent(CredentialDetailIntent.BackClicked) },
-                onEditClick = { viewModel.sendIntent(CredentialDetailIntent.EditClicked) },
-                onDeleteClick = { viewModel.sendIntent(CredentialDetailIntent.DeleteClicked) },
-                modifier = modifier,
-            )
-        }
-    }
+    CredentialDetailScreen(
+        state = state,
+        onBackClick = { viewModel.onIntent(CredentialDetailIntent.BackClicked) },
+        onEditClick = { viewModel.onIntent(CredentialDetailIntent.EditClicked) },
+        onDeleteClick = { viewModel.onIntent(CredentialDetailIntent.DeleteClicked) },
+        onRetry = { viewModel.onIntent(CredentialDetailIntent.Retry) },
+        modifier = modifier,
+    )
 }

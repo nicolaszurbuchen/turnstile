@@ -15,28 +15,30 @@ fun CredentialEditorRoute(
     viewModel: CredentialEditorViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
     val onNavigateBackUpdated by rememberUpdatedState(onNavigateBack)
 
     LaunchedEffect(Unit) {
-        viewModel.events.collect { event ->
-            when (event) {
-                CredentialEditorEvent.NavigateBack -> {
-                    onNavigateBackUpdated()
+        viewModel.labels.collect { label ->
+            when (label) {
+                CredentialEditorLabel.NavigateBack -> onNavigateBackUpdated()
+                is CredentialEditorLabel.ShowError -> {
+                    // This could be a toast or snackbar
                 }
-
-                is CredentialEditorEvent.ShowError -> { /* TODO: surface error */ }
             }
         }
     }
 
     CredentialEditorScreen(
         state = state,
-        onTitleChange = { viewModel.sendIntent(CredentialEditorIntent.TitleChanged(it)) },
-        onUsernameChange = { viewModel.sendIntent(CredentialEditorIntent.UsernameChanged(it)) },
-        onPasswordChange = { viewModel.sendIntent(CredentialEditorIntent.PasswordChanged(it)) },
-        onMemoChange = { viewModel.sendIntent(CredentialEditorIntent.MemoChanged(it)) },
-        onSaveClick = { viewModel.sendIntent(CredentialEditorIntent.SaveClicked) },
-        onCancelClick = { viewModel.sendIntent(CredentialEditorIntent.CancelClicked) },
+        onTitleChange = { viewModel.onIntent(CredentialEditorIntent.TitleChanged(it)) },
+        onUsernameChange = { viewModel.onIntent(CredentialEditorIntent.UsernameChanged(it)) },
+        onPasswordChange = { viewModel.onIntent(CredentialEditorIntent.PasswordChanged(it)) },
+        onMemoChange = { viewModel.onIntent(CredentialEditorIntent.MemoChanged(it)) },
+        onSaveClick = { viewModel.onIntent(CredentialEditorIntent.SaveClicked) },
+        onCancelClick = { viewModel.onIntent(CredentialEditorIntent.CancelClicked) },
+        onRetry = { viewModel.onIntent(CredentialEditorIntent.Retry) },
+        onDismissSaveError = { viewModel.onIntent(CredentialEditorIntent.DismissSaveError) },
         modifier = modifier,
     )
 }

@@ -1,73 +1,43 @@
 package io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.editor
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
-import io.nicolaszurbuchen.turnstile.feature.vault.domain.model.Credential
+import com.arkivanov.mvikotlin.core.store.StoreFactory
+import com.arkivanov.mvikotlin.extensions.coroutines.labels
+import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
 import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.GetCredentialUseCase
 import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.SaveCredentialUseCase
 import io.nicolaszurbuchen.turnstile.feature.vault.presentation.navigation.EditorDestination
-import io.nicolaszurbuchen.turnstile.infra.mvi.MviViewModel
-import io.nicolaszurbuchen.turnstile.infra.ui.AppError
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 class CredentialEditorViewModel(
     savedStateHandle: SavedStateHandle,
-    private val getCredential: GetCredentialUseCase,
-    private val saveCredential: SaveCredentialUseCase,
-) : MviViewModel<
-        CredentialEditorState,
-        CredentialEditorTrigger,
-        CredentialEditorIntent,
-        CredentialEditorAction,
-        CredentialEditorCommand,
-        CredentialEditorEvent,
-    >(
-        initialState = CredentialEditorState(),
-        reducer = CredentialEditorReducer,
-    ) {
-    init {
-        val credentialId = savedStateHandle.toRoute<EditorDestination>().id
-        if (credentialId != null) {
-            viewModelScope.launch {
-                executeCommand(
-                    CredentialEditorCommand.LoadCredential(
-                        credentialId,
-                    ),
-                )
-            }
-        }
+    storeFactory: StoreFactory,
+    getCredential: GetCredentialUseCase,
+    saveCredential: SaveCredentialUseCase,
+) : ViewModel() {
+    private val credentialId = savedStateHandle.toRoute<EditorDestination>().id
+    private val store = CredentialEditorStoreFactory(
+        storeFactory = storeFactory,
+        getCredential = getCredential,
+        saveCredential = saveCredential,
+        credentialId = credentialId,
+    ).create()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val state: StateFlow<CredentialEditorState> = store.stateFlow
+
+    val labels: Flow<CredentialEditorLabel> = store.labels
+
+    fun onIntent(intent: CredentialEditorIntent) {
+        store.accept(intent)
     }
 
-    override suspend fun executeCommand(command: CredentialEditorCommand) {
-        when (command) {
-            is CredentialEditorCommand.LoadCredential -> loadCredential(command.id)
-            is CredentialEditorCommand.SaveCredential -> save(command.credential)
-        }
-    }
-
-    private suspend fun loadCredential(id: String) {
-        runCatching { getCredential(id) }
-            .onSuccess { credential ->
-                if (credential != null) {
-                    dispatchAction(CredentialEditorAction.CredentialLoaded(credential))
-                }
-            }
-    }
-
-    private suspend fun save(credential: Credential) {
-        dispatchAction(CredentialEditorAction.Saving)
-        runCatching { saveCredential(credential) }
-            .onSuccess { dispatchAction(CredentialEditorAction.Saved) }
-            .onFailure {
-                dispatchAction(
-                    CredentialEditorAction.SaveFailed(
-                        AppError(
-                            it.message ?: "Unknown error",
-                            it,
-                        ),
-                    ),
-                )
-            }
+    override fun onCleared() {
+        store.dispose()
+        super.onCleared()
     }
 }

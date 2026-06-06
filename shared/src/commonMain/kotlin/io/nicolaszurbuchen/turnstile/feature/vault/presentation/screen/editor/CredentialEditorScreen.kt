@@ -27,8 +27,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import io.nicolaszurbuchen.turnstile.feature.login.presentation.component.LoginTextField
+import io.nicolaszurbuchen.turnstile.infra.design.component.AppBanner
+import io.nicolaszurbuchen.turnstile.infra.design.component.AppErrorView
 import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
 import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
+import io.nicolaszurbuchen.turnstile.infra.ui.InitialLoad
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,6 +43,8 @@ fun CredentialEditorScreen(
     onMemoChange: (String) -> Unit,
     onSaveClick: () -> Unit,
     onCancelClick: () -> Unit,
+    onRetry: () -> Unit,
+    onDismissSaveError: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val turnstileColors = MaterialTheme.turnstileColors
@@ -62,8 +67,10 @@ fun CredentialEditorScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = onSaveClick, enabled = !state.isSaving) {
-                        Icon(Icons.Default.Done, contentDescription = "Save", tint = turnstileColors.accent)
+                    if (state.initialLoad is InitialLoad.Loaded) {
+                        IconButton(onClick = onSaveClick, enabled = !state.isSaving) {
+                            Icon(Icons.Default.Done, contentDescription = "Save", tint = turnstileColors.accent)
+                        }
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = turnstileColors.background),
@@ -72,53 +79,75 @@ fun CredentialEditorScreen(
         containerColor = turnstileColors.background,
         modifier = modifier.fillMaxSize().statusBarsPadding(),
     ) { padding ->
-        Column(
-            modifier =
-                Modifier
-                    .padding(padding)
-                    .fillMaxSize()
-                    .padding(horizontal = spacing.md),
-        ) {
-            Spacer(Modifier.height(spacing.md))
+        when (val initialLoad = state.initialLoad) {
+            is InitialLoad.Loading -> {
+                // TODO: Skeleton
+            }
+            is InitialLoad.Failed -> {
+                AppErrorView(
+                    message = initialLoad.error.message,
+                    onRetry = onRetry,
+                    modifier = Modifier.padding(padding),
+                )
+            }
+            is InitialLoad.Loaded -> {
+                Column(
+                    modifier =
+                        Modifier
+                            .padding(padding)
+                            .fillMaxSize()
+                            .padding(horizontal = spacing.md),
+                ) {
+                    state.saveError?.let { error ->
+                        AppBanner(
+                            message = error.message,
+                            onDismiss = onDismissSaveError,
+                            modifier = Modifier.padding(vertical = spacing.sm),
+                        )
+                    }
 
-            LoginTextField(
-                value = state.title,
-                onValueChange = onTitleChange,
-                hint = "Title",
-                leadingIcon = Icons.Default.Title,
-                modifier = Modifier.fillMaxWidth(),
-            )
+                    Spacer(Modifier.height(spacing.md))
 
-            Spacer(Modifier.height(spacing.md))
+                    LoginTextField(
+                        value = state.title,
+                        onValueChange = onTitleChange,
+                        hint = "Title",
+                        leadingIcon = Icons.Default.Title,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
 
-            LoginTextField(
-                value = state.username,
-                onValueChange = onUsernameChange,
-                hint = "Username",
-                leadingIcon = Icons.Default.Person,
-                modifier = Modifier.fillMaxWidth(),
-            )
+                    Spacer(Modifier.height(spacing.md))
 
-            Spacer(Modifier.height(spacing.md))
+                    LoginTextField(
+                        value = state.username,
+                        onValueChange = onUsernameChange,
+                        hint = "Username",
+                        leadingIcon = Icons.Default.Person,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
 
-            LoginTextField(
-                value = state.password,
-                onValueChange = onPasswordChange,
-                hint = "Password",
-                leadingIcon = Icons.Default.Key,
-                isPassword = true,
-                modifier = Modifier.fillMaxWidth(),
-            )
+                    Spacer(Modifier.height(spacing.md))
 
-            Spacer(Modifier.height(spacing.md))
+                    LoginTextField(
+                        value = state.password,
+                        onValueChange = onPasswordChange,
+                        hint = "Password",
+                        leadingIcon = Icons.Default.Key,
+                        isPassword = true,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
 
-            LoginTextField(
-                value = state.memo.orEmpty(),
-                onValueChange = onMemoChange,
-                hint = "Memo",
-                leadingIcon = Icons.Default.Notes,
-                modifier = Modifier.fillMaxWidth(),
-            )
+                    Spacer(Modifier.height(spacing.md))
+
+                    LoginTextField(
+                        value = state.memo.orEmpty(),
+                        onValueChange = onMemoChange,
+                        hint = "Memo",
+                        leadingIcon = Icons.Default.Notes,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
+            }
         }
     }
 }

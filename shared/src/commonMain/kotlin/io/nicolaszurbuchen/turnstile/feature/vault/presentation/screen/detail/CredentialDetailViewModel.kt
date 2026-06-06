@@ -1,58 +1,43 @@
 package io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.detail
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
+import com.arkivanov.mvikotlin.core.store.StoreFactory
+import com.arkivanov.mvikotlin.extensions.coroutines.labels
+import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
 import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.DeleteCredentialUseCase
 import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.GetCredentialUseCase
 import io.nicolaszurbuchen.turnstile.feature.vault.presentation.navigation.DetailDestination
-import io.nicolaszurbuchen.turnstile.infra.mvi.MviViewModel
-import io.nicolaszurbuchen.turnstile.infra.ui.AppError
-import io.nicolaszurbuchen.turnstile.infra.ui.Loadable
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 class CredentialDetailViewModel(
     savedStateHandle: SavedStateHandle,
-    private val getCredential: GetCredentialUseCase,
-    private val deleteCredential: DeleteCredentialUseCase,
-) : MviViewModel<
-        Loadable<CredentialDetailState>,
-        CredentialDetailTrigger,
-        CredentialDetailIntent,
-        CredentialDetailAction,
-        CredentialDetailCommand,
-        CredentialDetailEvent,
-    >(
-        initialState = Loadable.Loading,
-        reducer = CredentialDetailReducer,
-    ) {
-    init {
-        val credentialId = savedStateHandle.toRoute<DetailDestination>().id
-        viewModelScope.launch { executeCommand(CredentialDetailCommand.LoadCredential(credentialId)) }
+    storeFactory: StoreFactory,
+    getCredential: GetCredentialUseCase,
+    deleteCredential: DeleteCredentialUseCase,
+) : ViewModel() {
+    private val credentialId = savedStateHandle.toRoute<DetailDestination>().id
+    private val store = CredentialDetailStoreFactory(
+        storeFactory = storeFactory,
+        getCredential = getCredential,
+        deleteCredential = deleteCredential,
+        credentialId = credentialId,
+    ).create()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val state: StateFlow<CredentialDetailState> = store.stateFlow
+
+    val labels: Flow<CredentialDetailLabel> = store.labels
+
+    fun onIntent(intent: CredentialDetailIntent) {
+        store.accept(intent)
     }
 
-    override suspend fun executeCommand(command: CredentialDetailCommand) {
-        when (command) {
-            is CredentialDetailCommand.LoadCredential -> loadCredential(command.id)
-            is CredentialDetailCommand.DeleteCredential -> delete(command.id)
-        }
-    }
-
-    private suspend fun loadCredential(id: String) {
-        runCatching { getCredential(id) }
-            .onSuccess { credential ->
-                if (credential != null) {
-                    dispatchAction(CredentialDetailAction.CredentialLoaded(credential))
-                } else {
-                    dispatchAction(CredentialDetailAction.LoadFailed(AppError("Credential not found")))
-                }
-            }
-            .onFailure { dispatchAction(CredentialDetailAction.LoadFailed(AppError(it.message ?: "Unknown error", it))) }
-    }
-
-    private suspend fun delete(id: String) {
-        runCatching { deleteCredential(id) }
-            .onSuccess { dispatchAction(CredentialDetailAction.Deleted) }
-            .onFailure { dispatchAction(CredentialDetailAction.DeleteFailed(AppError(it.message ?: "Unknown error", it))) }
+    override fun onCleared() {
+        store.dispose()
+        super.onCleared()
     }
 }

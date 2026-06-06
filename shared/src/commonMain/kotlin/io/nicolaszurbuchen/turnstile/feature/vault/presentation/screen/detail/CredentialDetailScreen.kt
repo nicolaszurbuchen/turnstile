@@ -28,8 +28,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.nicolaszurbuchen.turnstile.infra.design.component.AppErrorView
 import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
 import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
+import io.nicolaszurbuchen.turnstile.infra.ui.InitialLoad
 
 @Composable
 fun CredentialDetailScreen(
@@ -37,11 +39,11 @@ fun CredentialDetailScreen(
     onBackClick: () -> Unit,
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit,
+    onRetry: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val turnstileColors = MaterialTheme.turnstileColors
     val spacing = MaterialTheme.spacing
-    val credential = state.credential
 
     Scaffold(
         topBar = {
@@ -57,62 +59,78 @@ fun CredentialDetailScreen(
                     Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = turnstileColors.textPrimary)
                 }
                 Spacer(Modifier.weight(1f))
-                IconButton(onClick = onEditClick) {
-                    Icon(Icons.Default.Edit, contentDescription = "Edit", tint = turnstileColors.textPrimary)
-                }
-                IconButton(onClick = onDeleteClick) {
-                    Icon(Icons.Default.Delete, contentDescription = "Delete", tint = turnstileColors.danger)
+                if (state.initialLoad is InitialLoad.Loaded) {
+                    IconButton(onClick = onEditClick) {
+                        Icon(Icons.Default.Edit, contentDescription = "Edit", tint = turnstileColors.textPrimary)
+                    }
+                    IconButton(onClick = onDeleteClick) {
+                        Icon(Icons.Default.Delete, contentDescription = "Delete", tint = turnstileColors.danger)
+                    }
                 }
             }
         },
         containerColor = turnstileColors.background,
         modifier = modifier.fillMaxSize(),
     ) { padding ->
-        if (credential != null) {
-            Column(
-                modifier =
-                    Modifier
-                        .padding(padding)
-                        .fillMaxSize()
-                        .padding(horizontal = spacing.md),
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Card(
-                        shape = CircleShape,
-                        colors = CardDefaults.cardColors(containerColor = turnstileColors.surfaceRaised),
-                        modifier = Modifier.size(64.dp),
+        when (val initialLoad = state.initialLoad) {
+            is InitialLoad.Loading -> {
+                // TODO: Skeleton
+            }
+            is InitialLoad.Failed -> {
+                AppErrorView(
+                    message = initialLoad.error.message,
+                    onRetry = onRetry,
+                    modifier = Modifier.padding(padding),
+                )
+            }
+            is InitialLoad.Loaded -> {
+                state.credential?.let { credential ->
+                    Column(
+                        modifier =
+                            Modifier
+                                .padding(padding)
+                                .fillMaxSize()
+                                .padding(horizontal = spacing.md),
                     ) {
-                        Column(
-                            modifier = Modifier.fillMaxSize(),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = androidx.compose.foundation.layout.Arrangement.Center,
-                        ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Card(
+                                shape = CircleShape,
+                                colors = CardDefaults.cardColors(containerColor = turnstileColors.surfaceRaised),
+                                modifier = Modifier.size(64.dp),
+                            ) {
+                                Column(
+                                    modifier = Modifier.fillMaxSize(),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = androidx.compose.foundation.layout.Arrangement.Center,
+                                ) {
+                                    Text(
+                                        text = credential.title.firstOrNull()?.uppercase() ?: "?",
+                                        fontSize = 24.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = turnstileColors.textSecondary,
+                                    )
+                                }
+                            }
+                            Spacer(Modifier.width(spacing.md))
                             Text(
-                                text = credential.title.firstOrNull()?.uppercase() ?: "?",
-                                fontSize = 24.sp,
+                                text = credential.title,
+                                fontSize = 22.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = turnstileColors.textSecondary,
+                                color = turnstileColors.textPrimary,
                             )
                         }
+
+                        Spacer(Modifier.height(spacing.xl))
+
+                        DetailField(label = "Username", value = credential.username)
+                        Spacer(Modifier.height(spacing.lg))
+                        DetailField(label = "Password", value = credential.password, isPassword = true)
+
+                        if (!credential.memo.isNullOrBlank()) {
+                            Spacer(Modifier.height(spacing.lg))
+                            DetailField(label = "Memo", value = credential.memo)
+                        }
                     }
-                    Spacer(Modifier.width(spacing.md))
-                    Text(
-                        text = credential.title,
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = turnstileColors.textPrimary,
-                    )
-                }
-
-                Spacer(Modifier.height(spacing.xl))
-
-                DetailField(label = "Username", value = credential.username)
-                Spacer(Modifier.height(spacing.lg))
-                DetailField(label = "Password", value = credential.password, isPassword = true)
-
-                if (!credential.memo.isNullOrBlank()) {
-                    Spacer(Modifier.height(spacing.lg))
-                    DetailField(label = "Memo", value = credential.memo)
                 }
             }
         }

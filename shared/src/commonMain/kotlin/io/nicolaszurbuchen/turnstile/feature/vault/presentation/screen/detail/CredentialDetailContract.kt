@@ -1,62 +1,51 @@
 package io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.detail
 
 import io.nicolaszurbuchen.turnstile.feature.vault.domain.model.Credential
-import io.nicolaszurbuchen.turnstile.infra.mvi.Action
-import io.nicolaszurbuchen.turnstile.infra.mvi.Command
-import io.nicolaszurbuchen.turnstile.infra.mvi.Event
-import io.nicolaszurbuchen.turnstile.infra.mvi.Intent
-import io.nicolaszurbuchen.turnstile.infra.mvi.State
-import io.nicolaszurbuchen.turnstile.infra.mvi.Trigger
 import io.nicolaszurbuchen.turnstile.infra.ui.AppError
+import io.nicolaszurbuchen.turnstile.infra.ui.InitialLoad
+
+sealed interface CredentialDetailIntent {
+    data object EditClicked : CredentialDetailIntent
+    data object DeleteClicked : CredentialDetailIntent
+    data object BackClicked : CredentialDetailIntent
+    data object Retry : CredentialDetailIntent
+}
+
+sealed interface CredentialDetailLabel {
+    data class NavigateToEdit(val id: String) : CredentialDetailLabel
+    data object NavigateBack : CredentialDetailLabel
+}
+
+sealed interface CredentialDetailAction {
+    data class LoadCredential(val id: String) : CredentialDetailAction
+}
+
+sealed interface CredentialDetailMessage {
+    data class CredentialLoaded(val credential: Credential) : CredentialDetailMessage
+    data class LoadFailed(val error: AppError) : CredentialDetailMessage
+    data object Deleted : CredentialDetailMessage
+    data class DeleteFailed(val error: AppError) : CredentialDetailMessage
+    data object Loading : CredentialDetailMessage
+}
 
 data class CredentialDetailState(
-    val credential: Credential? = null,
-) : State
+    val credential: CredentialUi? = null,
+    val initialLoad: InitialLoad = InitialLoad.Loading,
+    val deleteError: AppError? = null,
+)
 
-sealed interface CredentialDetailTrigger : Trigger
+data class CredentialUi(
+    val id: String,
+    val title: String,
+    val username: String,
+    val password: String,
+    val memo: String?,
+)
 
-sealed interface CredentialDetailIntent :
-    CredentialDetailTrigger,
-    Intent {
-    data object EditClicked : CredentialDetailIntent
-
-    data object DeleteClicked : CredentialDetailIntent
-
-    data object BackClicked : CredentialDetailIntent
-}
-
-sealed interface CredentialDetailAction :
-    CredentialDetailTrigger,
-    Action {
-    data class CredentialLoaded(
-        val credential: Credential,
-    ) : CredentialDetailAction
-
-    data class LoadFailed(
-        val error: AppError,
-    ) : CredentialDetailAction
-
-    data object Deleted : CredentialDetailAction
-
-    data class DeleteFailed(
-        val error: AppError,
-    ) : CredentialDetailAction
-}
-
-sealed interface CredentialDetailCommand : Command {
-    data class LoadCredential(
-        val id: String,
-    ) : CredentialDetailCommand
-
-    data class DeleteCredential(
-        val id: String,
-    ) : CredentialDetailCommand
-}
-
-sealed interface CredentialDetailEvent : Event {
-    data class NavigateToEdit(
-        val id: String,
-    ) : CredentialDetailEvent
-
-    data object NavigateBack : CredentialDetailEvent
-}
+fun Credential.toUiModel() = CredentialUi(
+    id = id,
+    title = title,
+    username = username,
+    password = password,
+    memo = memo,
+)
