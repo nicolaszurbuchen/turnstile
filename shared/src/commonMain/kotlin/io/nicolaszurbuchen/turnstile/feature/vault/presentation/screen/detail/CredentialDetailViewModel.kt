@@ -16,7 +16,7 @@ class CredentialDetailViewModel(
     private val getCredential: GetCredentialUseCase,
     private val deleteCredential: DeleteCredentialUseCase,
 ) : MviViewModel<
-        Loadable<CredentialDetailStateImpl>,
+        Loadable<CredentialDetailState>,
         CredentialDetailTrigger,
         CredentialDetailIntent,
         CredentialDetailAction,

@@ -6,15 +6,15 @@ import io.nicolaszurbuchen.turnstile.infra.mvi.Reducer
 
 object CredentialEditorReducer :
     Reducer<
-        CredentialEditorStateImpl,
+        CredentialEditorState,
         CredentialEditorTrigger,
         CredentialEditorCommand,
         CredentialEditorEvent,
     > {
     override fun reduce(
-        state: CredentialEditorStateImpl,
+        state: CredentialEditorState,
         trigger: CredentialEditorTrigger,
-    ): Next<CredentialEditorStateImpl, CredentialEditorCommand, CredentialEditorEvent> =
+    ): Next<CredentialEditorState, CredentialEditorCommand, CredentialEditorEvent> =
         when (trigger) {
             is CredentialEditorAction.CredentialLoaded -> {
                 Next(

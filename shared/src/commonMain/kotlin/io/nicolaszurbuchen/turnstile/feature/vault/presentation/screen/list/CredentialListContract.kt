@@ -11,9 +11,10 @@ import io.nicolaszurbuchen.turnstile.infra.ui.AppError
 
 // ─── Contract ─────────────────────────────────────────────────────────────────
 
-sealed interface CredentialListState : State {
-    val entries: List<CredentialUiModel>
-    val isEmpty: Boolean
+data class CredentialListState(
+    val entries: List<CredentialUiModel> = emptyList(),
+) : State {
+    val isEmpty: Boolean get() = entries.isEmpty()
 }
 
 sealed interface CredentialListTrigger : Trigger

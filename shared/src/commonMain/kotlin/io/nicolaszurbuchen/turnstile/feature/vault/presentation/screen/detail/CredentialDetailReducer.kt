@@ -7,18 +7,18 @@ import io.nicolaszurbuchen.turnstile.infra.ui.onSuccess
 
 object CredentialDetailReducer :
     Reducer<
-        Loadable<CredentialDetailStateImpl>,
+        Loadable<CredentialDetailState>,
         CredentialDetailTrigger,
         CredentialDetailCommand,
         CredentialDetailEvent,
     > {
     override fun reduce(
-        state: Loadable<CredentialDetailStateImpl>,
+        state: Loadable<CredentialDetailState>,
         trigger: CredentialDetailTrigger,
-    ): Next<Loadable<CredentialDetailStateImpl>, CredentialDetailCommand, CredentialDetailEvent> =
+    ): Next<Loadable<CredentialDetailState>, CredentialDetailCommand, CredentialDetailEvent> =
         when (trigger) {
             is CredentialDetailAction.CredentialLoaded -> {
-                Next(state = Loadable.Success(CredentialDetailStateImpl(trigger.credential)))
+                Next(state = Loadable.Success(CredentialDetailState(trigger.credential)))
             }
 
             is CredentialDetailAction.LoadFailed -> {

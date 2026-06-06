@@ -8,8 +8,8 @@ import kotlinx.coroutines.launch
 
 class SignUpViewModel(
     private val signUpWithEmailUseCase: SignUpWithEmailUseCase,
-) : MviViewModel<SignUpStateImpl, SignUpTrigger, SignUpIntent, SignUpAction, SignUpCommand, SignUpEvent>(
-        initialState = SignUpStateImpl(),
+) : MviViewModel<SignUpState, SignUpTrigger, SignUpIntent, SignUpAction, SignUpCommand, SignUpEvent>(
+        initialState = SignUpState(),
         reducer = SignUpReducer,
     ) {
     private var registerJob: Job? = null

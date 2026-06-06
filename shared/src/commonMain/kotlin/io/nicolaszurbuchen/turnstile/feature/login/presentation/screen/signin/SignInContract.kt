@@ -8,15 +8,22 @@ import io.nicolaszurbuchen.turnstile.infra.mvi.State
 import io.nicolaszurbuchen.turnstile.infra.mvi.Trigger
 import org.jetbrains.compose.resources.StringResource
 
-sealed interface SignInState : State {
-    val email: String
-    val password: String
-    val emailError: StringResource?
-    val passwordError: StringResource?
-    val rememberMe: Boolean
-    val loading: Boolean
-    val submitError: String?
+data class SignInState(
+    val email: String = "",
+    val password: String = "",
+    val emailError: StringResource? = null,
+    val passwordError: StringResource? = null,
+    val rememberMe: Boolean = false,
+    val loading: Boolean = false,
+    val submitError: String? = null,
+) : State {
     val canSubmit: Boolean
+        get() =
+            email.isNotBlank() &&
+                password.isNotBlank() &&
+                emailError == null &&
+                passwordError == null &&
+                !loading
 }
 
 sealed interface SignInTrigger : Trigger

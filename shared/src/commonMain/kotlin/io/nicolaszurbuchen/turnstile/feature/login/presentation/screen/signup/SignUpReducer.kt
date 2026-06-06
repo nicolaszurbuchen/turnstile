@@ -8,20 +8,20 @@ import turnstile.shared.generated.resources.auth_error_email_invalid
 import turnstile.shared.generated.resources.auth_error_password_too_short
 import turnstile.shared.generated.resources.auth_error_username_too_short
 
-object SignUpReducer : Reducer<SignUpStateImpl, SignUpTrigger, SignUpCommand, SignUpEvent> {
+object SignUpReducer : Reducer<SignUpState, SignUpTrigger, SignUpCommand, SignUpEvent> {
     override fun reduce(
-        state: SignUpStateImpl,
+        state: SignUpState,
         trigger: SignUpTrigger,
-    ): Next<SignUpStateImpl, SignUpCommand, SignUpEvent> =
+    ): Next<SignUpState, SignUpCommand, SignUpEvent> =
         when (trigger) {
             is SignUpIntent -> reduceIntent(state, trigger)
             is SignUpAction -> reduceAction(state, trigger)
         }
 
     private fun reduceIntent(
-        state: SignUpStateImpl,
+        state: SignUpState,
         intent: SignUpIntent,
-    ): Next<SignUpStateImpl, SignUpCommand, SignUpEvent> =
+    ): Next<SignUpState, SignUpCommand, SignUpEvent> =
         when (intent) {
             is SignUpIntent.UsernameChanged -> {
                 Next(
@@ -79,9 +79,9 @@ object SignUpReducer : Reducer<SignUpStateImpl, SignUpTrigger, SignUpCommand, Si
         }
 
     private fun reduceAction(
-        state: SignUpStateImpl,
+        state: SignUpState,
         action: SignUpAction,
-    ): Next<SignUpStateImpl, SignUpCommand, SignUpEvent> =
+    ): Next<SignUpState, SignUpCommand, SignUpEvent> =
         when (action) {
             is SignUpAction.RegisterSucceeded -> {
                 Next(

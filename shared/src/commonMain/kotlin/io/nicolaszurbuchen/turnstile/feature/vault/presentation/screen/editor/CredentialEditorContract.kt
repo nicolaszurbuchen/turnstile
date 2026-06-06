@@ -9,14 +9,14 @@ import io.nicolaszurbuchen.turnstile.infra.mvi.State
 import io.nicolaszurbuchen.turnstile.infra.mvi.Trigger
 import io.nicolaszurbuchen.turnstile.infra.ui.AppError
 
-sealed interface CredentialEditorState : State {
-    val id: String
-    val title: String
-    val username: String
-    val password: String
-    val memo: String?
-    val isSaving: Boolean
-}
+data class CredentialEditorState(
+    val id: String = "",
+    val title: String = "",
+    val username: String = "",
+    val password: String = "",
+    val memo: String? = "",
+    val isSaving: Boolean = false,
+) : State
 
 sealed interface CredentialEditorTrigger : Trigger
 

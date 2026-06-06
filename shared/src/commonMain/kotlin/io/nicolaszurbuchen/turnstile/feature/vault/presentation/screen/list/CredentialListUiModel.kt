@@ -10,4 +10,4 @@ data class CredentialUiModel(
 
 fun Credential.toUiModel() = CredentialUiModel(id = id, title = title, username = username)
 
-fun List<Credential>.toCredentialListState() = CredentialListStateImpl(entries = map { it.toUiModel() })
+fun List<Credential>.toCredentialListState() = CredentialListState(entries = map { it.toUiModel() })

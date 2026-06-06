@@ -6,15 +6,15 @@ import io.nicolaszurbuchen.turnstile.infra.ui.Loadable
 
 object CredentialListReducer :
     Reducer<
-        Loadable<CredentialListStateImpl>,
+        Loadable<CredentialListState>,
         CredentialListTrigger,
         CredentialListCommand,
         CredentialListEvent,
     > {
     override fun reduce(
-        state: Loadable<CredentialListStateImpl>,
+        state: Loadable<CredentialListState>,
         trigger: CredentialListTrigger,
-    ): Next<Loadable<CredentialListStateImpl>, CredentialListCommand, CredentialListEvent> =
+    ): Next<Loadable<CredentialListState>, CredentialListCommand, CredentialListEvent> =
         when (trigger) {
             is CredentialListAction.EntriesLoaded -> {
                 Next(state = Loadable.Success(trigger.entries.toCredentialListState()))

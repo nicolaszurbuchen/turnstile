@@ -15,7 +15,7 @@ class CredentialListViewModel(
     private val getCredentials: GetCredentialsUseCase,
     private val signOut: SignOutUseCase,
 ) : MviViewModel<
-        Loadable<CredentialListStateImpl>,
+        Loadable<CredentialListState>,
         CredentialListTrigger,
         CredentialListIntent,
         CredentialListAction,

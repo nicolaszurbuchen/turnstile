@@ -40,7 +40,7 @@ import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
 
 @Composable
 fun CredentialListScreen(
-    state: CredentialListStateImpl,
+    state: CredentialListState,
     onEntryClick: (String) -> Unit,
     onCreateClick: () -> Unit,
     onSignOutClick: () -> Unit,

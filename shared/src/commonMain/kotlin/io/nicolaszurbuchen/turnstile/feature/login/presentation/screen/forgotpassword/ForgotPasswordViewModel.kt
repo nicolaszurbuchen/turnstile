@@ -8,14 +8,14 @@ import kotlinx.coroutines.launch
 class ForgotPasswordViewModel(
     private val sendPasswordResetEmailUseCase: SendPasswordResetEmailUseCase,
 ) : MviViewModel<
-        ForgotPasswordStateImpl,
+        ForgotPasswordState,
         ForgotPasswordTrigger,
         ForgotPasswordIntent,
         ForgotPasswordAction,
         ForgotPasswordCommand,
         ForgotPasswordEvent,
     >(
-        initialState = ForgotPasswordStateImpl(),
+        initialState = ForgotPasswordState(),
         reducer = ForgotPasswordReducer,
     ) {
     override suspend fun executeCommand(command: ForgotPasswordCommand) {

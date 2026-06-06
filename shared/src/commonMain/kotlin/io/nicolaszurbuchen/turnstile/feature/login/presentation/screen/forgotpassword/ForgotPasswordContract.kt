@@ -8,13 +8,19 @@ import io.nicolaszurbuchen.turnstile.infra.mvi.State
 import io.nicolaszurbuchen.turnstile.infra.mvi.Trigger
 import org.jetbrains.compose.resources.StringResource
 
-sealed interface ForgotPasswordState : State {
-    val email: String
-    val emailError: StringResource?
-    val loading: Boolean
-    val submitted: Boolean
-    val submitError: String?
+data class ForgotPasswordState(
+    val email: String = "",
+    val emailError: StringResource? = null,
+    val loading: Boolean = false,
+    val submitted: Boolean = false,
+    val submitError: String? = null,
+) : State {
     val canSubmit: Boolean
+        get() =
+            email.isNotBlank() &&
+                emailError == null &&
+                !loading &&
+                !submitted
 }
 
 sealed interface ForgotPasswordTrigger : Trigger
