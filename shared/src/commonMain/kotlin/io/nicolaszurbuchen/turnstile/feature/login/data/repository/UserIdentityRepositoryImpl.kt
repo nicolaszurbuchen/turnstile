@@ -35,8 +35,4 @@ class UserIdentityRepositoryImpl(
     override suspend fun sendPasswordResetEmail(email: String) {
         authRemoteDataSource.sendPasswordResetEmail(email)
     }
-
-    override suspend fun signOut() {
-        authRemoteDataSource.signOut()
-    }
 }

@@ -13,6 +13,4 @@ interface UserIdentityRepository {
     )
 
     suspend fun sendPasswordResetEmail(email: String)
-
-    suspend fun signOut()
 }
