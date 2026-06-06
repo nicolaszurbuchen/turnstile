@@ -1,7 +1,5 @@
 package io.nicolaszurbuchen.turnstile.feature.vault.di
 
-import com.arkivanov.mvikotlin.core.store.StoreFactory
-import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import io.nicolaszurbuchen.turnstile.feature.vault.data.datasource.remote.CredentialRemoteDataSource
 import io.nicolaszurbuchen.turnstile.feature.vault.data.datasource.remote.CredentialRemoteDataSourceImpl
 import io.nicolaszurbuchen.turnstile.feature.vault.data.datasource.remote.mapper.CredentialMapper
@@ -18,6 +16,7 @@ import io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.editor.Cr
 import io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.editor.CredentialEditorViewModel
 import io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.list.CredentialListStoreFactory
 import io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.list.CredentialListViewModel
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
@@ -25,31 +24,22 @@ import org.koin.dsl.module
 
 val vaultModule =
     module {
-        // Infrastructure
-        single<StoreFactory> { DefaultStoreFactory() }
-
-        // Data Sources
         singleOf(::CredentialRemoteDataSourceImpl) bind CredentialRemoteDataSource::class
 
-        // Mappers
-        singleOf(::CredentialMapper)
+        factoryOf(::CredentialMapper)
 
-        // Repositories
         singleOf(::CredentialRepositoryImpl) bind CredentialRepository::class
 
-        // Use Cases
-        singleOf(::DeleteCredentialUseCase)
-        singleOf(::GetCredentialsUseCase)
-        singleOf(::GetCredentialUseCase)
-        singleOf(::SaveCredentialUseCase)
-        singleOf(::SignOutUseCase)
+        factoryOf(::DeleteCredentialUseCase)
+        factoryOf(::GetCredentialsUseCase)
+        factoryOf(::GetCredentialUseCase)
+        factoryOf(::SaveCredentialUseCase)
+        factoryOf(::SignOutUseCase)
 
-        // Factories
-        singleOf(::CredentialListStoreFactory)
-        singleOf(::CredentialDetailStoreFactory)
-        singleOf(::CredentialEditorStoreFactory)
+        factoryOf(::CredentialListStoreFactory)
+        factoryOf(::CredentialDetailStoreFactory)
+        factoryOf(::CredentialEditorStoreFactory)
 
-        // View Models
         viewModelOf(::CredentialListViewModel)
         viewModelOf(::CredentialDetailViewModel)
         viewModelOf(::CredentialEditorViewModel)

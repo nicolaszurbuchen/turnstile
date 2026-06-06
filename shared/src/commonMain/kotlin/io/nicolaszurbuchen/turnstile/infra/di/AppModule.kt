@@ -16,5 +16,6 @@ val appModule =
         vaultModule,
         sessionModule,
         splashModule,
+        storeModule,
         userModule,
     )

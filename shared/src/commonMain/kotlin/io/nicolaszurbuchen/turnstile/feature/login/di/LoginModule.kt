@@ -11,6 +11,7 @@ import io.nicolaszurbuchen.turnstile.feature.login.presentation.screen.signin.Si
 import io.nicolaszurbuchen.turnstile.feature.login.presentation.screen.signin.SignInViewModel
 import io.nicolaszurbuchen.turnstile.feature.login.presentation.screen.signup.SignUpStoreFactory
 import io.nicolaszurbuchen.turnstile.feature.login.presentation.screen.signup.SignUpViewModel
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
@@ -20,16 +21,14 @@ val loginModule =
     module {
         singleOf(::UserIdentityRepositoryImpl) bind UserIdentityRepository::class
 
-        singleOf(::SignInWithEmailUseCase)
-        singleOf(::SignUpWithEmailUseCase)
-        singleOf(::SendPasswordResetEmailUseCase)
+        factoryOf(::SignInWithEmailUseCase)
+        factoryOf(::SignUpWithEmailUseCase)
+        factoryOf(::SendPasswordResetEmailUseCase)
 
-        // Factories
-        singleOf(::SignInStoreFactory)
-        singleOf(::SignUpStoreFactory)
-        singleOf(::ForgotPasswordStoreFactory)
+        factoryOf(::SignInStoreFactory)
+        factoryOf(::SignUpStoreFactory)
+        factoryOf(::ForgotPasswordStoreFactory)
 
-        // View Models
         viewModelOf(::SignInViewModel)
         viewModelOf(::SignUpViewModel)
         viewModelOf(::ForgotPasswordViewModel)
