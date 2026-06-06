@@ -8,7 +8,6 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.GetCredentialUseCase
 import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.SaveCredentialUseCase
 import io.nicolaszurbuchen.turnstile.infra.ui.AppError
-import io.nicolaszurbuchen.turnstile.infra.ui.InitialLoad
 import kotlinx.coroutines.launch
 
 interface CredentialEditorStore : Store<CredentialEditorIntent, CredentialEditorState, CredentialEditorLabel>
@@ -17,9 +16,8 @@ class CredentialEditorStoreFactory(
     private val storeFactory: StoreFactory,
     private val getCredential: GetCredentialUseCase,
     private val saveCredential: SaveCredentialUseCase,
-    private val credentialId: String?,
 ) {
-    fun create(): CredentialEditorStore =
+    fun create(credentialId: String?): CredentialEditorStore =
         object : CredentialEditorStore, Store<CredentialEditorIntent, CredentialEditorState, CredentialEditorLabel> by storeFactory.create(
             name = "CredentialEditorStore",
             initialState = if (credentialId != null) {
@@ -28,7 +26,7 @@ class CredentialEditorStoreFactory(
                 CredentialEditorState()
             },
             bootstrapper = BootstrapperImpl(),
-            executorFactory = ::ExecutorImpl,
+            executorFactory = { ExecutorImpl(credentialId) },
             reducer = ReducerImpl,
         ) {}
 
@@ -38,7 +36,7 @@ class CredentialEditorStoreFactory(
         }
     }
 
-    private inner class ExecutorImpl : CoroutineExecutor<CredentialEditorIntent, CredentialEditorAction, CredentialEditorState, CredentialEditorMessage, CredentialEditorLabel>() {
+    private inner class ExecutorImpl(private val credentialId: String?) : CoroutineExecutor<CredentialEditorIntent, CredentialEditorAction, CredentialEditorState, CredentialEditorMessage, CredentialEditorLabel>() {
         override fun executeAction(action: CredentialEditorAction) {
             when (action) {
                 is CredentialEditorAction.LoadCredential -> loadCredential()

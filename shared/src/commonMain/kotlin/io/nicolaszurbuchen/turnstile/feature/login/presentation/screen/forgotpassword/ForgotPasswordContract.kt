@@ -1,12 +1,27 @@
 package io.nicolaszurbuchen.turnstile.feature.login.presentation.screen.forgotpassword
 
-import io.nicolaszurbuchen.turnstile.infra.mvi.Action
-import io.nicolaszurbuchen.turnstile.infra.mvi.Command
-import io.nicolaszurbuchen.turnstile.infra.mvi.Event
-import io.nicolaszurbuchen.turnstile.infra.mvi.Intent
-import io.nicolaszurbuchen.turnstile.infra.mvi.State
-import io.nicolaszurbuchen.turnstile.infra.mvi.Trigger
 import org.jetbrains.compose.resources.StringResource
+import turnstile.shared.generated.resources.Res
+import turnstile.shared.generated.resources.auth_error_email_invalid
+
+sealed interface ForgotPasswordIntent {
+    data class EmailChanged(val value: String) : ForgotPasswordIntent
+    data object Submit : ForgotPasswordIntent
+    data object BackClicked : ForgotPasswordIntent
+}
+
+sealed interface ForgotPasswordLabel {
+    data object NavigateBack : ForgotPasswordLabel
+}
+
+sealed interface ForgotPasswordAction
+
+sealed interface ForgotPasswordMessage {
+    data class EmailChanged(val value: String, val error: StringResource?) : ForgotPasswordMessage
+    data object StartedLoading : ForgotPasswordMessage
+    data object ResetEmailSent : ForgotPasswordMessage
+    data class ResetFailed(val message: String) : ForgotPasswordMessage
+}
 
 data class ForgotPasswordState(
     val email: String = "",
@@ -14,7 +29,7 @@ data class ForgotPasswordState(
     val loading: Boolean = false,
     val submitted: Boolean = false,
     val submitError: String? = null,
-) : State {
+) {
     val canSubmit: Boolean
         get() =
             email.isNotBlank() &&
@@ -23,32 +38,9 @@ data class ForgotPasswordState(
                 !submitted
 }
 
-sealed interface ForgotPasswordTrigger : Trigger
-
-sealed interface ForgotPasswordIntent :
-    ForgotPasswordTrigger,
-    Intent {
-    data class EmailChanged(
-        val value: String,
-    ) : ForgotPasswordIntent
-
-    data object Submit : ForgotPasswordIntent
-}
-
-sealed interface ForgotPasswordAction :
-    ForgotPasswordTrigger,
-    Action {
-    data object ResetEmailSent : ForgotPasswordAction
-
-    data class ResetFailedWith(
-        val message: String,
-    ) : ForgotPasswordAction
-}
-
-sealed interface ForgotPasswordCommand : Command {
-    data class CallRequestReset(
-        val email: String,
-    ) : ForgotPasswordCommand
-}
-
-sealed interface ForgotPasswordEvent : Event
+fun validateEmail(email: String): StringResource? =
+    when {
+        email.isEmpty() -> null
+        !email.contains("@") -> Res.string.auth_error_email_invalid
+        else -> null
+    }

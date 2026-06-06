@@ -1,38 +1,28 @@
 package io.nicolaszurbuchen.turnstile.feature.login.presentation.screen.signup
 
-import androidx.lifecycle.viewModelScope
-import io.nicolaszurbuchen.turnstile.feature.login.domain.usecase.SignUpWithEmailUseCase
-import io.nicolaszurbuchen.turnstile.infra.mvi.MviViewModel
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import androidx.lifecycle.ViewModel
+import com.arkivanov.mvikotlin.extensions.coroutines.labels
+import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 class SignUpViewModel(
-    private val signUpWithEmailUseCase: SignUpWithEmailUseCase,
-) : MviViewModel<SignUpState, SignUpTrigger, SignUpIntent, SignUpAction, SignUpCommand, SignUpEvent>(
-        initialState = SignUpState(),
-        reducer = SignUpReducer,
-    ) {
-    private var registerJob: Job? = null
+    factory: SignUpStoreFactory,
+) : ViewModel() {
+    private val store = factory.create()
 
-    override suspend fun executeCommand(command: SignUpCommand) {
-        when (command) {
-            is SignUpCommand.CallRegister -> {
-                registerJob?.cancel()
-                registerJob =
-                    viewModelScope.launch {
-                        runCatching {
-                            signUpWithEmailUseCase(
-                                username = command.username,
-                                email = command.email,
-                                password = command.password,
-                            )
-                        }.onSuccess { user ->
-                            dispatchAction(SignUpAction.RegisterSucceeded)
-                        }.onFailure { e ->
-                            dispatchAction(SignUpAction.RegisterFailedWith(e.message ?: "Unknown error"))
-                        }
-                    }
-            }
-        }
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val state: StateFlow<SignUpState> = store.stateFlow
+
+    val labels: Flow<SignUpLabel> = store.labels
+
+    fun onIntent(intent: SignUpIntent) {
+        store.accept(intent)
+    }
+
+    override fun onCleared() {
+        store.dispose()
+        super.onCleared()
     }
 }

@@ -13,7 +13,7 @@ import io.nicolaszurbuchen.turnstile.feature.login.presentation.screen.forgotpas
 @Composable
 fun ForgotPasswordScreen(
     state: ForgotPasswordState,
-    onEmailChange: (String) -> Unit,
+    onEmailChanged: (String) -> Unit,
     onSubmit: () -> Unit,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
@@ -37,7 +37,7 @@ fun ForgotPasswordScreen(
             } else {
                 FormContent(
                     state = state,
-                    onEmailChange = onEmailChange,
+                    onEmailChange = onEmailChanged,
                     onSubmit = onSubmit,
                 )
             }

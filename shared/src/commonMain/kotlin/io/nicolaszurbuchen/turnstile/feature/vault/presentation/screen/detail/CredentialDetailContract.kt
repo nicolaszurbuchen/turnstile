@@ -2,7 +2,6 @@ package io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.detail
 
 import io.nicolaszurbuchen.turnstile.feature.vault.domain.model.Credential
 import io.nicolaszurbuchen.turnstile.infra.ui.AppError
-import io.nicolaszurbuchen.turnstile.infra.ui.InitialLoad
 
 sealed interface CredentialDetailIntent {
     data object EditClicked : CredentialDetailIntent
@@ -33,6 +32,12 @@ data class CredentialDetailState(
     val initialLoad: InitialLoad = InitialLoad.Loading,
     val deleteError: AppError? = null,
 )
+
+sealed interface InitialLoad {
+    data object Loading : InitialLoad
+    data object Loaded : InitialLoad
+    data class Failed(val error: AppError) : InitialLoad
+}
 
 data class CredentialUi(
     val id: String,

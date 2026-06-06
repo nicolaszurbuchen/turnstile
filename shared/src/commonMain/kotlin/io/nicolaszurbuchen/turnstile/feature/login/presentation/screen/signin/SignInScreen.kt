@@ -51,12 +51,12 @@ import turnstile.shared.generated.resources.common_password
 @Composable
 fun SignInScreen(
     state: SignInState,
-    onEmailChang: (String) -> Unit,
-    onPasswordChange: (String) -> Unit,
-    onRememberMeToggle: () -> Unit,
+    onEmailChanged: (String) -> Unit,
+    onPasswordChanged: (String) -> Unit,
+    onRememberMeToggled: () -> Unit,
     onSubmit: () -> Unit,
-    onForgotPasswordClick: () -> Unit,
-    onSignUpClick: () -> Unit,
+    onForgotPasswordClicked: () -> Unit,
+    onSignUpClicked: () -> Unit,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -85,7 +85,7 @@ fun SignInScreen(
 
             LoginTextField(
                 value = state.email,
-                onValueChange = onEmailChang,
+                onValueChange = onEmailChanged,
                 hint = stringResource(Res.string.common_email),
                 leadingIcon = Icons.Filled.Email,
                 isError = state.emailError != null,
@@ -102,7 +102,7 @@ fun SignInScreen(
 
             LoginTextField(
                 value = state.password,
-                onValueChange = onPasswordChange,
+                onValueChange = onPasswordChanged,
                 hint = stringResource(Res.string.common_password),
                 leadingIcon = Icons.Filled.Lock,
                 isError = state.passwordError != null,
@@ -137,7 +137,7 @@ fun SignInScreen(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Checkbox(
                         checked = state.rememberMe,
-                        onCheckedChange = { onRememberMeToggle() },
+                        onCheckedChange = { onRememberMeToggled() },
                         colors =
                             CheckboxDefaults.colors(
                                 checkedColor = turnstileColors.accent,
@@ -150,7 +150,7 @@ fun SignInScreen(
                         color = turnstileColors.textSecondary,
                     )
                 }
-                TextButton(onClick = onForgotPasswordClick) {
+                TextButton(onClick = onForgotPasswordClicked) {
                     Text(
                         text = stringResource(Res.string.auth_forgot_password),
                         fontSize = 13.sp,
@@ -182,7 +182,7 @@ fun SignInScreen(
                     fontSize = 14.sp,
                     color = turnstileColors.textSecondary,
                 )
-                TextButton(onClick = onSignUpClick) {
+                TextButton(onClick = onSignUpClicked) {
                     Text(
                         text = stringResource(Res.string.auth_sign_up),
                         fontSize = 14.sp,

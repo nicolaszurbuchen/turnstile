@@ -49,11 +49,11 @@ import turnstile.shared.generated.resources.common_password
 @Composable
 fun SignUpScreen(
     state: SignUpState,
-    onUsernameChange: (String) -> Unit,
-    onEmailChange: (String) -> Unit,
-    onPasswordChange: (String) -> Unit,
+    onUsernameChanged: (String) -> Unit,
+    onEmailChanged: (String) -> Unit,
+    onPasswordChanged: (String) -> Unit,
     onSubmit: () -> Unit,
-    onSignInClick: () -> Unit,
+    onSignInClicked: () -> Unit,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -83,7 +83,7 @@ fun SignUpScreen(
 
             LoginTextField(
                 value = state.username,
-                onValueChange = onUsernameChange,
+                onValueChange = onUsernameChanged,
                 hint = stringResource(Res.string.auth_username),
                 leadingIcon = Icons.Filled.Person,
                 isError = state.usernameError != null,
@@ -98,7 +98,7 @@ fun SignUpScreen(
 
             LoginTextField(
                 value = state.email,
-                onValueChange = onEmailChange,
+                onValueChange = onEmailChanged,
                 hint = stringResource(Res.string.common_email),
                 leadingIcon = Icons.Filled.Email,
                 isError = state.emailError != null,
@@ -121,7 +121,7 @@ fun SignUpScreen(
 
             LoginTextField(
                 value = state.password,
-                onValueChange = onPasswordChange,
+                onValueChange = onPasswordChanged,
                 hint = stringResource(Res.string.common_password),
                 leadingIcon = Icons.Filled.Lock,
                 isError = state.passwordError != null,
@@ -170,7 +170,7 @@ fun SignUpScreen(
                     color = turnstileColors.textSecondary,
                 )
                 TextButton(
-                    onClick = onSignInClick,
+                    onClick = onSignInClicked,
                 ) {
                     Text(
                         text = stringResource(Res.string.auth_sign_in),

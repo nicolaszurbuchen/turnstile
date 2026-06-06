@@ -31,7 +31,6 @@ import io.nicolaszurbuchen.turnstile.infra.design.component.AppBanner
 import io.nicolaszurbuchen.turnstile.infra.design.component.AppErrorView
 import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
 import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
-import io.nicolaszurbuchen.turnstile.infra.ui.InitialLoad
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

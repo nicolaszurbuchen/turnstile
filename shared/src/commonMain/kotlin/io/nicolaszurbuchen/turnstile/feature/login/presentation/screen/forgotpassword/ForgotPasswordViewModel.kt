@@ -1,36 +1,28 @@
 package io.nicolaszurbuchen.turnstile.feature.login.presentation.screen.forgotpassword
 
-import androidx.lifecycle.viewModelScope
-import io.nicolaszurbuchen.turnstile.feature.login.domain.usecase.SendPasswordResetEmailUseCase
-import io.nicolaszurbuchen.turnstile.infra.mvi.MviViewModel
-import kotlinx.coroutines.launch
+import androidx.lifecycle.ViewModel
+import com.arkivanov.mvikotlin.extensions.coroutines.labels
+import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 class ForgotPasswordViewModel(
-    private val sendPasswordResetEmailUseCase: SendPasswordResetEmailUseCase,
-) : MviViewModel<
-        ForgotPasswordState,
-        ForgotPasswordTrigger,
-        ForgotPasswordIntent,
-        ForgotPasswordAction,
-        ForgotPasswordCommand,
-        ForgotPasswordEvent,
-    >(
-        initialState = ForgotPasswordState(),
-        reducer = ForgotPasswordReducer,
-    ) {
-    override suspend fun executeCommand(command: ForgotPasswordCommand) {
-        when (command) {
-            is ForgotPasswordCommand.CallRequestReset -> {
-                viewModelScope.launch {
-                    runCatching { sendPasswordResetEmailUseCase(command.email) }
-                        .onSuccess {
-                            dispatchAction(ForgotPasswordAction.ResetEmailSent)
-                        }
-                        .onFailure { e ->
-                            dispatchAction(ForgotPasswordAction.ResetFailedWith(e.message ?: "Unknown error"))
-                        }
-                }
-            }
-        }
+    factory: ForgotPasswordStoreFactory,
+) : ViewModel() {
+    private val store = factory.create()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val state: StateFlow<ForgotPasswordState> = store.stateFlow
+
+    val labels: Flow<ForgotPasswordLabel> = store.labels
+
+    fun onIntent(intent: ForgotPasswordIntent) {
+        store.accept(intent)
+    }
+
+    override fun onCleared() {
+        store.dispose()
+        super.onCleared()
     }
 }

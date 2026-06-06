@@ -1,12 +1,34 @@
 package io.nicolaszurbuchen.turnstile.feature.login.presentation.screen.signup
 
-import io.nicolaszurbuchen.turnstile.infra.mvi.Action
-import io.nicolaszurbuchen.turnstile.infra.mvi.Command
-import io.nicolaszurbuchen.turnstile.infra.mvi.Event
-import io.nicolaszurbuchen.turnstile.infra.mvi.Intent
-import io.nicolaszurbuchen.turnstile.infra.mvi.State
-import io.nicolaszurbuchen.turnstile.infra.mvi.Trigger
 import org.jetbrains.compose.resources.StringResource
+import turnstile.shared.generated.resources.Res
+import turnstile.shared.generated.resources.auth_error_email_invalid
+import turnstile.shared.generated.resources.auth_error_password_too_short
+import turnstile.shared.generated.resources.auth_error_username_too_short
+
+sealed interface SignUpIntent {
+    data class UsernameChanged(val value: String) : SignUpIntent
+    data class EmailChanged(val value: String) : SignUpIntent
+    data class PasswordChanged(val value: String) : SignUpIntent
+    data object Submit : SignUpIntent
+    data object SignInClicked : SignUpIntent
+}
+
+sealed interface SignUpLabel {
+    data object NavigateHome : SignUpLabel
+    data object NavigateToSignIn : SignUpLabel
+}
+
+sealed interface SignUpAction
+
+sealed interface SignUpMessage {
+    data class UsernameChanged(val value: String, val error: StringResource?) : SignUpMessage
+    data class EmailChanged(val value: String, val error: StringResource?) : SignUpMessage
+    data class PasswordChanged(val value: String, val error: StringResource?) : SignUpMessage
+    data object StartedLoading : SignUpMessage
+    data object RegisterSucceeded : SignUpMessage
+    data class RegisterFailed(val message: String) : SignUpMessage
+}
 
 data class SignUpState(
     val username: String = "",
@@ -17,7 +39,7 @@ data class SignUpState(
     val passwordError: StringResource? = null,
     val loading: Boolean = false,
     val submitError: String? = null,
-) : State {
+) {
     val canSubmit: Boolean
         get() =
             username.isNotBlank() &&
@@ -29,48 +51,23 @@ data class SignUpState(
                 !loading
 }
 
-sealed interface SignUpTrigger : Trigger
+fun validateUsername(name: String): StringResource? =
+    when {
+        name.isEmpty() -> null
+        name.length < 2 -> Res.string.auth_error_username_too_short
+        else -> null
+    }
 
-sealed interface SignUpIntent :
-    SignUpTrigger,
-    Intent {
-    data class UsernameChanged(
-        val value: String,
-    ) : SignUpIntent
+fun validateEmail(email: String): StringResource? =
+    when {
+        email.isEmpty() -> null
+        !email.contains("@") -> Res.string.auth_error_email_invalid
+        else -> null
+    }
 
-    data class EmailChanged(
-        val value: String,
-    ) : SignUpIntent
-
-    data class PasswordChanged(
-        val value: String,
-    ) : SignUpIntent
-
-    data object Submit : SignUpIntent
-
-    data object SignInClicked : SignUpIntent
-}
-
-sealed interface SignUpAction :
-    SignUpTrigger,
-    Action {
-    data object RegisterSucceeded : SignUpAction
-
-    data class RegisterFailedWith(
-        val message: String,
-    ) : SignUpAction
-}
-
-sealed interface SignUpCommand : Command {
-    data class CallRegister(
-        val username: String,
-        val email: String,
-        val password: String,
-    ) : SignUpCommand
-}
-
-sealed interface SignUpEvent : Event {
-    data object NavigateHome : SignUpEvent
-
-    data object NavigateToSignIn : SignUpEvent
-}
+fun validatePassword(password: String): StringResource? =
+    when {
+        password.isEmpty() -> null
+        password.length < 8 -> Res.string.auth_error_password_too_short
+        else -> null
+    }

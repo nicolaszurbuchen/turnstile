@@ -8,7 +8,6 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.DeleteCredentialUseCase
 import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.GetCredentialUseCase
 import io.nicolaszurbuchen.turnstile.infra.ui.AppError
-import io.nicolaszurbuchen.turnstile.infra.ui.InitialLoad
 import kotlinx.coroutines.launch
 
 interface CredentialDetailStore : Store<CredentialDetailIntent, CredentialDetailState, CredentialDetailLabel>
@@ -17,14 +16,13 @@ class CredentialDetailStoreFactory(
     private val storeFactory: StoreFactory,
     private val getCredential: GetCredentialUseCase,
     private val deleteCredential: DeleteCredentialUseCase,
-    private val credentialId: String,
 ) {
-    fun create(): CredentialDetailStore =
+    fun create(credentialId: String): CredentialDetailStore =
         object : CredentialDetailStore, Store<CredentialDetailIntent, CredentialDetailState, CredentialDetailLabel> by storeFactory.create(
             name = "CredentialDetailStore",
             initialState = CredentialDetailState(),
             bootstrapper = BootstrapperImpl(),
-            executorFactory = ::ExecutorImpl,
+            executorFactory = { ExecutorImpl(credentialId) },
             reducer = ReducerImpl,
         ) {}
 
@@ -34,7 +32,7 @@ class CredentialDetailStoreFactory(
         }
     }
 
-    private inner class ExecutorImpl : CoroutineExecutor<CredentialDetailIntent, CredentialDetailAction, CredentialDetailState, CredentialDetailMessage, CredentialDetailLabel>() {
+    private inner class ExecutorImpl(private val credentialId: String) : CoroutineExecutor<CredentialDetailIntent, CredentialDetailAction, CredentialDetailState, CredentialDetailMessage, CredentialDetailLabel>() {
         override fun executeAction(action: CredentialDetailAction) {
             when (action) {
                 is CredentialDetailAction.LoadCredential -> loadCredential()

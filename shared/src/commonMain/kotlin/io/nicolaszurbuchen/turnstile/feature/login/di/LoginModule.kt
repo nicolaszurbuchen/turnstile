@@ -5,8 +5,11 @@ import io.nicolaszurbuchen.turnstile.feature.login.domain.repository.UserIdentit
 import io.nicolaszurbuchen.turnstile.feature.login.domain.usecase.SendPasswordResetEmailUseCase
 import io.nicolaszurbuchen.turnstile.feature.login.domain.usecase.SignInWithEmailUseCase
 import io.nicolaszurbuchen.turnstile.feature.login.domain.usecase.SignUpWithEmailUseCase
+import io.nicolaszurbuchen.turnstile.feature.login.presentation.screen.forgotpassword.ForgotPasswordStoreFactory
 import io.nicolaszurbuchen.turnstile.feature.login.presentation.screen.forgotpassword.ForgotPasswordViewModel
+import io.nicolaszurbuchen.turnstile.feature.login.presentation.screen.signin.SignInStoreFactory
 import io.nicolaszurbuchen.turnstile.feature.login.presentation.screen.signin.SignInViewModel
+import io.nicolaszurbuchen.turnstile.feature.login.presentation.screen.signup.SignUpStoreFactory
 import io.nicolaszurbuchen.turnstile.feature.login.presentation.screen.signup.SignUpViewModel
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
@@ -21,6 +24,12 @@ val loginModule =
         singleOf(::SignUpWithEmailUseCase)
         singleOf(::SendPasswordResetEmailUseCase)
 
+        // Factories
+        singleOf(::SignInStoreFactory)
+        singleOf(::SignUpStoreFactory)
+        singleOf(::ForgotPasswordStoreFactory)
+
+        // View Models
         viewModelOf(::SignInViewModel)
         viewModelOf(::SignUpViewModel)
         viewModelOf(::ForgotPasswordViewModel)

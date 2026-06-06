@@ -10,7 +10,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun SignUpRoute(
-    onSignedUp: () -> Unit,
+    onNavigateHome: () -> Unit,
     onNavigateToSignIn: () -> Unit,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
@@ -18,25 +18,25 @@ fun SignUpRoute(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    val onSignedUpUpdated by rememberUpdatedState(onSignedUp)
+    val onNavigateHomeUpdated by rememberUpdatedState(onNavigateHome)
     val onNavigateToSignInUpdated by rememberUpdatedState(onNavigateToSignIn)
 
     LaunchedEffect(Unit) {
-        viewModel.events.collect { event ->
-            when (event) {
-                SignUpEvent.NavigateHome -> onSignedUpUpdated()
-                SignUpEvent.NavigateToSignIn -> onNavigateToSignInUpdated()
+        viewModel.labels.collect { label ->
+            when (label) {
+                SignUpLabel.NavigateHome -> onNavigateHomeUpdated()
+                SignUpLabel.NavigateToSignIn -> onNavigateToSignInUpdated()
             }
         }
     }
 
     SignUpScreen(
         state = state,
-        onUsernameChange = { viewModel.sendIntent(SignUpIntent.UsernameChanged(it)) },
-        onEmailChange = { viewModel.sendIntent(SignUpIntent.EmailChanged(it)) },
-        onPasswordChange = { viewModel.sendIntent(SignUpIntent.PasswordChanged(it)) },
-        onSubmit = { viewModel.sendIntent(SignUpIntent.Submit) },
-        onSignInClick = { viewModel.sendIntent(SignUpIntent.SignInClicked) },
+        onUsernameChanged = { viewModel.onIntent(SignUpIntent.UsernameChanged(it)) },
+        onEmailChanged = { viewModel.onIntent(SignUpIntent.EmailChanged(it)) },
+        onPasswordChanged = { viewModel.onIntent(SignUpIntent.PasswordChanged(it)) },
+        onSubmit = { viewModel.onIntent(SignUpIntent.Submit) },
+        onSignInClicked = { viewModel.onIntent(SignUpIntent.SignInClicked) },
         onNavigateBack = onNavigateBack,
         modifier = modifier,
     )

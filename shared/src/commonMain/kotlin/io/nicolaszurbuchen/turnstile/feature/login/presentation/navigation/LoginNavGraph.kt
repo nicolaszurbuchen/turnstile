@@ -21,7 +21,7 @@ fun NavGraphBuilder.loginGraph(
     }
     composable<SignInDestination> {
         SignInRoute(
-            onSignedIn = onAuthenticated,
+            onNavigateHome = onAuthenticated,
             onNavigateToSignUp = {
                 navController.navigate(
                     SignUpDestination,
@@ -36,7 +36,7 @@ fun NavGraphBuilder.loginGraph(
     }
     composable<SignUpDestination> {
         SignUpRoute(
-            onSignedUp = onAuthenticated,
+            onNavigateHome = onAuthenticated,
             onNavigateToSignIn = {
                 navController.navigate(
                     SignInDestination,

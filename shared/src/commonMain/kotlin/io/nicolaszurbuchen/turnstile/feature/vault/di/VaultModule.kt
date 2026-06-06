@@ -12,7 +12,9 @@ import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.GetCredentialU
 import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.GetCredentialsUseCase
 import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.SaveCredentialUseCase
 import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.SignOutUseCase
+import io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.detail.CredentialDetailStoreFactory
 import io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.detail.CredentialDetailViewModel
+import io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.editor.CredentialEditorStoreFactory
 import io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.editor.CredentialEditorViewModel
 import io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.list.CredentialListStoreFactory
 import io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.list.CredentialListViewModel
@@ -44,6 +46,8 @@ val vaultModule =
 
         // Factories
         singleOf(::CredentialListStoreFactory)
+        singleOf(::CredentialDetailStoreFactory)
+        singleOf(::CredentialEditorStoreFactory)
 
         // View Models
         viewModelOf(::CredentialListViewModel)
