@@ -5,6 +5,6 @@ data class CredentialEditorStateImpl(
     override val title: String = "",
     override val username: String = "",
     override val password: String = "",
-    override val memo: String = "",
+    override val memo: String? = "",
     override val isSaving: Boolean = false,
 ) : CredentialEditorState

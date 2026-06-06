@@ -113,7 +113,7 @@ fun CredentialEditorScreen(
             Spacer(Modifier.height(spacing.md))
 
             LoginTextField(
-                value = state.memo,
+                value = state.memo.orEmpty(),
                 onValueChange = onMemoChange,
                 hint = "Memo",
                 leadingIcon = Icons.Default.Notes,
