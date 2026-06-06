@@ -1,5 +1,7 @@
 package io.nicolaszurbuchen.turnstile.feature.vault.di
 
+import com.arkivanov.mvikotlin.core.store.StoreFactory
+import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import io.nicolaszurbuchen.turnstile.feature.vault.data.datasource.remote.CredentialRemoteDataSource
 import io.nicolaszurbuchen.turnstile.feature.vault.data.datasource.remote.CredentialRemoteDataSourceImpl
 import io.nicolaszurbuchen.turnstile.feature.vault.data.datasource.remote.mapper.CredentialMapper
@@ -12,6 +14,7 @@ import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.SaveCredential
 import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.SignOutUseCase
 import io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.detail.CredentialDetailViewModel
 import io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.editor.CredentialEditorViewModel
+import io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.list.CredentialListStoreFactory
 import io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.list.CredentialListViewModel
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
@@ -20,6 +23,9 @@ import org.koin.dsl.module
 
 val vaultModule =
     module {
+        // Infrastructure
+        single<StoreFactory> { DefaultStoreFactory() }
+
         // Data Sources
         singleOf(::CredentialRemoteDataSourceImpl) bind CredentialRemoteDataSource::class
 
@@ -35,6 +41,9 @@ val vaultModule =
         singleOf(::GetCredentialUseCase)
         singleOf(::SaveCredentialUseCase)
         singleOf(::SignOutUseCase)
+
+        // Factories
+        singleOf(::CredentialListStoreFactory)
 
         // View Models
         viewModelOf(::CredentialListViewModel)

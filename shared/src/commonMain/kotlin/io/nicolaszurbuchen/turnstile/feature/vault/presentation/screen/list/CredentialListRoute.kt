@@ -6,8 +6,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.nicolaszurbuchen.turnstile.infra.design.component.AppErrorView
-import io.nicolaszurbuchen.turnstile.infra.ui.Loadable
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -25,36 +23,22 @@ fun CredentialListRoute(
     val onNavigateToAuthUpdated by rememberUpdatedState(onNavigateToAuth)
 
     LaunchedEffect(Unit) {
-        viewModel.events.collect { event ->
-            when (event) {
-                is CredentialListEvent.NavigateToDetail -> onNavigateToDetailUpdated(event.id)
-                CredentialListEvent.NavigateToCreate -> onNavigateToCreateUpdated()
-                CredentialListEvent.NavigateToAuth -> onNavigateToAuthUpdated()
+        viewModel.labels.collect { label ->
+            when (label) {
+                is CredentialListLabel.NavigateToDetail -> onNavigateToDetailUpdated(label.id)
+                CredentialListLabel.NavigateToCreate -> onNavigateToCreateUpdated()
+                CredentialListLabel.NavigateToAuth -> onNavigateToAuthUpdated()
             }
         }
     }
 
-    when (val loadable = state) {
-        is Loadable.Loading -> {
-            // TODO: List skeleton
-        }
-
-        is Loadable.Failure -> {
-            AppErrorView(
-                message = loadable.error.message,
-                onRetry = { /* Retry logic if needed */ },
-                modifier = modifier,
-            )
-        }
-
-        is Loadable.Success -> {
-            CredentialListScreen(
-                state = loadable.data,
-                onEntryClick = { id -> viewModel.sendIntent(CredentialListIntent.EntryClicked(id)) },
-                onCreateClick = { viewModel.sendIntent(CredentialListIntent.CreateClicked) },
-                onSignOutClick = { viewModel.sendIntent(CredentialListIntent.SignOutClicked) },
-                modifier = modifier,
-            )
-        }
-    }
+    CredentialListScreen(
+        state = state,
+        onEntryClick = { id -> viewModel.onIntent(CredentialListIntent.EntryClicked(id)) },
+        onCreateClick = { viewModel.onIntent(CredentialListIntent.CreateClicked) },
+        onSignOutClick = { viewModel.onIntent(CredentialListIntent.SignOutClicked) },
+        onRetryInitialLoad = { viewModel.onIntent(CredentialListIntent.RetryInitialLoad) },
+        onDismissStreamError = { viewModel.onIntent(CredentialListIntent.DismissStreamError) },
+        modifier = modifier,
+    )
 }

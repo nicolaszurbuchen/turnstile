@@ -1,59 +1,28 @@
 package io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.list
 
-import androidx.lifecycle.viewModelScope
-import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.GetCredentialsUseCase
-import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.SignOutUseCase
-import io.nicolaszurbuchen.turnstile.infra.mvi.MviViewModel
-import io.nicolaszurbuchen.turnstile.infra.ui.AppError
-import io.nicolaszurbuchen.turnstile.infra.ui.Loadable
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
+import androidx.lifecycle.ViewModel
+import com.arkivanov.mvikotlin.extensions.coroutines.labels
+import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 class CredentialListViewModel(
-    private val getCredentials: GetCredentialsUseCase,
-    private val signOut: SignOutUseCase,
-) : MviViewModel<
-        Loadable<CredentialListState>,
-        CredentialListTrigger,
-        CredentialListIntent,
-        CredentialListAction,
-        CredentialListCommand,
-        CredentialListEvent,
-    >(
-        initialState = Loadable.Loading,
-        reducer = CredentialListReducer,
-    ) {
-    init {
-        viewModelScope.launch { executeCommand(CredentialListCommand.ObserveEntries) }
+    factory: CredentialListStoreFactory,
+) : ViewModel() {
+    private val store = factory.create()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val state: StateFlow<CredentialListState> = store.stateFlow
+
+    val labels: Flow<CredentialListLabel> = store.labels
+
+    fun onIntent(intent: CredentialListIntent) {
+        store.accept(intent)
     }
 
-    override suspend fun executeCommand(command: CredentialListCommand) {
-        when (command) {
-            CredentialListCommand.ObserveEntries -> observeEntries()
-            CredentialListCommand.SignOut -> performSignOut()
-        }
-    }
-
-    private suspend fun performSignOut() {
-        signOut()
-        dispatchAction(CredentialListAction.SignOutSucceeded)
-    }
-
-    private fun observeEntries() {
-        getCredentials()
-            .onEach { dispatchAction(CredentialListAction.EntriesLoaded(it)) }
-            .catch {
-                dispatchAction(
-                    CredentialListAction.LoadFailed(
-                        AppError(
-                            it.message ?: "Unknown error",
-                            it,
-                        ),
-                    ),
-                )
-            }
-            .launchIn(viewModelScope)
+    override fun onCleared() {
+        store.dispose()
+        super.onCleared()
     }
 }

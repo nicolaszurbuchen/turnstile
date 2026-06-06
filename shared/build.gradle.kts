@@ -44,6 +44,9 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.material.icons.extended)
+            implementation(libs.mvikotlin)
+            implementation(libs.mvikotlin.main)
+            implementation(libs.mvikotlin.extensions.coroutines)
             implementation(libs.navigation.compose)
         }
         commonTest.dependencies {

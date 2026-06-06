@@ -34,7 +34,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.nicolaszurbuchen.turnstile.infra.design.component.AppBanner
 import io.nicolaszurbuchen.turnstile.infra.design.component.AppEmptyView
+import io.nicolaszurbuchen.turnstile.infra.design.component.AppErrorView
 import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
 import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
 
@@ -44,6 +46,8 @@ fun CredentialListScreen(
     onEntryClick: (String) -> Unit,
     onCreateClick: () -> Unit,
     onSignOutClick: () -> Unit,
+    onRetryInitialLoad: () -> Unit,
+    onDismissStreamError: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val turnstileColors = MaterialTheme.turnstileColors
@@ -95,25 +99,50 @@ fun CredentialListScreen(
                 }
             }
 
-            if (state.isEmpty) {
-                AppEmptyView(
-                    title = "Your vault is empty",
-                    subtitle = "Tap + to add your first credential",
-                )
-            } else {
-                LazyColumn(
-                    modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .navigationBarsPadding(),
-                ) {
-                    items(items = state.entries, key = { it.id }) { entry ->
-                        CredentialListItem(
-                            entry = entry,
-                            onClick = { onEntryClick(entry.id) },
-                        )
+            when (val initialLoad = state.initialLoad) {
+                is InitialLoad.Loading -> {
+                    CredentialListSkeleton()
+                }
+
+                is InitialLoad.Failed -> {
+                    AppErrorView(
+                        message = initialLoad.error.message,
+                        onRetry = onRetryInitialLoad,
+                    )
+                }
+
+                is InitialLoad.Loaded -> {
+                    Column(modifier = Modifier.fillMaxSize()) {
+                        state.streamError?.let { error ->
+                            AppBanner(
+                                message = error.message,
+                                onDismiss = onDismissStreamError,
+                                modifier = Modifier.padding(horizontal = spacing.md, vertical = spacing.sm),
+                            )
+                        }
+
+                        if (state.isEmpty) {
+                            AppEmptyView(
+                                title = "Your vault is empty",
+                                subtitle = "Tap + to add your first credential",
+                            )
+                        } else {
+                            LazyColumn(
+                                modifier =
+                                    Modifier
+                                        .fillMaxSize()
+                                        .navigationBarsPadding(),
+                            ) {
+                                items(items = state.entries, key = { it.id }) { entry ->
+                                    CredentialListItem(
+                                        entry = entry,
+                                        onClick = { onEntryClick(entry.id) },
+                                    )
+                                }
+                                item { Spacer(Modifier.height(spacing.md)) }
+                            }
+                        }
                     }
-                    item { Spacer(Modifier.height(spacing.md)) }
                 }
             }
         }
@@ -122,7 +151,7 @@ fun CredentialListScreen(
 
 @Composable
 private fun CredentialListItem(
-    entry: CredentialUiModel,
+    entry: CredentialUi,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
