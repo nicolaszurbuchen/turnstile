@@ -16,8 +16,8 @@ fun CredentialListRoute(
     onNavigateToCreate: () -> Unit,
     onNavigateToAuth: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: CredentialListViewModel = koinViewModel(),
 ) {
-    val viewModel = koinViewModel<CredentialListViewModel>()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     val onNavigateToDetailUpdated by rememberUpdatedState(onNavigateToDetail)

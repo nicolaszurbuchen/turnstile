@@ -22,7 +22,10 @@ sealed interface ForgotPasswordTrigger : Trigger
 sealed interface ForgotPasswordIntent :
     ForgotPasswordTrigger,
     Intent {
-    data class EmailChanged(val value: String) : ForgotPasswordIntent
+    data class EmailChanged(
+        val value: String,
+    ) : ForgotPasswordIntent
+
     data object Submit : ForgotPasswordIntent
 }
 
@@ -30,11 +33,16 @@ sealed interface ForgotPasswordAction :
     ForgotPasswordTrigger,
     Action {
     data object ResetEmailSent : ForgotPasswordAction
-    data class ResetFailedWith(val message: String) : ForgotPasswordAction
+
+    data class ResetFailedWith(
+        val message: String,
+    ) : ForgotPasswordAction
 }
 
 sealed interface ForgotPasswordCommand : Command {
-    data class CallRequestReset(val email: String) : ForgotPasswordCommand
+    data class CallRequestReset(
+        val email: String,
+    ) : ForgotPasswordCommand
 }
 
 sealed interface ForgotPasswordEvent : Event

@@ -14,8 +14,8 @@ fun SignUpRoute(
     onNavigateToSignIn: () -> Unit,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: SignUpViewModel = koinViewModel(),
 ) {
-    val viewModel = koinViewModel<SignUpViewModel>()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     val onSignedUpUpdated by rememberUpdatedState(onSignedUp)

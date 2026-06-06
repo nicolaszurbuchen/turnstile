@@ -15,8 +15,8 @@ fun SignInRoute(
     onNavigateToForgotPassword: () -> Unit,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: SignInViewModel = koinViewModel(),
 ) {
-    val viewModel = koinViewModel<SignInViewModel>()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     val onSignedInUpdated by rememberUpdatedState(onSignedIn)

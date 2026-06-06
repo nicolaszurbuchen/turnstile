@@ -12,7 +12,11 @@ data object VaultGraph : VaultDestination
 internal data object ListDestination : VaultDestination
 
 @Serializable
-internal data class DetailDestination(val id: String) : VaultDestination
+internal data class DetailDestination(
+    val id: String,
+) : VaultDestination
 
 @Serializable
-internal data class EditorDestination(val id: String? = null) : VaultDestination
+internal data class EditorDestination(
+    val id: String? = null,
+) : VaultDestination

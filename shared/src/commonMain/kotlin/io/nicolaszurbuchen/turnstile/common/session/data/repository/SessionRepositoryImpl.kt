@@ -8,10 +8,7 @@ class SessionRepositoryImpl(
     private val localDataSource: SessionLocalDataSource,
     private val remoteDataSource: AuthRemoteDataSource,
 ) : SessionRepository {
-
-    override fun getCurrentUserId(): String? {
-        return localDataSource.getCurrentUserId()
-    }
+    override fun getCurrentUserId(): String? = localDataSource.getCurrentUserId()
 
     override suspend fun signOut() {
         remoteDataSource.signOut()

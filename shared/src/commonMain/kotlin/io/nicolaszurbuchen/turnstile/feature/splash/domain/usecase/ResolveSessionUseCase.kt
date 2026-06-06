@@ -9,7 +9,10 @@ class ResolveSessionUseCase(
     operator fun invoke(): SessionStatus {
         val userId = sessionRepository.getCurrentUserId()
         println("ResolveSessionUseCase - userId: $userId")
-        return if (userId != null) SessionStatus.Authenticated
-        else SessionStatus.Unauthenticated
+        return if (userId != null) {
+            SessionStatus.Authenticated
+        } else {
+            SessionStatus.Unauthenticated
+        }
     }
 }

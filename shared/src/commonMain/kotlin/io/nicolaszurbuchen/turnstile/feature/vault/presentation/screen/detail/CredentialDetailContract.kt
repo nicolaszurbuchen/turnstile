@@ -19,25 +19,44 @@ sealed interface CredentialDetailIntent :
     CredentialDetailTrigger,
     Intent {
     data object EditClicked : CredentialDetailIntent
+
     data object DeleteClicked : CredentialDetailIntent
+
     data object BackClicked : CredentialDetailIntent
 }
 
 sealed interface CredentialDetailAction :
     CredentialDetailTrigger,
     Action {
-    data class CredentialLoaded(val credential: Credential) : CredentialDetailAction
-    data class LoadFailed(val error: AppError) : CredentialDetailAction
+    data class CredentialLoaded(
+        val credential: Credential,
+    ) : CredentialDetailAction
+
+    data class LoadFailed(
+        val error: AppError,
+    ) : CredentialDetailAction
+
     data object Deleted : CredentialDetailAction
-    data class DeleteFailed(val error: AppError) : CredentialDetailAction
+
+    data class DeleteFailed(
+        val error: AppError,
+    ) : CredentialDetailAction
 }
 
 sealed interface CredentialDetailCommand : Command {
-    data class LoadCredential(val id: String) : CredentialDetailCommand
-    data class DeleteCredential(val id: String) : CredentialDetailCommand
+    data class LoadCredential(
+        val id: String,
+    ) : CredentialDetailCommand
+
+    data class DeleteCredential(
+        val id: String,
+    ) : CredentialDetailCommand
 }
 
 sealed interface CredentialDetailEvent : Event {
-    data class NavigateToEdit(val id: String) : CredentialDetailEvent
+    data class NavigateToEdit(
+        val id: String,
+    ) : CredentialDetailEvent
+
     data object NavigateBack : CredentialDetailEvent
 }

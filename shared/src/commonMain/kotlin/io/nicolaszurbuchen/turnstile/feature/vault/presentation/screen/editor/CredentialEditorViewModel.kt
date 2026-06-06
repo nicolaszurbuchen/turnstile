@@ -15,14 +15,27 @@ class CredentialEditorViewModel(
     savedStateHandle: SavedStateHandle,
     private val getCredential: GetCredentialUseCase,
     private val saveCredential: SaveCredentialUseCase,
-) : MviViewModel<CredentialEditorStateImpl, CredentialEditorTrigger, CredentialEditorIntent, CredentialEditorAction, CredentialEditorCommand, CredentialEditorEvent>(
+) : MviViewModel<
+        CredentialEditorStateImpl,
+        CredentialEditorTrigger,
+        CredentialEditorIntent,
+        CredentialEditorAction,
+        CredentialEditorCommand,
+        CredentialEditorEvent,
+    >(
         initialState = CredentialEditorStateImpl(),
         reducer = CredentialEditorReducer,
     ) {
     init {
         val credentialId = savedStateHandle.toRoute<EditorDestination>().id
         if (credentialId != null) {
-            viewModelScope.launch { executeCommand(CredentialEditorCommand.LoadCredential(credentialId)) }
+            viewModelScope.launch {
+                executeCommand(
+                    CredentialEditorCommand.LoadCredential(
+                        credentialId,
+                    ),
+                )
+            }
         }
     }
 
@@ -46,6 +59,15 @@ class CredentialEditorViewModel(
         dispatchAction(CredentialEditorAction.Saving)
         runCatching { saveCredential(credential) }
             .onSuccess { dispatchAction(CredentialEditorAction.Saved) }
-            .onFailure { dispatchAction(CredentialEditorAction.SaveFailed(AppError(it.message ?: "Unknown error", it))) }
+            .onFailure {
+                dispatchAction(
+                    CredentialEditorAction.SaveFailed(
+                        AppError(
+                            it.message ?: "Unknown error",
+                            it,
+                        ),
+                    ),
+                )
+            }
     }
 }

@@ -12,15 +12,18 @@ import org.koin.compose.viewmodel.koinViewModel
 fun CredentialEditorRoute(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: CredentialEditorViewModel = koinViewModel(),
 ) {
-    val viewModel = koinViewModel<CredentialEditorViewModel>()
     val state by viewModel.state.collectAsStateWithLifecycle()
     val onNavigateBackUpdated by rememberUpdatedState(onNavigateBack)
 
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
-                CredentialEditorEvent.NavigateBack -> onNavigateBackUpdated()
+                CredentialEditorEvent.NavigateBack -> {
+                    onNavigateBackUpdated()
+                }
+
                 is CredentialEditorEvent.ShowError -> { /* TODO: surface error */ }
             }
         }

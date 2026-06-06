@@ -7,8 +7,7 @@ import kotlinx.coroutines.launch
 
 class ForgotPasswordViewModel(
     private val sendPasswordResetEmailUseCase: SendPasswordResetEmailUseCase,
-) :
-    MviViewModel<
+) : MviViewModel<
         ForgotPasswordStateImpl,
         ForgotPasswordTrigger,
         ForgotPasswordIntent,

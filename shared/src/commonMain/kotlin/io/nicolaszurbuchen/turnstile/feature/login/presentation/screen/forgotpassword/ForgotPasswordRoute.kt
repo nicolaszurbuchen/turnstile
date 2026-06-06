@@ -10,8 +10,8 @@ import org.koin.compose.viewmodel.koinViewModel
 fun ForgotPasswordRoute(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: ForgotPasswordViewModel = koinViewModel(),
 ) {
-    val viewModel = koinViewModel<ForgotPasswordViewModel>()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     ForgotPasswordScreen(

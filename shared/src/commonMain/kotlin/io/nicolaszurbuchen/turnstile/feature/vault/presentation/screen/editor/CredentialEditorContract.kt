@@ -23,29 +23,57 @@ sealed interface CredentialEditorTrigger : Trigger
 sealed interface CredentialEditorIntent :
     CredentialEditorTrigger,
     Intent {
-    data class TitleChanged(val value: String) : CredentialEditorIntent
-    data class UsernameChanged(val value: String) : CredentialEditorIntent
-    data class PasswordChanged(val value: String) : CredentialEditorIntent
-    data class MemoChanged(val value: String) : CredentialEditorIntent
+    data class TitleChanged(
+        val value: String,
+    ) : CredentialEditorIntent
+
+    data class UsernameChanged(
+        val value: String,
+    ) : CredentialEditorIntent
+
+    data class PasswordChanged(
+        val value: String,
+    ) : CredentialEditorIntent
+
+    data class MemoChanged(
+        val value: String,
+    ) : CredentialEditorIntent
+
     data object SaveClicked : CredentialEditorIntent
+
     data object CancelClicked : CredentialEditorIntent
 }
 
 sealed interface CredentialEditorAction :
     CredentialEditorTrigger,
     Action {
-    data class CredentialLoaded(val credential: Credential) : CredentialEditorAction
+    data class CredentialLoaded(
+        val credential: Credential,
+    ) : CredentialEditorAction
+
     data object Saving : CredentialEditorAction
+
     data object Saved : CredentialEditorAction
-    data class SaveFailed(val error: AppError) : CredentialEditorAction
+
+    data class SaveFailed(
+        val error: AppError,
+    ) : CredentialEditorAction
 }
 
 sealed interface CredentialEditorCommand : Command {
-    data class LoadCredential(val id: String) : CredentialEditorCommand
-    data class SaveCredential(val credential: Credential) : CredentialEditorCommand
+    data class LoadCredential(
+        val id: String,
+    ) : CredentialEditorCommand
+
+    data class SaveCredential(
+        val credential: Credential,
+    ) : CredentialEditorCommand
 }
 
 sealed interface CredentialEditorEvent : Event {
     data object NavigateBack : CredentialEditorEvent
-    data class ShowError(val error: AppError) : CredentialEditorEvent
+
+    data class ShowError(
+        val error: AppError,
+    ) : CredentialEditorEvent
 }

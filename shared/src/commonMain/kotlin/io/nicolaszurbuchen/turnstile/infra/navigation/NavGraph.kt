@@ -31,7 +31,7 @@ fun NavGraph(navController: NavHostController = rememberNavController()) {
                     navController.navigate(VaultGraph) {
                         popUpTo(SplashDestination) { inclusive = true }
                     }
-                }
+                },
             )
         }
 

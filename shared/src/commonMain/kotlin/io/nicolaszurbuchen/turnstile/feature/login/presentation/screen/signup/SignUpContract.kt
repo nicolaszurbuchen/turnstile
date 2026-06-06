@@ -25,10 +25,20 @@ sealed interface SignUpTrigger : Trigger
 sealed interface SignUpIntent :
     SignUpTrigger,
     Intent {
-    data class UsernameChanged(val value: String) : SignUpIntent
-    data class EmailChanged(val value: String) : SignUpIntent
-    data class PasswordChanged(val value: String) : SignUpIntent
+    data class UsernameChanged(
+        val value: String,
+    ) : SignUpIntent
+
+    data class EmailChanged(
+        val value: String,
+    ) : SignUpIntent
+
+    data class PasswordChanged(
+        val value: String,
+    ) : SignUpIntent
+
     data object Submit : SignUpIntent
+
     data object SignInClicked : SignUpIntent
 }
 
@@ -36,7 +46,10 @@ sealed interface SignUpAction :
     SignUpTrigger,
     Action {
     data object RegisterSucceeded : SignUpAction
-    data class RegisterFailedWith(val message: String) : SignUpAction
+
+    data class RegisterFailedWith(
+        val message: String,
+    ) : SignUpAction
 }
 
 sealed interface SignUpCommand : Command {
@@ -49,5 +62,6 @@ sealed interface SignUpCommand : Command {
 
 sealed interface SignUpEvent : Event {
     data object NavigateHome : SignUpEvent
+
     data object NavigateToSignIn : SignUpEvent
 }

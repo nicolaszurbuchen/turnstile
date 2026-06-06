@@ -4,7 +4,13 @@ import io.nicolaszurbuchen.turnstile.infra.mvi.Next
 import io.nicolaszurbuchen.turnstile.infra.mvi.Reducer
 import io.nicolaszurbuchen.turnstile.infra.ui.Loadable
 
-object CredentialListReducer : Reducer<Loadable<CredentialListStateImpl>, CredentialListTrigger, CredentialListCommand, CredentialListEvent> {
+object CredentialListReducer :
+    Reducer<
+        Loadable<CredentialListStateImpl>,
+        CredentialListTrigger,
+        CredentialListCommand,
+        CredentialListEvent,
+    > {
     override fun reduce(
         state: Loadable<CredentialListStateImpl>,
         trigger: CredentialListTrigger,
@@ -19,7 +25,10 @@ object CredentialListReducer : Reducer<Loadable<CredentialListStateImpl>, Creden
             }
 
             is CredentialListIntent.EntryClicked -> {
-                Next(state = state, events = listOf(CredentialListEvent.NavigateToDetail(trigger.id)))
+                Next(
+                    state = state,
+                    events = listOf(CredentialListEvent.NavigateToDetail(trigger.id)),
+                )
             }
 
             CredentialListIntent.CreateClicked -> {

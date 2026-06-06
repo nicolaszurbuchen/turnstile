@@ -4,7 +4,13 @@ import io.nicolaszurbuchen.turnstile.feature.vault.domain.model.Credential
 import io.nicolaszurbuchen.turnstile.infra.mvi.Next
 import io.nicolaszurbuchen.turnstile.infra.mvi.Reducer
 
-object CredentialEditorReducer : Reducer<CredentialEditorStateImpl, CredentialEditorTrigger, CredentialEditorCommand, CredentialEditorEvent> {
+object CredentialEditorReducer :
+    Reducer<
+        CredentialEditorStateImpl,
+        CredentialEditorTrigger,
+        CredentialEditorCommand,
+        CredentialEditorEvent,
+    > {
     override fun reduce(
         state: CredentialEditorStateImpl,
         trigger: CredentialEditorTrigger,
@@ -12,13 +18,14 @@ object CredentialEditorReducer : Reducer<CredentialEditorStateImpl, CredentialEd
         when (trigger) {
             is CredentialEditorAction.CredentialLoaded -> {
                 Next(
-                    state = state.copy(
-                        id = trigger.credential.id,
-                        title = trigger.credential.title,
-                        username = trigger.credential.username,
-                        password = trigger.credential.password,
-                        memo = trigger.credential.memo
-                    )
+                    state =
+                        state.copy(
+                            id = trigger.credential.id,
+                            title = trigger.credential.title,
+                            username = trigger.credential.username,
+                            password = trigger.credential.password,
+                            memo = trigger.credential.memo,
+                        ),
                 )
             }
 
@@ -39,13 +46,14 @@ object CredentialEditorReducer : Reducer<CredentialEditorStateImpl, CredentialEd
             }
 
             CredentialEditorIntent.SaveClicked -> {
-                val credential = Credential(
-                    id = state.id,
-                    title = state.title,
-                    username = state.username,
-                    password = state.password,
-                    memo = state.memo
-                )
+                val credential =
+                    Credential(
+                        id = state.id,
+                        title = state.title,
+                        username = state.username,
+                        password = state.password,
+                        memo = state.memo,
+                    )
                 Next(state = state, commands = listOf(CredentialEditorCommand.SaveCredential(credential)))
             }
 

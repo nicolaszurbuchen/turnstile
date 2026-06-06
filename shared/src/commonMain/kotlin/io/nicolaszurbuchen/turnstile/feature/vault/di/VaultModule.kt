@@ -2,6 +2,7 @@ package io.nicolaszurbuchen.turnstile.feature.vault.di
 
 import io.nicolaszurbuchen.turnstile.feature.vault.data.datasource.remote.CredentialRemoteDataSource
 import io.nicolaszurbuchen.turnstile.feature.vault.data.datasource.remote.CredentialRemoteDataSourceImpl
+import io.nicolaszurbuchen.turnstile.feature.vault.data.datasource.remote.mapper.CredentialMapper
 import io.nicolaszurbuchen.turnstile.feature.vault.data.repository.CredentialRepositoryImpl
 import io.nicolaszurbuchen.turnstile.feature.vault.domain.repository.CredentialRepository
 import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.DeleteCredentialUseCase
@@ -21,6 +22,9 @@ val vaultModule =
     module {
         // Data Sources
         singleOf(::CredentialRemoteDataSourceImpl) bind CredentialRemoteDataSource::class
+
+        // Mappers
+        singleOf(::CredentialMapper)
 
         // Repositories
         singleOf(::CredentialRepositoryImpl) bind CredentialRepository::class

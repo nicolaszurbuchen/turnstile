@@ -15,8 +15,8 @@ fun CredentialDetailRoute(
     onNavigateToEdit: (String) -> Unit,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: CredentialDetailViewModel = koinViewModel(),
 ) {
-    val viewModel = koinViewModel<CredentialDetailViewModel>()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     val onNavigateToEditUpdated by rememberUpdatedState(onNavigateToEdit)

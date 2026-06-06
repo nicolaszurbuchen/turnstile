@@ -53,7 +53,7 @@ fun CredentialEditorScreen(
                         text = if (state.id.isEmpty()) "New Credential" else "Edit Credential",
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        color = turnstileColors.textPrimary
+                        color = turnstileColors.textPrimary,
                     )
                 },
                 navigationIcon = {
@@ -66,7 +66,7 @@ fun CredentialEditorScreen(
                         Icon(Icons.Default.Done, contentDescription = "Save", tint = turnstileColors.accent)
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = turnstileColors.background)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = turnstileColors.background),
             )
         },
         containerColor = turnstileColors.background,
@@ -86,7 +86,7 @@ fun CredentialEditorScreen(
                 onValueChange = onTitleChange,
                 hint = "Title",
                 leadingIcon = Icons.Default.Title,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
 
             Spacer(Modifier.height(spacing.md))
@@ -96,7 +96,7 @@ fun CredentialEditorScreen(
                 onValueChange = onUsernameChange,
                 hint = "Username",
                 leadingIcon = Icons.Default.Person,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
 
             Spacer(Modifier.height(spacing.md))
@@ -107,7 +107,7 @@ fun CredentialEditorScreen(
                 hint = "Password",
                 leadingIcon = Icons.Default.Key,
                 isPassword = true,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
 
             Spacer(Modifier.height(spacing.md))
@@ -117,7 +117,7 @@ fun CredentialEditorScreen(
                 onValueChange = onMemoChange,
                 hint = "Memo",
                 leadingIcon = Icons.Default.Notes,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         }
     }

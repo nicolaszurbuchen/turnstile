@@ -21,26 +21,41 @@ sealed interface CredentialListTrigger : Trigger
 sealed interface CredentialListIntent :
     CredentialListTrigger,
     Intent {
-    data class EntryClicked(val id: String) : CredentialListIntent
+    data class EntryClicked(
+        val id: String,
+    ) : CredentialListIntent
+
     data object CreateClicked : CredentialListIntent
+
     data object SignOutClicked : CredentialListIntent
 }
 
 sealed interface CredentialListAction :
     CredentialListTrigger,
     Action {
-    data class EntriesLoaded(val entries: List<Credential>) : CredentialListAction
-    data class LoadFailed(val error: AppError) : CredentialListAction
+    data class EntriesLoaded(
+        val entries: List<Credential>,
+    ) : CredentialListAction
+
+    data class LoadFailed(
+        val error: AppError,
+    ) : CredentialListAction
+
     data object SignOutSucceeded : CredentialListAction
 }
 
 sealed interface CredentialListCommand : Command {
     data object ObserveEntries : CredentialListCommand
+
     data object SignOut : CredentialListCommand
 }
 
 sealed interface CredentialListEvent : Event {
-    data class NavigateToDetail(val id: String) : CredentialListEvent
+    data class NavigateToDetail(
+        val id: String,
+    ) : CredentialListEvent
+
     data object NavigateToCreate : CredentialListEvent
+
     data object NavigateToAuth : CredentialListEvent
 }

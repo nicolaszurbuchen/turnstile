@@ -5,7 +5,13 @@ import io.nicolaszurbuchen.turnstile.infra.mvi.Reducer
 import io.nicolaszurbuchen.turnstile.infra.ui.Loadable
 import io.nicolaszurbuchen.turnstile.infra.ui.onSuccess
 
-object CredentialDetailReducer : Reducer<Loadable<CredentialDetailStateImpl>, CredentialDetailTrigger, CredentialDetailCommand, CredentialDetailEvent> {
+object CredentialDetailReducer :
+    Reducer<
+        Loadable<CredentialDetailStateImpl>,
+        CredentialDetailTrigger,
+        CredentialDetailCommand,
+        CredentialDetailEvent,
+    > {
     override fun reduce(
         state: Loadable<CredentialDetailStateImpl>,
         trigger: CredentialDetailTrigger,
@@ -23,7 +29,14 @@ object CredentialDetailReducer : Reducer<Loadable<CredentialDetailStateImpl>, Cr
                 state.onSuccess { content ->
                     Next(
                         state = state,
-                        events = content.credential?.id?.let { listOf(CredentialDetailEvent.NavigateToEdit(it)) } ?: emptyList()
+                        events =
+                            content.credential?.id?.let {
+                                listOf(
+                                    CredentialDetailEvent.NavigateToEdit(
+                                        it,
+                                    ),
+                                )
+                            } ?: emptyList(),
                     )
                 }
             }
@@ -32,7 +45,14 @@ object CredentialDetailReducer : Reducer<Loadable<CredentialDetailStateImpl>, Cr
                 state.onSuccess { content ->
                     Next(
                         state = state,
-                        commands = content.credential?.id?.let { listOf(CredentialDetailCommand.DeleteCredential(it)) } ?: emptyList()
+                        commands =
+                            content.credential?.id?.let {
+                                listOf(
+                                    CredentialDetailCommand.DeleteCredential(
+                                        it,
+                                    ),
+                                )
+                            } ?: emptyList(),
                     )
                 }
             }
@@ -44,7 +64,9 @@ object CredentialDetailReducer : Reducer<Loadable<CredentialDetailStateImpl>, Cr
             CredentialDetailIntent.BackClicked -> {
                 Next(state = state, events = listOf(CredentialDetailEvent.NavigateBack))
             }
-            
-            else -> Next(state = state)
+
+            else -> {
+                Next(state = state)
+            }
         }
 }

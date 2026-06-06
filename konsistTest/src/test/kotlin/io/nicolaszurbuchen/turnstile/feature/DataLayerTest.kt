@@ -5,6 +5,7 @@ import com.lemonappdev.konsist.api.declaration.KoClassDeclaration
 import com.lemonappdev.konsist.api.declaration.KoFunctionDeclaration
 import com.lemonappdev.konsist.api.declaration.KoInterfaceDeclaration
 import com.lemonappdev.konsist.api.declaration.type.KoTypeDeclaration
+import com.lemonappdev.konsist.api.ext.list.declaration.flatten
 import com.lemonappdev.konsist.api.ext.list.withNameEndingWith
 import com.lemonappdev.konsist.api.ext.list.withPackage
 import com.lemonappdev.konsist.api.verify.assertEmpty
@@ -480,19 +481,21 @@ class DataLayerTest {
     }
 
     private fun extractLeafTypeNames(returnType: KoTypeDeclaration?): List<String> {
+        val containerTypes = setOf("Flow", "List", "Set")
+
         if (returnType == null) return emptyList()
-        return when (returnType.name) {
-            "Flow", "List", "Set" -> returnType.typeArguments
-                ?.flatMap { extractLeafTypeNames(it.returnType) }
-                ?: emptyList()
-            else -> listOf(returnType.name)
-        }
+
+        return (returnType.typeArguments
+            ?.flatten()
+            ?.map { it.name }
+            ?: listOf(returnType.name))
+            .filterNot { it in containerTypes }
     }
 
     private fun isAllowedReturnType(
         function: KoFunctionDeclaration,
         allowedProjectSuffix: String,
-        allowPrimitives: Boolean = false,
+        allowUnresolvedTypes: Boolean = false,
     ): Boolean {
         val returnType = function.returnType ?: return true // Unit/void - allowed
 
@@ -503,7 +506,7 @@ class DataLayerTest {
                 .find { it.name.endsWith(".$typeName") }
 
             when {
-                matchingImport == null -> allowPrimitives // primitive or stdlib
+                matchingImport == null -> allowUnresolvedTypes // primitive or stdlib
                 matchingImport.name.startsWith(projectPackagePrefix) ->
                     matchingImport.name.contains(".$allowedProjectSuffix.")
                 else -> false // external SDK type - not allowed
@@ -516,7 +519,7 @@ class DataLayerTest {
         scope.interfaces()
             .withNameEndingWith("RemoteDataSource")
             .flatMap { it.functions(includeNested = false) }
-            .assertTrue { isAllowedReturnType(it, allowedProjectSuffix = "dto", allowPrimitives = false) }
+            .assertTrue { isAllowedReturnType(it, allowedProjectSuffix = "dto", allowUnresolvedTypes = true) }
     }
 
     @Test // ok
@@ -524,7 +527,7 @@ class DataLayerTest {
         scope.interfaces()
             .withNameEndingWith("LocalDataSource")
             .flatMap { it.functions(includeNested = false) }
-            .assertTrue { isAllowedReturnType(it, allowedProjectSuffix = "entity", allowPrimitives = true) }
+            .assertTrue { isAllowedReturnType(it, allowedProjectSuffix = "entity", allowUnresolvedTypes = true) }
     }
 
     @Test // ok

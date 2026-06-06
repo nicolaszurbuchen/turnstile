@@ -15,11 +15,17 @@ class CredentialDetailViewModel(
     savedStateHandle: SavedStateHandle,
     private val getCredential: GetCredentialUseCase,
     private val deleteCredential: DeleteCredentialUseCase,
-) : MviViewModel<Loadable<CredentialDetailStateImpl>, CredentialDetailTrigger, CredentialDetailIntent, CredentialDetailAction, CredentialDetailCommand, CredentialDetailEvent>(
+) : MviViewModel<
+        Loadable<CredentialDetailStateImpl>,
+        CredentialDetailTrigger,
+        CredentialDetailIntent,
+        CredentialDetailAction,
+        CredentialDetailCommand,
+        CredentialDetailEvent,
+    >(
         initialState = Loadable.Loading,
         reducer = CredentialDetailReducer,
     ) {
-
     init {
         val credentialId = savedStateHandle.toRoute<DetailDestination>().id
         viewModelScope.launch { executeCommand(CredentialDetailCommand.LoadCredential(credentialId)) }

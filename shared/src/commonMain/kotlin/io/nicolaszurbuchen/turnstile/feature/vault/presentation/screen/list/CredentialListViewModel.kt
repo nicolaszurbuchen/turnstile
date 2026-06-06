@@ -14,7 +14,14 @@ import kotlinx.coroutines.launch
 class CredentialListViewModel(
     private val getCredentials: GetCredentialsUseCase,
     private val signOut: SignOutUseCase,
-) : MviViewModel<Loadable<CredentialListStateImpl>, CredentialListTrigger, CredentialListIntent, CredentialListAction, CredentialListCommand, CredentialListEvent>(
+) : MviViewModel<
+        Loadable<CredentialListStateImpl>,
+        CredentialListTrigger,
+        CredentialListIntent,
+        CredentialListAction,
+        CredentialListCommand,
+        CredentialListEvent,
+    >(
         initialState = Loadable.Loading,
         reducer = CredentialListReducer,
     ) {
@@ -37,7 +44,16 @@ class CredentialListViewModel(
     private fun observeEntries() {
         getCredentials()
             .onEach { dispatchAction(CredentialListAction.EntriesLoaded(it)) }
-            .catch { dispatchAction(CredentialListAction.LoadFailed(AppError(it.message ?: "Unknown error", it))) }
+            .catch {
+                dispatchAction(
+                    CredentialListAction.LoadFailed(
+                        AppError(
+                            it.message ?: "Unknown error",
+                            it,
+                        ),
+                    ),
+                )
+            }
             .launchIn(viewModelScope)
     }
 }

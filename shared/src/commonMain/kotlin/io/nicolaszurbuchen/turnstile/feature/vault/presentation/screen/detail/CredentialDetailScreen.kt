@@ -109,7 +109,7 @@ fun CredentialDetailScreen(
                 DetailField(label = "Username", value = credential.username)
                 Spacer(Modifier.height(spacing.lg))
                 DetailField(label = "Password", value = credential.password, isPassword = true)
-                
+
                 if (credential.memo.isNotEmpty()) {
                     Spacer(Modifier.height(spacing.lg))
                     DetailField(label = "Memo", value = credential.memo)

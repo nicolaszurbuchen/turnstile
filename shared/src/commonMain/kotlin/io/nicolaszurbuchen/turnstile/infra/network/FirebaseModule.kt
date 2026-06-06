@@ -7,9 +7,12 @@ import dev.gitlive.firebase.firestore.FirebaseFirestore
 import dev.gitlive.firebase.firestore.firestore
 import org.koin.dsl.module
 
-val firebaseModule = module {
-    single<FirebaseAuth> { Firebase.auth.also {
-        println("FirebaseAuth current user: ${it.currentUser?.uid}")
-    } }
-    single<FirebaseFirestore> { Firebase.firestore }
-}
+val firebaseModule =
+    module {
+        single<FirebaseAuth> {
+            Firebase.auth.also {
+                println("FirebaseAuth current user: ${it.currentUser?.uid}")
+            }
+        }
+        single<FirebaseFirestore> { Firebase.firestore }
+    }

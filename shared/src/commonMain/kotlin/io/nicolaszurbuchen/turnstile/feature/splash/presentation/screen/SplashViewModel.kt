@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.update
 class SplashViewModel(
     private val resolveSession: ResolveSessionUseCase,
 ) : ViewModel() {
-
     private val _state = MutableStateFlow(SplashState())
     val state: StateFlow<SplashState> = _state.asStateFlow()
 
