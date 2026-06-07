@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.turnstile.feature.login.presentation.component
+package io.nicolaszurbuchen.turnstile.infra.design.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -38,7 +38,7 @@ import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
 import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
 
 @Composable
-fun LoginTextField(
+fun TurnstileTextField(
     value: String,
     onValueChange: (String) -> Unit,
     hint: String,

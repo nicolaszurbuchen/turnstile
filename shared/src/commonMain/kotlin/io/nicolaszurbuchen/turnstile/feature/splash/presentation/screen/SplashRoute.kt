@@ -4,25 +4,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.nicolaszurbuchen.turnstile.feature.splash.domain.model.SessionStatus
+import androidx.compose.ui.Modifier
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun SplashRoute(
-    viewModel: SplashViewModel,
     onNavigateToAuth: () -> Unit,
     onNavigateToVault: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: SplashViewModel = koinViewModel(),
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
-
     val onNavigateToAuthUpdated by rememberUpdatedState(onNavigateToAuth)
     val onNavigateToVaultUpdated by rememberUpdatedState(onNavigateToVault)
 
-    LaunchedEffect(state.status) {
-        when (state.status) {
-            SessionStatus.Authenticated -> onNavigateToAuthUpdated()
-            SessionStatus.Unauthenticated -> onNavigateToVaultUpdated()
-            null -> Unit
+    LaunchedEffect(Unit) {
+        viewModel.labels.collect { label ->
+            when (label) {
+                SplashLabel.NavigateToAuth -> onNavigateToAuthUpdated()
+                SplashLabel.NavigateToVault -> onNavigateToVaultUpdated()
+            }
         }
     }
 }

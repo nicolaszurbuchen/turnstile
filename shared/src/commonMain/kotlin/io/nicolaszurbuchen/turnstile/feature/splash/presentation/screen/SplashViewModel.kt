@@ -1,19 +1,28 @@
 package io.nicolaszurbuchen.turnstile.feature.splash.presentation.screen
 
 import androidx.lifecycle.ViewModel
-import io.nicolaszurbuchen.turnstile.feature.splash.domain.usecase.ResolveSessionUseCase
-import kotlinx.coroutines.flow.MutableStateFlow
+import com.arkivanov.mvikotlin.extensions.coroutines.labels
+import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 
 class SplashViewModel(
-    private val resolveSession: ResolveSessionUseCase,
+    factory: SplashStoreFactory,
 ) : ViewModel() {
-    private val _state = MutableStateFlow(SplashState())
-    val state: StateFlow<SplashState> = _state.asStateFlow()
+    private val store = factory.create()
 
-    init {
-        _state.update { it.copy(status = resolveSession()) }
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val state: StateFlow<SplashState> = store.stateFlow
+
+    val labels: Flow<SplashLabel> = store.labels
+
+    fun onIntent(intent: SplashIntent) {
+        store.accept(intent)
+    }
+
+    override fun onCleared() {
+        store.dispose()
+        super.onCleared()
     }
 }

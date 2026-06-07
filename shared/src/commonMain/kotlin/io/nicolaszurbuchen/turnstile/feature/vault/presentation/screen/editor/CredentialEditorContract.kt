@@ -2,6 +2,7 @@ package io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.editor
 
 import io.nicolaszurbuchen.turnstile.feature.vault.domain.model.Credential
 import io.nicolaszurbuchen.turnstile.infra.ui.AppError
+import io.nicolaszurbuchen.turnstile.infra.ui.InitialLoad
 
 sealed interface CredentialEditorIntent {
     data class TitleChanged(val value: String) : CredentialEditorIntent
@@ -43,12 +44,6 @@ data class CredentialEditorState(
     val initialLoad: InitialLoad = InitialLoad.Loaded,
     val saveError: AppError? = null,
 )
-
-sealed interface InitialLoad {
-    data object Loading : InitialLoad
-    data object Loaded : InitialLoad
-    data class Failed(val error: AppError) : InitialLoad
-}
 
 fun CredentialEditorState.toDomain() = Credential(
     id = id,

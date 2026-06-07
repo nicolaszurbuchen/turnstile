@@ -24,7 +24,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.nicolaszurbuchen.turnstile.feature.login.presentation.component.LoginTextField
+import io.nicolaszurbuchen.turnstile.infra.design.component.TurnstileTextField
 import io.nicolaszurbuchen.turnstile.feature.login.presentation.screen.forgotpassword.ForgotPasswordState
 import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
 import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
@@ -36,7 +36,7 @@ import turnstile.shared.generated.resources.auth_forgot_subtitle
 import turnstile.shared.generated.resources.common_email
 
 @Composable
-internal fun FormContent(
+fun FormContent(
     state: ForgotPasswordState,
     onEmailChange: (String) -> Unit,
     onSubmit: () -> Unit,
@@ -67,7 +67,7 @@ internal fun FormContent(
         )
         Spacer(Modifier.height(28.dp))
 
-        LoginTextField(
+        TurnstileTextField(
             value = state.email,
             onValueChange = onEmailChange,
             hint = stringResource(Res.string.common_email),

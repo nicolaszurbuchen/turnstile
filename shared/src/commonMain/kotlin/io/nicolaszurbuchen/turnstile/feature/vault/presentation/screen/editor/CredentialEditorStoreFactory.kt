@@ -8,6 +8,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.GetCredentialUseCase
 import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.SaveCredentialUseCase
 import io.nicolaszurbuchen.turnstile.infra.ui.AppError
+import io.nicolaszurbuchen.turnstile.infra.ui.InitialLoad
 import kotlinx.coroutines.launch
 
 interface CredentialEditorStore : Store<CredentialEditorIntent, CredentialEditorState, CredentialEditorLabel>

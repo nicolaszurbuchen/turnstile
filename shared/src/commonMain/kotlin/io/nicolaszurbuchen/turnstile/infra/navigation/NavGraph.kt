@@ -11,7 +11,6 @@ import io.nicolaszurbuchen.turnstile.feature.splash.presentation.navigation.Spla
 import io.nicolaszurbuchen.turnstile.feature.splash.presentation.screen.SplashRoute
 import io.nicolaszurbuchen.turnstile.feature.vault.presentation.navigation.VaultGraph
 import io.nicolaszurbuchen.turnstile.feature.vault.presentation.navigation.vaultGraph
-import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun NavGraph(navController: NavHostController = rememberNavController()) {
@@ -21,7 +20,6 @@ fun NavGraph(navController: NavHostController = rememberNavController()) {
     ) {
         composable<SplashDestination> {
             SplashRoute(
-                viewModel = koinViewModel(),
                 onNavigateToAuth = {
                     navController.navigate(LoginGraph) {
                         popUpTo(SplashDestination) { inclusive = true }

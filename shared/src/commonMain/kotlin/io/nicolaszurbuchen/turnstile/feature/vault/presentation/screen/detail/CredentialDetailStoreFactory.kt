@@ -8,6 +8,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.DeleteCredentialUseCase
 import io.nicolaszurbuchen.turnstile.feature.vault.domain.usecase.GetCredentialUseCase
 import io.nicolaszurbuchen.turnstile.infra.ui.AppError
+import io.nicolaszurbuchen.turnstile.infra.ui.InitialLoad
 import kotlinx.coroutines.launch
 
 interface CredentialDetailStore : Store<CredentialDetailIntent, CredentialDetailState, CredentialDetailLabel>

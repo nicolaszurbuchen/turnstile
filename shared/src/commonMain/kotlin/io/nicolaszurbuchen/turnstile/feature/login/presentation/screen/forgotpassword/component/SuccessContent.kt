@@ -24,7 +24,7 @@ import turnstile.shared.generated.resources.auth_forgot_success_body
 import turnstile.shared.generated.resources.auth_forgot_success_title
 
 @Composable
-internal fun SuccessContent(
+fun SuccessContent(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {

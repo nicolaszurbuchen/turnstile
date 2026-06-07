@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import io.nicolaszurbuchen.turnstile.infra.design.component.AppErrorView
 import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
 import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
+import io.nicolaszurbuchen.turnstile.infra.ui.InitialLoad
 
 @Composable
 fun CredentialDetailScreen(

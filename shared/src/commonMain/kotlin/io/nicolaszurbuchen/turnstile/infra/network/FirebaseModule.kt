@@ -9,10 +9,6 @@ import org.koin.dsl.module
 
 val firebaseModule =
     module {
-        single<FirebaseAuth> {
-            Firebase.auth.also {
-                println("FirebaseAuth current user: ${it.currentUser?.uid}")
-            }
-        }
+        single<FirebaseAuth> { Firebase.auth }
         single<FirebaseFirestore> { Firebase.firestore }
     }

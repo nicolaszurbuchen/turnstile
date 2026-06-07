@@ -31,7 +31,7 @@ import io.nicolaszurbuchen.turnstile.feature.login.presentation.component.LoginB
 import io.nicolaszurbuchen.turnstile.feature.login.presentation.component.LoginHeading
 import io.nicolaszurbuchen.turnstile.feature.login.presentation.component.LoginModalView
 import io.nicolaszurbuchen.turnstile.feature.login.presentation.component.LoginSocialSection
-import io.nicolaszurbuchen.turnstile.feature.login.presentation.component.LoginTextField
+import io.nicolaszurbuchen.turnstile.infra.design.component.TurnstileTextField
 import io.nicolaszurbuchen.turnstile.infra.design.component.TurnstilePrimaryButton
 import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
 import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
@@ -83,7 +83,7 @@ fun SignInScreen(
             )
             Spacer(Modifier.height(28.dp))
 
-            LoginTextField(
+            TurnstileTextField(
                 value = state.email,
                 onValueChange = onEmailChanged,
                 hint = stringResource(Res.string.common_email),
@@ -100,7 +100,7 @@ fun SignInScreen(
             )
             Spacer(Modifier.height(12.dp))
 
-            LoginTextField(
+            TurnstileTextField(
                 value = state.password,
                 onValueChange = onPasswordChanged,
                 hint = stringResource(Res.string.common_password),

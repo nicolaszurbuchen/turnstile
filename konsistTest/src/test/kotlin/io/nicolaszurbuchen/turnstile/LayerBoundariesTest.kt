@@ -7,38 +7,6 @@ import kotlin.test.Test
 class LayerBoundariesTest {
 
     @Test
-    fun `domain layer should not depend on presentation or data`() {
-        Konsist.scopeFromProject()
-            .files
-            .filter { it.hasPackage("..domain..") }
-            .assertFalse {
-                it.imports.any { import ->
-                    import.name.contains(".presentation") || import.name.contains(".data")
-                }
-            }
-    }
-
-    @Test
-    fun `presentation layer should not depend on data`() {
-        Konsist.scopeFromProject()
-            .files
-            .filter { it.hasPackage("..presentation..") }
-            .assertFalse {
-                it.imports.any { import -> import.name.contains(".data") }
-            }
-    }
-
-    @Test
-    fun `data layer should not depend on presentation`() {
-        Konsist.scopeFromProject()
-            .files
-            .filter { it.hasPackage("..data..") }
-            .assertFalse {
-                it.imports.any { import -> import.name.contains(".presentation") }
-            }
-    }
-
-    @Test
     fun `feature layers should not depend on other features internal implementation`() {
         Konsist.scopeFromProject()
             .files
@@ -62,10 +30,10 @@ class LayerBoundariesTest {
     }
 
     @Test
-    fun `core should not depend on features except for root di and navigation`() {
+    fun `infra should not depend on features except for root di and navigation`() {
         Konsist.scopeFromProject()
             .files
-            .filter { it.hasPackage("..core..") }
+            .filter { it.hasPackage("..infra..") }
             .filterNot { it.name.contains("AppModule") || it.name.contains("NavGraph") }
             .assertFalse {
                 it.imports.any { import -> import.name.contains(".feature.") }

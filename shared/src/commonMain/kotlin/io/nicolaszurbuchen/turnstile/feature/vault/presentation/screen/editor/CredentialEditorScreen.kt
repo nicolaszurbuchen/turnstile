@@ -26,11 +26,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import io.nicolaszurbuchen.turnstile.feature.login.presentation.component.LoginTextField
+import io.nicolaszurbuchen.turnstile.infra.design.component.TurnstileTextField
 import io.nicolaszurbuchen.turnstile.infra.design.component.AppBanner
 import io.nicolaszurbuchen.turnstile.infra.design.component.AppErrorView
 import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
 import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
+import io.nicolaszurbuchen.turnstile.infra.ui.InitialLoad
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -107,7 +108,7 @@ fun CredentialEditorScreen(
 
                     Spacer(Modifier.height(spacing.md))
 
-                    LoginTextField(
+                    TurnstileTextField(
                         value = state.title,
                         onValueChange = onTitleChange,
                         hint = "Title",
@@ -117,7 +118,7 @@ fun CredentialEditorScreen(
 
                     Spacer(Modifier.height(spacing.md))
 
-                    LoginTextField(
+                    TurnstileTextField(
                         value = state.username,
                         onValueChange = onUsernameChange,
                         hint = "Username",
@@ -127,7 +128,7 @@ fun CredentialEditorScreen(
 
                     Spacer(Modifier.height(spacing.md))
 
-                    LoginTextField(
+                    TurnstileTextField(
                         value = state.password,
                         onValueChange = onPasswordChange,
                         hint = "Password",
@@ -138,7 +139,7 @@ fun CredentialEditorScreen(
 
                     Spacer(Modifier.height(spacing.md))
 
-                    LoginTextField(
+                    TurnstileTextField(
                         value = state.memo.orEmpty(),
                         onValueChange = onMemoChange,
                         hint = "Memo",
