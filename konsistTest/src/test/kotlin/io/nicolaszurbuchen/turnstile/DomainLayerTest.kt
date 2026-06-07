@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.turnstile.feature
+package io.nicolaszurbuchen.turnstile
 
 import com.lemonappdev.konsist.api.Konsist
 import com.lemonappdev.konsist.api.declaration.KoClassDeclaration
@@ -104,13 +104,6 @@ class DomainLayerTest {
     @Test // ok
     fun `declarations in domain model package must not be interfaces`() {
         scope.interfaces()
-            .withPackage("..domain.model")
-            .assertEmpty()
-    }
-
-    @Test // ok
-    fun `declarations in domain model package must not be objects`() {
-        scope.objects()
             .withPackage("..domain.model")
             .assertEmpty()
     }

@@ -1,4 +1,4 @@
-package io.nicolaszurbuchen.turnstile.feature
+package io.nicolaszurbuchen.turnstile
 
 import com.lemonappdev.konsist.api.Konsist
 import com.lemonappdev.konsist.api.ext.list.withNameEndingWith
