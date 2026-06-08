@@ -67,7 +67,7 @@ fun TurnstileTextField(
                 Modifier
                     .fillMaxWidth()
                     .background(
-                        color = if (isError) turnstileColors.danger else turnstileColors.surface,
+                        color = if (isError) turnstileColors.dangerSubtle else turnstileColors.surface,
                         shape = RoundedCornerShape(12.dp),
                     ).padding(horizontal = spacing.md, vertical = 14.dp),
         ) {

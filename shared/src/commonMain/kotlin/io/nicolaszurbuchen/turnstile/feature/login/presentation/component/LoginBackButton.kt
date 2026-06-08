@@ -13,9 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
 import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
-import org.jetbrains.compose.resources.stringResource
-import turnstile.shared.generated.resources.Res
-import turnstile.shared.generated.resources.common_back
 
 @Composable
 fun LoginBackButton(
@@ -33,7 +30,7 @@ fun LoginBackButton(
     ) {
         Icon(
             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-            contentDescription = stringResource(Res.string.common_back),
+            contentDescription = null,
             modifier = Modifier.size(20.dp),
         )
     }

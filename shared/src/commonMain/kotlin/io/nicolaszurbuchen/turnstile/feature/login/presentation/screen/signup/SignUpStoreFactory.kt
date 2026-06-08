@@ -24,9 +24,9 @@ class SignUpStoreFactory(
     private inner class ExecutorImpl : CoroutineExecutor<SignUpIntent, SignUpAction, SignUpState, SignUpMessage, SignUpLabel>() {
         override fun executeIntent(intent: SignUpIntent) {
             when (intent) {
-                is SignUpIntent.UsernameChanged -> dispatch(SignUpMessage.UsernameChanged(intent.value, validateUsername(intent.value)))
-                is SignUpIntent.EmailChanged -> dispatch(SignUpMessage.EmailChanged(intent.value, validateEmail(intent.value)))
-                is SignUpIntent.PasswordChanged -> dispatch(SignUpMessage.PasswordChanged(intent.value, validatePassword(intent.value)))
+                is SignUpIntent.UsernameChanged -> dispatch(SignUpMessage.UsernameChanged(intent.value))
+                is SignUpIntent.EmailChanged -> dispatch(SignUpMessage.EmailChanged(intent.value))
+                is SignUpIntent.PasswordChanged -> dispatch(SignUpMessage.PasswordChanged(intent.value))
                 SignUpIntent.Submit -> register()
                 SignUpIntent.SignInClicked -> publish(SignUpLabel.NavigateToSignIn)
             }
@@ -35,6 +35,15 @@ class SignUpStoreFactory(
         private fun register() {
             val state = state()
             if (!state.canSubmit) return
+
+            val usernameError = validateUsername(state.username)
+            val emailError = validateEmail(state.email)
+            val passwordError = validatePassword(state.password)
+
+            if (usernameError != null || emailError != null || passwordError != null) {
+                dispatch(SignUpMessage.SetErrors(usernameError, emailError, passwordError))
+                return
+            }
 
             scope.launch {
                 dispatch(SignUpMessage.StartedLoading)
@@ -51,9 +60,18 @@ class SignUpStoreFactory(
     private object ReducerImpl : Reducer<SignUpState, SignUpMessage> {
         override fun SignUpState.reduce(msg: SignUpMessage): SignUpState =
             when (msg) {
-                is SignUpMessage.UsernameChanged -> copy(username = msg.value, usernameError = msg.error, submitError = null)
-                is SignUpMessage.EmailChanged -> copy(email = msg.value, emailError = msg.error, submitError = null)
-                is SignUpMessage.PasswordChanged -> copy(password = msg.value, passwordError = msg.error, submitError = null)
+                is SignUpMessage.UsernameChanged ->
+                    copy(username = msg.value, usernameError = null, submitError = null)
+                is SignUpMessage.EmailChanged ->
+                    copy(email = msg.value, emailError = null, submitError = null)
+                is SignUpMessage.PasswordChanged ->
+                    copy(password = msg.value, passwordError = null, submitError = null)
+                is SignUpMessage.SetErrors ->
+                    copy(
+                        usernameError = msg.usernameError,
+                        emailError = msg.emailError,
+                        passwordError = msg.passwordError,
+                    )
                 SignUpMessage.StartedLoading -> copy(loading = true, submitError = null)
                 SignUpMessage.RegisterSucceeded -> copy(loading = false)
                 is SignUpMessage.RegisterFailed -> copy(loading = false, submitError = msg.message)

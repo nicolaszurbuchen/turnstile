@@ -3,6 +3,7 @@ package io.nicolaszurbuchen.turnstile.feature.login.presentation.screen.forgotpa
 import org.jetbrains.compose.resources.StringResource
 import turnstile.shared.generated.resources.Res
 import turnstile.shared.generated.resources.auth_error_email_invalid
+import turnstile.shared.generated.resources.auth_error_email_required
 
 sealed interface ForgotPasswordIntent {
     data class EmailChanged(val value: String) : ForgotPasswordIntent
@@ -17,7 +18,8 @@ sealed interface ForgotPasswordLabel {
 sealed interface ForgotPasswordAction
 
 sealed interface ForgotPasswordMessage {
-    data class EmailChanged(val value: String, val error: StringResource?) : ForgotPasswordMessage
+    data class EmailChanged(val value: String) : ForgotPasswordMessage
+    data class SetError(val error: StringResource?) : ForgotPasswordMessage
     data object StartedLoading : ForgotPasswordMessage
     data object ResetEmailSent : ForgotPasswordMessage
     data class ResetFailed(val message: String) : ForgotPasswordMessage
@@ -31,16 +33,12 @@ data class ForgotPasswordState(
     val submitError: String? = null,
 ) {
     val canSubmit: Boolean
-        get() =
-            email.isNotBlank() &&
-                emailError == null &&
-                !loading &&
-                !submitted
+        get() = !loading && !submitted
 }
 
 fun validateEmail(email: String): StringResource? =
     when {
-        email.isEmpty() -> null
+        email.isBlank() -> Res.string.auth_error_email_required
         !email.contains("@") -> Res.string.auth_error_email_invalid
         else -> null
     }

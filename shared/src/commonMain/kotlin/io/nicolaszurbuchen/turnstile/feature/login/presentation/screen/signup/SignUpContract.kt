@@ -3,7 +3,10 @@ package io.nicolaszurbuchen.turnstile.feature.login.presentation.screen.signup
 import org.jetbrains.compose.resources.StringResource
 import turnstile.shared.generated.resources.Res
 import turnstile.shared.generated.resources.auth_error_email_invalid
+import turnstile.shared.generated.resources.auth_error_email_required
+import turnstile.shared.generated.resources.auth_error_password_required
 import turnstile.shared.generated.resources.auth_error_password_too_short
+import turnstile.shared.generated.resources.auth_error_username_required
 import turnstile.shared.generated.resources.auth_error_username_too_short
 
 sealed interface SignUpIntent {
@@ -22,9 +25,14 @@ sealed interface SignUpLabel {
 sealed interface SignUpAction
 
 sealed interface SignUpMessage {
-    data class UsernameChanged(val value: String, val error: StringResource?) : SignUpMessage
-    data class EmailChanged(val value: String, val error: StringResource?) : SignUpMessage
-    data class PasswordChanged(val value: String, val error: StringResource?) : SignUpMessage
+    data class UsernameChanged(val value: String) : SignUpMessage
+    data class EmailChanged(val value: String) : SignUpMessage
+    data class PasswordChanged(val value: String) : SignUpMessage
+    data class SetErrors(
+        val usernameError: StringResource?,
+        val emailError: StringResource?,
+        val passwordError: StringResource?,
+    ) : SignUpMessage
     data object StartedLoading : SignUpMessage
     data object RegisterSucceeded : SignUpMessage
     data class RegisterFailed(val message: String) : SignUpMessage
@@ -41,33 +49,26 @@ data class SignUpState(
     val submitError: String? = null,
 ) {
     val canSubmit: Boolean
-        get() =
-            username.isNotBlank() &&
-                email.isNotBlank() &&
-                password.isNotBlank() &&
-                usernameError == null &&
-                emailError == null &&
-                passwordError == null &&
-                !loading
+        get() = !loading
 }
 
 fun validateUsername(name: String): StringResource? =
     when {
-        name.isEmpty() -> null
+        name.isBlank() -> Res.string.auth_error_username_required
         name.length < 2 -> Res.string.auth_error_username_too_short
         else -> null
     }
 
 fun validateEmail(email: String): StringResource? =
     when {
-        email.isEmpty() -> null
+        email.isBlank() -> Res.string.auth_error_email_required
         !email.contains("@") -> Res.string.auth_error_email_invalid
         else -> null
     }
 
 fun validatePassword(password: String): StringResource? =
     when {
-        password.isEmpty() -> null
+        password.isBlank() -> Res.string.auth_error_password_required
         password.length < 8 -> Res.string.auth_error_password_too_short
         else -> null
     }

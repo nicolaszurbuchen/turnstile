@@ -4,7 +4,6 @@
     <string name="app_name">Turnstile</string>
 
     <!-- Common -->
-    <string name="common_back">← Back</string>
     <string name="common_email">Email</string>
     <string name="common_password">Password</string>
 
@@ -44,8 +43,11 @@
     <string name="dashboard_retry">Try again</string>
     <string name="dashboard_banner_retry">Retry</string>
 
-    <!-- Validation errors -->
+    <!-- Validation errors -->§
+    <string name="auth_error_email_required">Email is required</string>
     <string name="auth_error_email_invalid">Invalid email</string>
+    <string name="auth_error_password_required">Password is required</string>
     <string name="auth_error_password_too_short">Password must be at least 8 characters</string>
+    <string name="auth_error_username_required">Username is required</string>
     <string name="auth_error_username_too_short">Username is too short</string>
 </resources>
