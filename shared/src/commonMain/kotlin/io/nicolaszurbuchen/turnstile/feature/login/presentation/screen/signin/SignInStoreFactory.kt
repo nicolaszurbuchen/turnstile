@@ -5,6 +5,7 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import io.nicolaszurbuchen.turnstile.feature.login.domain.usecase.SignInWithEmailUseCase
+import io.nicolaszurbuchen.turnstile.feature.login.domain.validation.LoginValidation
 import kotlinx.coroutines.launch
 
 interface SignInStore : Store<SignInIntent, SignInState, SignInLabel>
@@ -36,11 +37,16 @@ class SignInStoreFactory(
             val state = state()
             if (!state.canSubmit) return
 
-            val emailError = validateEmail(state.email)
-            val passwordError = validatePassword(state.password)
+            val emailError = LoginValidation.validateEmail(state.email)
+            val passwordError = LoginValidation.validatePassword(state.password)
 
             if (emailError != null || passwordError != null) {
-                dispatch(SignInMessage.SetErrors(emailError, passwordError))
+                dispatch(
+                    SignInMessage.SetErrors(
+                        emailError?.asStringResource(),
+                        passwordError?.asStringResource(),
+                    ),
+                )
                 return
             }
 

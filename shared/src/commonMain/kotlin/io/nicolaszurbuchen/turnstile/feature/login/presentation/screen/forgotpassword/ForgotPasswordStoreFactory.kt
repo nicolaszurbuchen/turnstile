@@ -5,6 +5,7 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import io.nicolaszurbuchen.turnstile.feature.login.domain.usecase.SendPasswordResetEmailUseCase
+import io.nicolaszurbuchen.turnstile.feature.login.domain.validation.LoginValidation
 import kotlinx.coroutines.launch
 
 interface ForgotPasswordStore : Store<ForgotPasswordIntent, ForgotPasswordState, ForgotPasswordLabel>
@@ -34,9 +35,9 @@ class ForgotPasswordStoreFactory(
             val state = state()
             if (!state.canSubmit) return
 
-            val emailError = validateEmail(state.email)
+            val emailError = LoginValidation.validateEmail(state.email)
             if (emailError != null) {
-                dispatch(ForgotPasswordMessage.SetError(emailError))
+                dispatch(ForgotPasswordMessage.SetError(emailError.asStringResource()))
                 return
             }
 

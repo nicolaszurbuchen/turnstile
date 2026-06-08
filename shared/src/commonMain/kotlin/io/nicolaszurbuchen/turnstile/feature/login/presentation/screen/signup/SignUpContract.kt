@@ -1,5 +1,8 @@
 package io.nicolaszurbuchen.turnstile.feature.login.presentation.screen.signup
 
+import io.nicolaszurbuchen.turnstile.feature.login.domain.validation.EmailValidationError
+import io.nicolaszurbuchen.turnstile.feature.login.domain.validation.PasswordValidationError
+import io.nicolaszurbuchen.turnstile.feature.login.domain.validation.UsernameValidationError
 import org.jetbrains.compose.resources.StringResource
 import turnstile.shared.generated.resources.Res
 import turnstile.shared.generated.resources.auth_error_email_invalid
@@ -52,23 +55,20 @@ data class SignUpState(
         get() = !loading
 }
 
-fun validateUsername(name: String): StringResource? =
-    when {
-        name.isBlank() -> Res.string.auth_error_username_required
-        name.length < 2 -> Res.string.auth_error_username_too_short
-        else -> null
+fun UsernameValidationError.asStringResource(): StringResource =
+    when (this) {
+        UsernameValidationError.Required -> Res.string.auth_error_username_required
+        UsernameValidationError.TooShort -> Res.string.auth_error_username_too_short
     }
 
-fun validateEmail(email: String): StringResource? =
-    when {
-        email.isBlank() -> Res.string.auth_error_email_required
-        !email.contains("@") -> Res.string.auth_error_email_invalid
-        else -> null
+fun EmailValidationError.asStringResource(): StringResource =
+    when (this) {
+        EmailValidationError.Required -> Res.string.auth_error_email_required
+        EmailValidationError.Invalid -> Res.string.auth_error_email_invalid
     }
 
-fun validatePassword(password: String): StringResource? =
-    when {
-        password.isBlank() -> Res.string.auth_error_password_required
-        password.length < 8 -> Res.string.auth_error_password_too_short
-        else -> null
+fun PasswordValidationError.asStringResource(): StringResource =
+    when (this) {
+        PasswordValidationError.Required -> Res.string.auth_error_password_required
+        PasswordValidationError.TooShort -> Res.string.auth_error_password_too_short
     }

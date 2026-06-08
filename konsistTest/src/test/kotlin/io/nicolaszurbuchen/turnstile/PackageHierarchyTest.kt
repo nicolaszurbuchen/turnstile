@@ -36,7 +36,7 @@ class PackageHierarchyTest {
 
     @Test // ok
     fun `Direct children of domain must be in allowed list`() {
-        val allowed = listOf("model", "repository", "usecase")
+        val allowed = listOf("model", "repository", "usecase", "validation")
 
         scope.packages
             .filter { it.name.matches(Regex(".*\\.(feature|common)\\.[^.]+\\.domain\\.[^.]+$")) }

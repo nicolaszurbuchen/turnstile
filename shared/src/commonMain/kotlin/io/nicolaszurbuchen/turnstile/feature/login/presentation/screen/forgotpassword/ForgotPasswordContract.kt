@@ -1,5 +1,6 @@
 package io.nicolaszurbuchen.turnstile.feature.login.presentation.screen.forgotpassword
 
+import io.nicolaszurbuchen.turnstile.feature.login.domain.validation.EmailValidationError
 import org.jetbrains.compose.resources.StringResource
 import turnstile.shared.generated.resources.Res
 import turnstile.shared.generated.resources.auth_error_email_invalid
@@ -36,9 +37,8 @@ data class ForgotPasswordState(
         get() = !loading && !submitted
 }
 
-fun validateEmail(email: String): StringResource? =
-    when {
-        email.isBlank() -> Res.string.auth_error_email_required
-        !email.contains("@") -> Res.string.auth_error_email_invalid
-        else -> null
+fun EmailValidationError.asStringResource(): StringResource =
+    when (this) {
+        EmailValidationError.Required -> Res.string.auth_error_email_required
+        EmailValidationError.Invalid -> Res.string.auth_error_email_invalid
     }
