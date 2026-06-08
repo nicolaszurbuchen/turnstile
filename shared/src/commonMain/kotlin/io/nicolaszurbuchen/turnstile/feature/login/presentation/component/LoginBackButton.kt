@@ -11,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
 import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
 import org.jetbrains.compose.resources.stringResource
 import turnstile.shared.generated.resources.Res
@@ -28,18 +29,12 @@ fun LoginBackButton(
                 containerColor = MaterialTheme.turnstileColors.surface,
                 contentColor = MaterialTheme.turnstileColors.textPrimary,
             ),
-        modifier =
-            Modifier
-                // .align(Alignment.TopStart)
-                .padding(12.dp)
-                .then(modifier),
+        modifier = modifier.padding(MaterialTheme.spacing.md),
     ) {
         Icon(
             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
             contentDescription = stringResource(Res.string.common_back),
-            modifier =
-                Modifier
-                    .size(20.dp),
+            modifier = Modifier.size(20.dp),
         )
     }
 }

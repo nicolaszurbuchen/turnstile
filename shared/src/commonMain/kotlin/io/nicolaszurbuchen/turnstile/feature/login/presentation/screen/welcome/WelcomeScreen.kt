@@ -16,6 +16,7 @@ import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
 import io.nicolaszurbuchen.turnstile.infra.ui.UiText
 import turnstile.shared.generated.resources.Res
 import turnstile.shared.generated.resources.auth_sign_in
+import turnstile.shared.generated.resources.auth_sign_up
 
 @Composable
 fun WelcomeScreen(
@@ -45,7 +46,7 @@ fun WelcomeScreen(
             onClick = onSignInClick,
         )
         TurnstileSecondaryButton(
-            text = UiText.Resource(Res.string.auth_sign_in),
+            text = UiText.Resource(Res.string.auth_sign_up),
             onClick = onSignUpClick,
         )
     }

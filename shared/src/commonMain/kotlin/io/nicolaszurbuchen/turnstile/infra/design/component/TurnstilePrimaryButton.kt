@@ -6,7 +6,9 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -42,9 +44,11 @@ fun TurnstilePrimaryButton(
                 containerColor = MaterialTheme.turnstileColors.accent,
                 contentColor = MaterialTheme.turnstileColors.onAccent,
             ),
+        shape = RoundedCornerShape(12.dp),
         modifier =
             modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .height(52.dp),
     ) {
         Box(
             contentAlignment = Alignment.Center,

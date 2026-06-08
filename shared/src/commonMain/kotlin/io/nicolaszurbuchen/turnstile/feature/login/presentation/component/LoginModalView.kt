@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -32,7 +30,7 @@ fun LoginModalView(
 ) {
     Surface(
         shape = InvertedArchShape(72.dp),
-        color = MaterialTheme.turnstileColors.surface,
+        color = MaterialTheme.turnstileColors.background,
         modifier =
             modifier
                 .fillMaxWidth()
@@ -43,11 +41,12 @@ fun LoginModalView(
             modifier =
                 Modifier
                     .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
                     .padding(horizontal = MaterialTheme.spacing.xl)
-                    .padding(top = 88.dp)
+                    .padding(
+                        top = 88.dp,
+                        bottom = MaterialTheme.spacing.md,
+                    )
                     .navigationBarsPadding()
-                    .padding(bottom = MaterialTheme.spacing.xl),
         ) {
             content()
         }

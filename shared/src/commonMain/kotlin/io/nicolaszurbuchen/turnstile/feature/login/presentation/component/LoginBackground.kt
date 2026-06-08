@@ -11,36 +11,29 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import org.jetbrains.compose.resources.painterResource
 import turnstile.shared.generated.resources.Res
-import turnstile.shared.generated.resources.background2
+import turnstile.shared.generated.resources.img_bg_turnstile
 
 @Composable
 fun LoginBackground(modifier: Modifier = Modifier) {
-    Box(
-        modifier =
-            modifier
-                .fillMaxSize(),
-    ) {
+    Box(modifier = modifier.fillMaxSize()) {
         Image(
-            painter = painterResource(Res.drawable.background2),
+            painter = painterResource(Res.drawable.img_bg_turnstile),
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier =
-                Modifier
-                    .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
         )
         Box(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .background(
-                        Brush.verticalGradient(
-                            colorStops =
-                                arrayOf(
-                                    0.45f to Color.Transparent,
-                                    0.8f to Color.Black.copy(alpha = 0.8f),
-                                ),
-                        ),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        colorStops =
+                            arrayOf(
+                                0.45f to Color.Transparent,
+                                0.8f to Color.Black.copy(alpha = 0.8f),
+                            ),
                     ),
+                ),
         )
     }
 }

@@ -26,7 +26,6 @@ class SignInStoreFactory(
             when (intent) {
                 is SignInIntent.EmailChanged -> dispatch(SignInMessage.EmailChanged(intent.value, validateEmail(intent.value)))
                 is SignInIntent.PasswordChanged -> dispatch(SignInMessage.PasswordChanged(intent.value, validatePassword(intent.value)))
-                SignInIntent.RememberMeToggled -> dispatch(SignInMessage.RememberMeToggled)
                 SignInIntent.Submit -> login()
                 SignInIntent.SignUpClicked -> publish(SignInLabel.NavigateToSignUp)
                 SignInIntent.ForgotPasswordClicked -> publish(SignInLabel.NavigateToForgotPassword)
@@ -54,7 +53,6 @@ class SignInStoreFactory(
             when (msg) {
                 is SignInMessage.EmailChanged -> copy(email = msg.value, emailError = msg.error, submitError = null)
                 is SignInMessage.PasswordChanged -> copy(password = msg.value, passwordError = msg.error, submitError = null)
-                SignInMessage.RememberMeToggled -> copy(rememberMe = !rememberMe)
                 SignInMessage.StartedLoading -> copy(loading = true, submitError = null)
                 SignInMessage.LoginSucceeded -> copy(loading = false)
                 is SignInMessage.LoginFailed -> copy(loading = false, submitError = msg.message)

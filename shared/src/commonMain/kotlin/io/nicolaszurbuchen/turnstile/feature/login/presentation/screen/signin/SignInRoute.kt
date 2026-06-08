@@ -37,7 +37,6 @@ fun SignInRoute(
         state = state,
         onEmailChanged = { viewModel.onIntent(SignInIntent.EmailChanged(it)) },
         onPasswordChanged = { viewModel.onIntent(SignInIntent.PasswordChanged(it)) },
-        onRememberMeToggled = { viewModel.onIntent(SignInIntent.RememberMeToggled) },
         onSubmit = { viewModel.onIntent(SignInIntent.Submit) },
         onSignUpClicked = { viewModel.onIntent(SignInIntent.SignUpClicked) },
         onForgotPasswordClicked = { viewModel.onIntent(SignInIntent.ForgotPasswordClicked) },

@@ -24,12 +24,10 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.nicolaszurbuchen.turnstile.feature.login.presentation.component.LoginBackButton
 import io.nicolaszurbuchen.turnstile.feature.login.presentation.component.LoginHeading
 import io.nicolaszurbuchen.turnstile.feature.login.presentation.component.LoginModalView
-import io.nicolaszurbuchen.turnstile.feature.login.presentation.component.LoginSocialSection
 import io.nicolaszurbuchen.turnstile.infra.design.component.TurnstileTextField
 import io.nicolaszurbuchen.turnstile.infra.design.component.TurnstilePrimaryButton
 import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
@@ -60,26 +58,17 @@ fun SignUpScreen(
     val emailFocus = FocusRequester()
     val passwordFocus = FocusRequester()
     val focusManager = LocalFocusManager.current
-    val turnstileColors = MaterialTheme.turnstileColors
-    val spacing = MaterialTheme.spacing
 
-    Column(
-        modifier = modifier,
-    ) {
-        LoginBackButton(
-            onNavigateBack = onNavigateBack,
-        )
-        Spacer(
-            modifier =
-                Modifier
-                    .weight(1f),
-        )
+    Column(modifier = modifier) {
+        LoginBackButton(onNavigateBack = onNavigateBack)
+        Spacer(modifier = Modifier.weight(1f))
+
         LoginModalView {
             LoginHeading(
                 title = UiText.Resource(Res.string.auth_signup_title),
                 subtitle = UiText.Resource(Res.string.auth_signup_subtitle),
             )
-            Spacer(Modifier.height(28.dp))
+            Spacer(Modifier.height(MaterialTheme.spacing.lg))
 
             TurnstileTextField(
                 value = state.username,
@@ -90,11 +79,9 @@ fun SignUpScreen(
                 errorMessage = state.usernameError?.let { stringResource(it) },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 keyboardActions = KeyboardActions(onNext = { emailFocus.requestFocus() }),
-                modifier =
-                    Modifier
-                        .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
             )
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(MaterialTheme.spacing.md))
 
             TurnstileTextField(
                 value = state.email,
@@ -108,16 +95,12 @@ fun SignUpScreen(
                         keyboardType = KeyboardType.Email,
                         imeAction = ImeAction.Next,
                     ),
-                keyboardActions =
-                    KeyboardActions(
-                        onNext = { passwordFocus.requestFocus() },
-                    ),
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .focusRequester(emailFocus),
+                keyboardActions = KeyboardActions(onNext = { passwordFocus.requestFocus() }),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .focusRequester(emailFocus),
             )
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(MaterialTheme.spacing.md))
 
             TurnstileTextField(
                 value = state.password,
@@ -127,26 +110,22 @@ fun SignUpScreen(
                 isError = state.passwordError != null,
                 errorMessage = state.passwordError?.let { stringResource(it) },
                 isPassword = true,
-                keyboardOptions =
-                    KeyboardOptions(
-                        imeAction = ImeAction.Done,
-                    ),
-                keyboardActions =
-                    KeyboardActions(
-                        onDone = { focusManager.clearFocus() },
-                    ),
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .focusRequester(passwordFocus),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .focusRequester(passwordFocus),
             )
 
             state.submitError?.let { error ->
-                Spacer(Modifier.height(spacing.sm))
-                Text(text = error, color = MaterialTheme.colorScheme.error, fontSize = 13.sp)
+                Spacer(Modifier.height(MaterialTheme.spacing.sm))
+                Text(
+                    text = error,
+                    color = MaterialTheme.colorScheme.error,
+                    fontSize = 12.sp,
+                )
             }
-
-            Spacer(Modifier.height(spacing.lg))
+            Spacer(Modifier.weight(1f))
 
             TurnstilePrimaryButton(
                 text = UiText.Resource(id = Res.string.auth_sign_up),
@@ -154,10 +133,7 @@ fun SignUpScreen(
                 enabled = state.canSubmit,
                 loading = state.loading,
             )
-
-            Spacer(Modifier.height(spacing.lg))
-            LoginSocialSection()
-            Spacer(Modifier.weight(1f))
+            Spacer(Modifier.height(MaterialTheme.spacing.lg))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -167,7 +143,7 @@ fun SignUpScreen(
                 Text(
                     text = stringResource(Res.string.auth_signup_has_account),
                     fontSize = 14.sp,
-                    color = turnstileColors.textSecondary,
+                    color = MaterialTheme.turnstileColors.textSecondary,
                 )
                 TextButton(
                     onClick = onSignInClicked,
@@ -176,7 +152,7 @@ fun SignUpScreen(
                         text = stringResource(Res.string.auth_sign_in),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
-                        color = turnstileColors.accent,
+                        color = MaterialTheme.turnstileColors.accent,
                     )
                 }
             }

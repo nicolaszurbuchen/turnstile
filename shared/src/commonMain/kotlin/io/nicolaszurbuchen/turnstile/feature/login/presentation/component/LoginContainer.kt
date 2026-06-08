@@ -11,18 +11,13 @@ fun LoginContainer(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
-    Box(
-        modifier =
-            modifier
-                .fillMaxSize(),
-    ) {
+    Box(modifier = modifier.fillMaxSize()) {
         LoginBackground()
 
         Box(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .statusBarsPadding(),
+            modifier = Modifier
+                .fillMaxSize()
+                .statusBarsPadding(),
         ) {
             content()
         }

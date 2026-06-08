@@ -9,7 +9,6 @@ sealed interface SignInIntent {
     data class EmailChanged(val value: String) : SignInIntent
     data class PasswordChanged(val value: String) : SignInIntent
     data object Submit : SignInIntent
-    data object RememberMeToggled : SignInIntent
     data object SignUpClicked : SignInIntent
     data object ForgotPasswordClicked : SignInIntent
 }
@@ -25,7 +24,6 @@ sealed interface SignInAction
 sealed interface SignInMessage {
     data class EmailChanged(val value: String, val error: StringResource?) : SignInMessage
     data class PasswordChanged(val value: String, val error: StringResource?) : SignInMessage
-    data object RememberMeToggled : SignInMessage
     data object StartedLoading : SignInMessage
     data object LoginSucceeded : SignInMessage
     data class LoginFailed(val message: String) : SignInMessage
