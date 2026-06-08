@@ -47,6 +47,7 @@ fun TurnstileTextField(
     isError: Boolean = false,
     errorMessage: String? = null,
     isPassword: Boolean = false,
+    singleLine: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
 ) {
@@ -72,14 +73,14 @@ fun TurnstileTextField(
                     ).padding(horizontal = spacing.md, vertical = 14.dp),
         ) {
             Row(
-                verticalAlignment = Alignment.CenterVertically,
+                verticalAlignment = if (singleLine) Alignment.CenterVertically else Alignment.Top,
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Icon(
                     imageVector = leadingIcon,
                     contentDescription = null,
                     tint = if (isError) turnstileColors.danger else turnstileColors.textSecondary,
-                    modifier = Modifier.size(20.dp),
+                    modifier = Modifier.size(20.dp).padding(top = if (singleLine) 0.dp else 2.dp),
                 )
                 Spacer(Modifier.width(12.dp))
                 Box(Modifier.weight(1f)) {
@@ -92,7 +93,7 @@ fun TurnstileTextField(
                         visualTransformation = visualTransformation,
                         keyboardOptions = keyboardOptions,
                         keyboardActions = keyboardActions,
-                        singleLine = true,
+                        singleLine = singleLine,
                         textStyle =
                             LocalTextStyle.current.copy(
                                 fontSize = 15.sp,

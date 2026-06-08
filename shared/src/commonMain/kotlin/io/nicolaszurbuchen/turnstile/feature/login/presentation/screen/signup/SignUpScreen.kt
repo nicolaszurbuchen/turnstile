@@ -28,8 +28,8 @@ import androidx.compose.ui.unit.sp
 import io.nicolaszurbuchen.turnstile.feature.login.presentation.component.LoginBackButton
 import io.nicolaszurbuchen.turnstile.feature.login.presentation.component.LoginHeading
 import io.nicolaszurbuchen.turnstile.feature.login.presentation.component.LoginModalView
-import io.nicolaszurbuchen.turnstile.infra.design.component.TurnstileTextField
 import io.nicolaszurbuchen.turnstile.infra.design.component.TurnstilePrimaryButton
+import io.nicolaszurbuchen.turnstile.infra.design.component.TurnstileTextField
 import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
 import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
 import io.nicolaszurbuchen.turnstile.infra.ui.UiText

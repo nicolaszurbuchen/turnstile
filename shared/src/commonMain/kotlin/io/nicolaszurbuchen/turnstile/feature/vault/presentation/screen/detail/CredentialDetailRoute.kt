@@ -5,6 +5,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -16,6 +18,7 @@ fun CredentialDetailRoute(
     viewModel: CredentialDetailViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val clipboardManager = LocalClipboardManager.current
 
     val onNavigateToEditUpdated by rememberUpdatedState(onNavigateToEdit)
     val onNavigateBackUpdated by rememberUpdatedState(onNavigateBack)
@@ -34,6 +37,12 @@ fun CredentialDetailRoute(
         onBackClick = { viewModel.onIntent(CredentialDetailIntent.BackClicked) },
         onEditClick = { viewModel.onIntent(CredentialDetailIntent.EditClicked) },
         onDeleteClick = { viewModel.onIntent(CredentialDetailIntent.DeleteClicked) },
+        onCopyUsername = { username ->
+            clipboardManager.setText(AnnotatedString(username))
+        },
+        onCopyPassword = { password ->
+            clipboardManager.setText(AnnotatedString(password))
+        },
         onRetry = { viewModel.onIntent(CredentialDetailIntent.Retry) },
         modifier = modifier,
     )

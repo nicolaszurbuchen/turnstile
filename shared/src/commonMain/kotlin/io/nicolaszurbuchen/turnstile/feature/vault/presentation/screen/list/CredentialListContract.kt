@@ -42,12 +42,14 @@ data class CredentialUi(
     val id: String,
     val title: String,
     val username: String,
+    val password: String,
 )
 
 fun Credential.toUiModel() = CredentialUi(
     id = id,
     title = title,
     username = username,
+    password = password,
 )
 
 fun List<Credential>.toUiModels() = map { it.toUiModel() }

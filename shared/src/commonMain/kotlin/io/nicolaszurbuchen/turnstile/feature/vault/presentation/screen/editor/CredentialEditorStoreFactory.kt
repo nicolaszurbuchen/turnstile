@@ -76,9 +76,18 @@ class CredentialEditorStoreFactory(
         }
 
         private fun save() {
+            val state = state()
+            val usernameError = if (state.username.isBlank()) "Username must not be empty" else null
+            val passwordError = if (state.password.isBlank()) "Password must not be empty" else null
+
+            if (usernameError != null || passwordError != null) {
+                dispatch(CredentialEditorMessage.ValidationFailed(usernameError, passwordError))
+                return
+            }
+
             scope.launch {
                 dispatch(CredentialEditorMessage.Saving)
-                runCatching { saveCredential(state().toDomain()) }
+                runCatching { saveCredential(state.toDomain()) }
                     .onSuccess {
                         publish(CredentialEditorLabel.NavigateBack)
                     }
@@ -96,6 +105,8 @@ class CredentialEditorStoreFactory(
                     username = msg.credential.username,
                     password = msg.credential.password,
                     memo = msg.credential.memo,
+                    usernameError = null,
+                    passwordError = null,
                     initialLoad = InitialLoad.Loaded,
                 )
                 is CredentialEditorMessage.InitialLoadFailed -> copy(
@@ -117,6 +128,10 @@ class CredentialEditorStoreFactory(
                 )
                 CredentialEditorMessage.DismissSaveError -> copy(
                     saveError = null,
+                )
+                is CredentialEditorMessage.ValidationFailed -> copy(
+                    usernameError = msg.usernameError,
+                    passwordError = msg.passwordError,
                 )
             }
     }

@@ -6,11 +6,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.Key
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Notes
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Title
@@ -25,10 +24,11 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.nicolaszurbuchen.turnstile.infra.design.component.TurnstileTextField
 import io.nicolaszurbuchen.turnstile.infra.design.component.AppBanner
 import io.nicolaszurbuchen.turnstile.infra.design.component.AppErrorView
+import io.nicolaszurbuchen.turnstile.infra.design.component.TurnstileTextField
 import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
 import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
 import io.nicolaszurbuchen.turnstile.infra.ui.InitialLoad
@@ -68,8 +68,8 @@ fun CredentialEditorScreen(
                 },
                 actions = {
                     if (state.initialLoad is InitialLoad.Loaded) {
-                        IconButton(onClick = onSaveClick, enabled = !state.isSaving) {
-                            Icon(Icons.Default.Done, contentDescription = "Save", tint = turnstileColors.accent)
+                        IconButton(onClick = onSaveClick, enabled = state.canSave) {
+                            Icon(Icons.Default.Done, contentDescription = "Save", tint = if (state.canSave) turnstileColors.accent else turnstileColors.textDisabled)
                         }
                     }
                 },
@@ -77,7 +77,7 @@ fun CredentialEditorScreen(
             )
         },
         containerColor = turnstileColors.background,
-        modifier = modifier.fillMaxSize().statusBarsPadding(),
+        modifier = modifier.fillMaxSize(),
     ) { padding ->
         when (val initialLoad = state.initialLoad) {
             is InitialLoad.Loading -> {
@@ -108,46 +108,66 @@ fun CredentialEditorScreen(
 
                     Spacer(Modifier.height(spacing.md))
 
+                    EditLabel("Title")
                     TurnstileTextField(
                         value = state.title,
                         onValueChange = onTitleChange,
-                        hint = "Title",
+                        hint = "e.g. Google",
                         leadingIcon = Icons.Default.Title,
                         modifier = Modifier.fillMaxWidth(),
                     )
 
                     Spacer(Modifier.height(spacing.md))
 
+                    EditLabel("Username")
                     TurnstileTextField(
                         value = state.username,
                         onValueChange = onUsernameChange,
                         hint = "Username",
                         leadingIcon = Icons.Default.Person,
+                        isError = state.username.isEmpty() && state.usernameError != null,
+                        errorMessage = if (state.username.isEmpty()) state.usernameError else null,
                         modifier = Modifier.fillMaxWidth(),
                     )
 
                     Spacer(Modifier.height(spacing.md))
 
+                    EditLabel("Password")
                     TurnstileTextField(
                         value = state.password,
                         onValueChange = onPasswordChange,
                         hint = "Password",
-                        leadingIcon = Icons.Default.Key,
+                        leadingIcon = Icons.Default.Lock,
                         isPassword = true,
+                        isError = state.password.isEmpty() && state.passwordError != null,
+                        errorMessage = if (state.password.isEmpty()) state.passwordError else null,
                         modifier = Modifier.fillMaxWidth(),
                     )
 
                     Spacer(Modifier.height(spacing.md))
 
+                    EditLabel("Memo")
                     TurnstileTextField(
                         value = state.memo.orEmpty(),
                         onValueChange = onMemoChange,
                         hint = "Memo",
                         leadingIcon = Icons.Default.Notes,
-                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = false,
+                        modifier = Modifier.fillMaxWidth().height(120.dp),
                     )
                 }
             }
         }
     }
+}
+
+@Composable
+private fun EditLabel(text: String) {
+    Text(
+        text = text,
+        fontSize = 13.sp,
+        fontWeight = FontWeight.Medium,
+        color = MaterialTheme.turnstileColors.textSecondary,
+        modifier = Modifier.padding(bottom = 6.dp),
+    )
 }

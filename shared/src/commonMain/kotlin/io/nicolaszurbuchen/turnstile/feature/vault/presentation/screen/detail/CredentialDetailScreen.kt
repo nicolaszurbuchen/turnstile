@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
@@ -39,6 +40,8 @@ fun CredentialDetailScreen(
     onBackClick: () -> Unit,
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit,
+    onCopyUsername: (String) -> Unit,
+    onCopyPassword: (String) -> Unit,
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -64,7 +67,7 @@ fun CredentialDetailScreen(
                         Icon(Icons.Default.Edit, contentDescription = "Edit", tint = turnstileColors.textPrimary)
                     }
                     IconButton(onClick = onDeleteClick) {
-                        Icon(Icons.Default.Delete, contentDescription = "Delete", tint = turnstileColors.danger)
+                        Icon(Icons.Default.Delete, contentDescription = "Delete", tint = turnstileColors.textPrimary)
                     }
                 }
             }
@@ -122,14 +125,24 @@ fun CredentialDetailScreen(
 
                         Spacer(Modifier.height(spacing.xl))
 
-                        DetailField(label = "Username", value = credential.username)
+                        DetailField(
+                            label = "Username",
+                            value = credential.username,
+                            onCopy = { onCopyUsername(credential.username) },
+                        )
                         Spacer(Modifier.height(spacing.lg))
-                        DetailField(label = "Password", value = credential.password, isPassword = true)
+                        DetailField(
+                            label = "Password",
+                            value = credential.password,
+                            isPassword = true,
+                            onCopy = { onCopyPassword(credential.password) },
+                        )
 
-                        if (!credential.memo.isNullOrBlank()) {
-                            Spacer(Modifier.height(spacing.lg))
-                            DetailField(label = "Memo", value = credential.memo)
-                        }
+                        Spacer(Modifier.height(spacing.lg))
+                        DetailField(
+                            label = "Memo",
+                            value = credential.memo ?: "",
+                        )
                     }
                 }
             }
@@ -142,6 +155,7 @@ private fun DetailField(
     label: String,
     value: String,
     isPassword: Boolean = false,
+    onCopy: (() -> Unit)? = null,
 ) {
     val turnstileColors = MaterialTheme.turnstileColors
     val spacing = MaterialTheme.spacing
@@ -154,11 +168,30 @@ private fun DetailField(
             fontWeight = FontWeight.Medium,
         )
         Spacer(Modifier.height(spacing.xs))
-        Text(
-            text = if (isPassword) "••••••••" else value,
-            fontSize = 16.sp,
-            color = turnstileColors.textPrimary,
-            fontWeight = FontWeight.SemiBold,
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Text(
+                text = if (isPassword) "••••••••" else value.ifBlank { "None" },
+                fontSize = 16.sp,
+                color = if (value.isBlank()) turnstileColors.textDisabled else turnstileColors.textPrimary,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.weight(1f),
+            )
+            if (onCopy != null && value.isNotBlank()) {
+                IconButton(
+                    onClick = onCopy,
+                    modifier = Modifier.size(24.dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ContentCopy,
+                        contentDescription = "Copy $label",
+                        tint = turnstileColors.accent,
+                        modifier = Modifier.size(16.dp),
+                    )
+                }
+            }
+        }
     }
 }

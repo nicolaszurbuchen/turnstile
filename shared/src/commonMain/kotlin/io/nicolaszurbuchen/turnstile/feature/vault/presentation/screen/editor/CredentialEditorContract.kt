@@ -32,6 +32,7 @@ sealed interface CredentialEditorMessage {
     data class SaveFailed(val error: AppError) : CredentialEditorMessage
     data object ResetToLoading : CredentialEditorMessage
     data object DismissSaveError : CredentialEditorMessage
+    data class ValidationFailed(val usernameError: String?, val passwordError: String?) : CredentialEditorMessage
 }
 
 data class CredentialEditorState(
@@ -40,10 +41,14 @@ data class CredentialEditorState(
     val username: String = "",
     val password: String = "",
     val memo: String? = "",
+    val usernameError: String? = null,
+    val passwordError: String? = null,
     val isSaving: Boolean = false,
     val initialLoad: InitialLoad = InitialLoad.Loaded,
     val saveError: AppError? = null,
-)
+) {
+    val canSave: Boolean get() = title.isNotBlank() && username.isNotBlank() && password.isNotBlank() && !isSaving
+}
 
 fun CredentialEditorState.toDomain() = Credential(
     id = id,
