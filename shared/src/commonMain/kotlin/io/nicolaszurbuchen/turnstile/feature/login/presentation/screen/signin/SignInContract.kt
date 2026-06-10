@@ -10,28 +10,52 @@ import turnstile.shared.generated.resources.login_error_password_required
 import turnstile.shared.generated.resources.login_error_password_too_short
 
 sealed interface SignInIntent {
-    data class EmailChanged(val value: String) : SignInIntent
-    data class PasswordChanged(val value: String) : SignInIntent
+    data class EmailChanged(
+        val value: String,
+    ) : SignInIntent
+
+    data class PasswordChanged(
+        val value: String,
+    ) : SignInIntent
+
     data object Submit : SignInIntent
+
     data object SignUpClicked : SignInIntent
+
     data object ForgotPasswordClicked : SignInIntent
 }
 
 sealed interface SignInLabel {
     data object NavigateHome : SignInLabel
+
     data object NavigateToSignUp : SignInLabel
+
     data object NavigateToForgotPassword : SignInLabel
 }
 
 sealed interface SignInAction
 
 sealed interface SignInMessage {
-    data class EmailChanged(val value: String) : SignInMessage
-    data class PasswordChanged(val value: String) : SignInMessage
-    data class SetErrors(val emailError: StringResource?, val passwordError: StringResource?) : SignInMessage
+    data class EmailChanged(
+        val value: String,
+    ) : SignInMessage
+
+    data class PasswordChanged(
+        val value: String,
+    ) : SignInMessage
+
+    data class SetErrors(
+        val emailError: StringResource?,
+        val passwordError: StringResource?,
+    ) : SignInMessage
+
     data object StartedLoading : SignInMessage
+
     data object LoginSucceeded : SignInMessage
-    data class LoginFailed(val message: String) : SignInMessage
+
+    data class LoginFailed(
+        val message: String,
+    ) : SignInMessage
 }
 
 data class SignInState(

@@ -15,9 +15,10 @@ fun LoginContainer(
         LoginBackground()
 
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .statusBarsPadding(),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .statusBarsPadding(),
         ) {
             content()
         }

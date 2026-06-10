@@ -19,13 +19,15 @@ class CredentialDetailStoreFactory(
     private val deleteCredential: DeleteCredentialUseCase,
 ) {
     fun create(credentialId: String): CredentialDetailStore =
-        object : CredentialDetailStore, Store<CredentialDetailIntent, CredentialDetailState, CredentialDetailLabel> by storeFactory.create(
-            name = "CredentialDetailStore",
-            initialState = CredentialDetailState(),
-            bootstrapper = BootstrapperImpl(),
-            executorFactory = { ExecutorImpl(credentialId) },
-            reducer = ReducerImpl,
-        ) {}
+        object :
+            CredentialDetailStore,
+            Store<CredentialDetailIntent, CredentialDetailState, CredentialDetailLabel> by storeFactory.create(
+                name = "CredentialDetailStore",
+                initialState = CredentialDetailState(),
+                bootstrapper = BootstrapperImpl(),
+                executorFactory = { ExecutorImpl(credentialId) },
+                reducer = ReducerImpl,
+            ) {}
 
     private class BootstrapperImpl : CoroutineBootstrapper<CredentialDetailAction>() {
         override fun invoke() {
@@ -33,7 +35,15 @@ class CredentialDetailStoreFactory(
         }
     }
 
-    private inner class ExecutorImpl(private val credentialId: String) : CoroutineExecutor<CredentialDetailIntent, CredentialDetailAction, CredentialDetailState, CredentialDetailMessage, CredentialDetailLabel>() {
+    private inner class ExecutorImpl(
+        private val credentialId: String,
+    ) : CoroutineExecutor<
+            CredentialDetailIntent,
+            CredentialDetailAction,
+            CredentialDetailState,
+            CredentialDetailMessage,
+            CredentialDetailLabel,
+        >() {
         override fun executeAction(action: CredentialDetailAction) {
             when (action) {
                 is CredentialDetailAction.LoadCredential -> loadCredential()
@@ -42,11 +52,20 @@ class CredentialDetailStoreFactory(
 
         override fun executeIntent(intent: CredentialDetailIntent) {
             when (intent) {
-                CredentialDetailIntent.BackClicked -> publish(CredentialDetailLabel.NavigateBack)
-                CredentialDetailIntent.DeleteClicked -> delete()
-                CredentialDetailIntent.EditClicked -> state().credential?.id?.let {
-                    publish(CredentialDetailLabel.NavigateToEdit(it))
+                CredentialDetailIntent.BackClicked -> {
+                    publish(CredentialDetailLabel.NavigateBack)
                 }
+
+                CredentialDetailIntent.DeleteClicked -> {
+                    delete()
+                }
+
+                CredentialDetailIntent.EditClicked -> {
+                    state().credential?.id?.let {
+                        publish(CredentialDetailLabel.NavigateToEdit(it))
+                    }
+                }
+
                 CredentialDetailIntent.Retry -> {
                     dispatch(CredentialDetailMessage.Loading)
                     loadCredential()
@@ -64,7 +83,16 @@ class CredentialDetailStoreFactory(
                             dispatch(CredentialDetailMessage.LoadFailed(AppError("Credential not found")))
                         }
                     }
-                    .onFailure { dispatch(CredentialDetailMessage.LoadFailed(AppError(it.message ?: "Unknown error", it))) }
+                    .onFailure {
+                        dispatch(
+                            CredentialDetailMessage.LoadFailed(
+                                AppError(
+                                    it.message ?: "Unknown error",
+                                    it,
+                                ),
+                            ),
+                        )
+                    }
             }
         }
 
@@ -74,7 +102,16 @@ class CredentialDetailStoreFactory(
                     .onSuccess {
                         publish(CredentialDetailLabel.NavigateBack)
                     }
-                    .onFailure { dispatch(CredentialDetailMessage.DeleteFailed(AppError(it.message ?: "Unknown error", it))) }
+                    .onFailure {
+                        dispatch(
+                            CredentialDetailMessage.DeleteFailed(
+                                AppError(
+                                    it.message ?: "Unknown error",
+                                    it,
+                                ),
+                            ),
+                        )
+                    }
             }
         }
     }
@@ -82,20 +119,34 @@ class CredentialDetailStoreFactory(
     private object ReducerImpl : Reducer<CredentialDetailState, CredentialDetailMessage> {
         override fun CredentialDetailState.reduce(msg: CredentialDetailMessage): CredentialDetailState =
             when (msg) {
-                is CredentialDetailMessage.CredentialLoaded -> copy(
-                    credential = msg.credential.toUiModel(),
-                    initialLoad = InitialLoad.Loaded,
-                )
-                is CredentialDetailMessage.LoadFailed -> copy(
-                    initialLoad = InitialLoad.Failed(msg.error),
-                )
-                is CredentialDetailMessage.DeleteFailed -> copy(
-                    deleteError = msg.error,
-                )
-                CredentialDetailMessage.Deleted -> this
-                CredentialDetailMessage.Loading -> copy(
-                    initialLoad = InitialLoad.Loading,
-                )
+                is CredentialDetailMessage.CredentialLoaded -> {
+                    copy(
+                        credential = msg.credential.toUiModel(),
+                        initialLoad = InitialLoad.Loaded,
+                    )
+                }
+
+                is CredentialDetailMessage.LoadFailed -> {
+                    copy(
+                        initialLoad = InitialLoad.Failed(msg.error),
+                    )
+                }
+
+                is CredentialDetailMessage.DeleteFailed -> {
+                    copy(
+                        deleteError = msg.error,
+                    )
+                }
+
+                CredentialDetailMessage.Deleted -> {
+                    this
+                }
+
+                CredentialDetailMessage.Loading -> {
+                    copy(
+                        initialLoad = InitialLoad.Loading,
+                    )
+                }
             }
     }
 }

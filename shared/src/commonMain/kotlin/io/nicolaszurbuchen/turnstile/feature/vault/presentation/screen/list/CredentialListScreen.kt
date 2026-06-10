@@ -111,9 +111,11 @@ fun CredentialListScreen(
         containerColor = MaterialTheme.turnstileColors.background,
         modifier = modifier.fillMaxSize(),
     ) { padding ->
-        Column(modifier = Modifier
-            .padding(padding)
-            .fillMaxSize(),
+        Column(
+            modifier =
+                Modifier
+                    .padding(padding)
+                    .fillMaxSize(),
         ) {
             when (val initialLoad = state.initialLoad) {
                 is InitialLoad.Loading -> {
@@ -133,11 +135,12 @@ fun CredentialListScreen(
                             TurnstileBanner(
                                 message = error.message,
                                 onDismiss = onDismissStreamError,
-                                modifier = Modifier
-                                    .padding(
-                                        horizontal = MaterialTheme.spacing.md,
-                                        vertical = MaterialTheme.spacing.sm,
-                                    ),
+                                modifier =
+                                    Modifier
+                                        .padding(
+                                            horizontal = MaterialTheme.spacing.md,
+                                            vertical = MaterialTheme.spacing.sm,
+                                        ),
                             )
                         }
 
@@ -149,9 +152,10 @@ fun CredentialListScreen(
                         } else {
                             LazyColumn(
                                 contentPadding = PaddingValues(MaterialTheme.spacing.md),
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .navigationBarsPadding(),
+                                modifier =
+                                    Modifier
+                                        .fillMaxSize()
+                                        .navigationBarsPadding(),
                             ) {
                                 items(
                                     items = state.entries,
@@ -189,11 +193,12 @@ private fun CredentialListItem(
         shape = MaterialTheme.shapes.small,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.turnstileColors.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(
-                vertical = 4.dp,
-            ),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(
+                    vertical = 4.dp,
+                ),
     ) {
         Row(
             modifier = Modifier.padding(MaterialTheme.spacing.md),
@@ -201,9 +206,10 @@ private fun CredentialListItem(
         ) {
             Box(
                 contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .size(44.dp)
-                    .background(MaterialTheme.turnstileColors.accentSubtle, CircleShape),
+                modifier =
+                    Modifier
+                        .size(44.dp)
+                        .background(MaterialTheme.turnstileColors.accentSubtle, CircleShape),
             ) {
                 Text(
                     text = entry.title.firstOrNull()?.uppercase() ?: "?",

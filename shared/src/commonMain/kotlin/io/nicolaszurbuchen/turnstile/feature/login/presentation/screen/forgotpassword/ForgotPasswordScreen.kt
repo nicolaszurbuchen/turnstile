@@ -37,7 +37,7 @@ import turnstile.shared.generated.resources.login_forgot_success_title
 @Composable
 fun ForgotPasswordScreen(
     state: ForgotPasswordState,
-    onEmailChanged: (String) -> Unit,
+    onEmailChange: (String) -> Unit,
     onSubmit: () -> Unit,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
@@ -52,7 +52,7 @@ fun ForgotPasswordScreen(
             } else {
                 FormContent(
                     state = state,
-                    onEmailChange = onEmailChanged,
+                    onEmailChange = onEmailChange,
                     onSubmit = onSubmit,
                 )
             }
@@ -94,7 +94,8 @@ private fun FormContent(
 
         state.submitError?.let { error ->
             Spacer(Modifier.height(MaterialTheme.spacing.sm))
-            Text(text = error,
+            Text(
+                text = error,
                 color = MaterialTheme.colorScheme.error,
                 fontSize = 13.sp,
             )

@@ -47,11 +47,11 @@ import turnstile.shared.generated.resources.login_signup_title
 @Composable
 fun SignUpScreen(
     state: SignUpState,
-    onUsernameChanged: (String) -> Unit,
-    onEmailChanged: (String) -> Unit,
-    onPasswordChanged: (String) -> Unit,
+    onUsernameChange: (String) -> Unit,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
     onSubmit: () -> Unit,
-    onSignInClicked: () -> Unit,
+    onSignInClick: () -> Unit,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -72,7 +72,7 @@ fun SignUpScreen(
 
             TurnstileTextField(
                 value = state.username,
-                onValueChange = onUsernameChanged,
+                onValueChange = onUsernameChange,
                 hint = stringResource(Res.string.common_username),
                 leadingIcon = Icons.Filled.Person,
                 isError = state.usernameError != null,
@@ -85,7 +85,7 @@ fun SignUpScreen(
 
             TurnstileTextField(
                 value = state.email,
-                onValueChange = onEmailChanged,
+                onValueChange = onEmailChange,
                 hint = stringResource(Res.string.common_email),
                 leadingIcon = Icons.Filled.Email,
                 isError = state.emailError != null,
@@ -96,15 +96,16 @@ fun SignUpScreen(
                         imeAction = ImeAction.Next,
                     ),
                 keyboardActions = KeyboardActions(onNext = { passwordFocus.requestFocus() }),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .focusRequester(emailFocus),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .focusRequester(emailFocus),
             )
             Spacer(Modifier.height(MaterialTheme.spacing.md))
 
             TurnstileTextField(
                 value = state.password,
-                onValueChange = onPasswordChanged,
+                onValueChange = onPasswordChange,
                 hint = stringResource(Res.string.common_password),
                 leadingIcon = Icons.Filled.Lock,
                 isError = state.passwordError != null,
@@ -112,9 +113,10 @@ fun SignUpScreen(
                 isPassword = true,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .focusRequester(passwordFocus),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .focusRequester(passwordFocus),
             )
 
             state.submitError?.let { error ->
@@ -146,7 +148,7 @@ fun SignUpScreen(
                     color = MaterialTheme.turnstileColors.textSecondary,
                 )
                 TextButton(
-                    onClick = onSignInClicked,
+                    onClick = onSignInClick,
                 ) {
                     Text(
                         text = stringResource(Res.string.login_sign_in),

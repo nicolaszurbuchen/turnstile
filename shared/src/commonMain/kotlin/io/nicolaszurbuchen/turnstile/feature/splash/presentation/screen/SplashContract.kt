@@ -6,6 +6,7 @@ sealed interface SplashIntent
 
 sealed interface SplashLabel {
     data object NavigateToAuth : SplashLabel
+
     data object NavigateToVault : SplashLabel
 }
 
@@ -14,7 +15,9 @@ sealed interface SplashAction {
 }
 
 sealed interface SplashMessage {
-    data class SessionResolved(val status: SessionStatus) : SplashMessage
+    data class SessionResolved(
+        val status: SessionStatus,
+    ) : SplashMessage
 }
 
 data class SplashState(

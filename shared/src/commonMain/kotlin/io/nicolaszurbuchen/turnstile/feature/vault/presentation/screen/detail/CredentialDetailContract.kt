@@ -6,25 +6,43 @@ import io.nicolaszurbuchen.turnstile.infra.ui.InitialLoad
 
 sealed interface CredentialDetailIntent {
     data object EditClicked : CredentialDetailIntent
+
     data object DeleteClicked : CredentialDetailIntent
+
     data object BackClicked : CredentialDetailIntent
+
     data object Retry : CredentialDetailIntent
 }
 
 sealed interface CredentialDetailLabel {
-    data class NavigateToEdit(val id: String) : CredentialDetailLabel
+    data class NavigateToEdit(
+        val id: String,
+    ) : CredentialDetailLabel
+
     data object NavigateBack : CredentialDetailLabel
 }
 
 sealed interface CredentialDetailAction {
-    data class LoadCredential(val id: String) : CredentialDetailAction
+    data class LoadCredential(
+        val id: String,
+    ) : CredentialDetailAction
 }
 
 sealed interface CredentialDetailMessage {
-    data class CredentialLoaded(val credential: Credential) : CredentialDetailMessage
-    data class LoadFailed(val error: AppError) : CredentialDetailMessage
+    data class CredentialLoaded(
+        val credential: Credential,
+    ) : CredentialDetailMessage
+
+    data class LoadFailed(
+        val error: AppError,
+    ) : CredentialDetailMessage
+
     data object Deleted : CredentialDetailMessage
-    data class DeleteFailed(val error: AppError) : CredentialDetailMessage
+
+    data class DeleteFailed(
+        val error: AppError,
+    ) : CredentialDetailMessage
+
     data object Loading : CredentialDetailMessage
 }
 
@@ -42,10 +60,11 @@ data class CredentialUi(
     val memo: String?,
 )
 
-fun Credential.toUiModel() = CredentialUi(
-    id = id,
-    title = title,
-    username = username,
-    password = password,
-    memo = memo,
-)
+fun Credential.toUiModel() =
+    CredentialUi(
+        id = id,
+        title = title,
+        username = username,
+        password = password,
+        memo = memo,
+    )

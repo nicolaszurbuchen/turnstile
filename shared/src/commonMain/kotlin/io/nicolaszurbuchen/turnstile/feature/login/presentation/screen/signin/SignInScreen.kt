@@ -46,11 +46,11 @@ import turnstile.shared.generated.resources.login_signin_title
 @Composable
 fun SignInScreen(
     state: SignInState,
-    onEmailChanged: (String) -> Unit,
-    onPasswordChanged: (String) -> Unit,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
     onSubmit: () -> Unit,
-    onForgotPasswordClicked: () -> Unit,
-    onSignUpClicked: () -> Unit,
+    onForgotPasswordClick: () -> Unit,
+    onSignUpClick: () -> Unit,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -72,7 +72,7 @@ fun SignInScreen(
 
             TurnstileTextField(
                 value = state.email,
-                onValueChange = onEmailChanged,
+                onValueChange = onEmailChange,
                 hint = stringResource(Res.string.common_email),
                 leadingIcon = Icons.Filled.Email,
                 isError = state.emailError != null,
@@ -89,7 +89,7 @@ fun SignInScreen(
 
             TurnstileTextField(
                 value = state.password,
-                onValueChange = onPasswordChanged,
+                onValueChange = onPasswordChange,
                 hint = stringResource(Res.string.common_password),
                 leadingIcon = Icons.Filled.Lock,
                 isError = state.passwordError != null,
@@ -97,9 +97,10 @@ fun SignInScreen(
                 isPassword = true,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .focusRequester(passwordFocus),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .focusRequester(passwordFocus),
             )
 
             state.submitError?.let { error ->
@@ -117,7 +118,7 @@ fun SignInScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                TextButton(onClick = onForgotPasswordClicked) {
+                TextButton(onClick = onForgotPasswordClick) {
                     Text(
                         text = stringResource(Res.string.login_forgot_password),
                         fontSize = 12.sp,
@@ -145,7 +146,7 @@ fun SignInScreen(
                     fontSize = 14.sp,
                     color = MaterialTheme.turnstileColors.textSecondary,
                 )
-                TextButton(onClick = onSignUpClicked) {
+                TextButton(onClick = onSignUpClick) {
                     Text(
                         text = stringResource(Res.string.login_sign_up),
                         fontSize = 14.sp,

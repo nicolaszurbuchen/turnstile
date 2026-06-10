@@ -21,7 +21,10 @@ fun CredentialEditorRoute(
     LaunchedEffect(Unit) {
         viewModel.labels.collect { label ->
             when (label) {
-                CredentialEditorLabel.NavigateBack -> onNavigateBackUpdated()
+                CredentialEditorLabel.NavigateBack -> {
+                    onNavigateBackUpdated()
+                }
+
                 is CredentialEditorLabel.ShowError -> {
                     // TODO: This could be a toast or snackbar
                 }

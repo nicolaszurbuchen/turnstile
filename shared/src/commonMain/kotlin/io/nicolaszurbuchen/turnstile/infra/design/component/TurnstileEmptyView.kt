@@ -32,9 +32,10 @@ fun TurnstileEmptyView(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = modifier
-            .fillMaxSize()
-            .padding(MaterialTheme.spacing.xl),
+        modifier =
+            modifier
+                .fillMaxSize()
+                .padding(MaterialTheme.spacing.xl),
     ) {
         Icon(
             imageVector = Icons.Outlined.Lock,

@@ -13,32 +13,57 @@ import turnstile.shared.generated.resources.login_error_username_required
 import turnstile.shared.generated.resources.login_error_username_too_short
 
 sealed interface SignUpIntent {
-    data class UsernameChanged(val value: String) : SignUpIntent
-    data class EmailChanged(val value: String) : SignUpIntent
-    data class PasswordChanged(val value: String) : SignUpIntent
+    data class UsernameChanged(
+        val value: String,
+    ) : SignUpIntent
+
+    data class EmailChanged(
+        val value: String,
+    ) : SignUpIntent
+
+    data class PasswordChanged(
+        val value: String,
+    ) : SignUpIntent
+
     data object Submit : SignUpIntent
+
     data object SignInClicked : SignUpIntent
 }
 
 sealed interface SignUpLabel {
     data object NavigateHome : SignUpLabel
+
     data object NavigateToSignIn : SignUpLabel
 }
 
 sealed interface SignUpAction
 
 sealed interface SignUpMessage {
-    data class UsernameChanged(val value: String) : SignUpMessage
-    data class EmailChanged(val value: String) : SignUpMessage
-    data class PasswordChanged(val value: String) : SignUpMessage
+    data class UsernameChanged(
+        val value: String,
+    ) : SignUpMessage
+
+    data class EmailChanged(
+        val value: String,
+    ) : SignUpMessage
+
+    data class PasswordChanged(
+        val value: String,
+    ) : SignUpMessage
+
     data class SetErrors(
         val usernameError: StringResource?,
         val emailError: StringResource?,
         val passwordError: StringResource?,
     ) : SignUpMessage
+
     data object StartedLoading : SignUpMessage
+
     data object RegisterSucceeded : SignUpMessage
-    data class RegisterFailed(val message: String) : SignUpMessage
+
+    data class RegisterFailed(
+        val message: String,
+    ) : SignUpMessage
 }
 
 data class SignUpState(

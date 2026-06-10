@@ -5,16 +5,26 @@ import io.nicolaszurbuchen.turnstile.infra.ui.AppError
 import io.nicolaszurbuchen.turnstile.infra.ui.InitialLoad
 
 sealed interface CredentialListIntent {
-    data class EntryClicked(val id: String) : CredentialListIntent
+    data class EntryClicked(
+        val id: String,
+    ) : CredentialListIntent
+
     data object CreateClicked : CredentialListIntent
+
     data object SignOutClicked : CredentialListIntent
+
     data object DismissStreamError : CredentialListIntent
+
     data object RetryInitialLoad : CredentialListIntent
 }
 
 sealed interface CredentialListLabel {
-    data class NavigateToDetail(val id: String) : CredentialListLabel
+    data class NavigateToDetail(
+        val id: String,
+    ) : CredentialListLabel
+
     data object NavigateToCreate : CredentialListLabel
+
     data object NavigateToAuth : CredentialListLabel
 }
 
@@ -23,10 +33,20 @@ sealed interface CredentialListAction {
 }
 
 sealed interface CredentialListMessage {
-    data class EntriesLoaded(val entries: List<Credential>) : CredentialListMessage
-    data class InitialLoadFailed(val error: AppError) : CredentialListMessage
-    data class StreamErrored(val error: AppError) : CredentialListMessage
+    data class EntriesLoaded(
+        val entries: List<Credential>,
+    ) : CredentialListMessage
+
+    data class InitialLoadFailed(
+        val error: AppError,
+    ) : CredentialListMessage
+
+    data class StreamErrored(
+        val error: AppError,
+    ) : CredentialListMessage
+
     data object DismissStreamError : CredentialListMessage
+
     data object ResetToLoading : CredentialListMessage
 }
 
@@ -45,11 +65,12 @@ data class CredentialUi(
     val password: String,
 )
 
-fun Credential.toUiModel() = CredentialUi(
-    id = id,
-    title = title,
-    username = username,
-    password = password,
-)
+fun Credential.toUiModel() =
+    CredentialUi(
+        id = id,
+        title = title,
+        username = username,
+        password = password,
+    )
 
 fun List<Credential>.toUiModels() = map { it.toUiModel() }

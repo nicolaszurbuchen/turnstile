@@ -53,17 +53,18 @@ fun CredentialDetailScreen(
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
-        topBar =             {
+        topBar = {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .statusBarsPadding()
-                    .padding(
-                        horizontal = MaterialTheme.spacing.sm,
-                        vertical = MaterialTheme.spacing.sm,
-                    ),
-                ) {
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .statusBarsPadding()
+                        .padding(
+                            horizontal = MaterialTheme.spacing.sm,
+                            vertical = MaterialTheme.spacing.sm,
+                        ),
+            ) {
                 IconButton(onClick = onBackClick) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -98,6 +99,7 @@ fun CredentialDetailScreen(
             is InitialLoad.Loading -> {
                 // TODO: Skeleton
             }
+
             is InitialLoad.Failed -> {
                 TurnstileErrorView(
                     message = initialLoad.error.message,
@@ -105,12 +107,15 @@ fun CredentialDetailScreen(
                     modifier = Modifier.padding(padding),
                 )
             }
+
             is InitialLoad.Loaded -> {
                 state.credential?.let { credential ->
-                    Column(modifier = Modifier
-                        .padding(padding)
-                        .fillMaxSize()
-                        .padding(horizontal = MaterialTheme.spacing.md),
+                    Column(
+                        modifier =
+                            Modifier
+                                .padding(padding)
+                                .fillMaxSize()
+                                .padding(horizontal = MaterialTheme.spacing.md),
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Card(

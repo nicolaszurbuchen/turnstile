@@ -23,17 +23,18 @@ fun LoginBackground(modifier: Modifier = Modifier) {
             modifier = Modifier.fillMaxSize(),
         )
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    Brush.verticalGradient(
-                        colorStops =
-                            arrayOf(
-                                0.45f to Color.Transparent,
-                                0.8f to Color.Black.copy(alpha = 0.8f),
-                            ),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(
+                        Brush.verticalGradient(
+                            colorStops =
+                                arrayOf(
+                                    0.45f to Color.Transparent,
+                                    0.8f to Color.Black.copy(alpha = 0.8f),
+                                ),
+                        ),
                     ),
-                ),
         )
     }
 }

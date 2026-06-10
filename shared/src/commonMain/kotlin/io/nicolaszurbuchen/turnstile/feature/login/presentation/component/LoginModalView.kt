@@ -46,7 +46,7 @@ fun LoginModalView(
                         top = 88.dp,
                         bottom = MaterialTheme.spacing.md,
                     )
-                    .navigationBarsPadding()
+                    .navigationBarsPadding(),
         ) {
             content()
         }

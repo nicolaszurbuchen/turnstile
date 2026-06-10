@@ -28,7 +28,7 @@ fun ForgotPasswordRoute(
 
     ForgotPasswordScreen(
         state = state,
-        onEmailChanged = { viewModel.onIntent(ForgotPasswordIntent.EmailChanged(it)) },
+        onEmailChange = { viewModel.onIntent(ForgotPasswordIntent.EmailChanged(it)) },
         onSubmit = { viewModel.onIntent(ForgotPasswordIntent.Submit) },
         onNavigateBack = { viewModel.onIntent(ForgotPasswordIntent.BackClicked) },
         modifier = modifier,

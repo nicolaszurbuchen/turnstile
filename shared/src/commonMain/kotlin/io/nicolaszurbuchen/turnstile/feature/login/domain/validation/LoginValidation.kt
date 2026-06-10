@@ -2,16 +2,19 @@ package io.nicolaszurbuchen.turnstile.feature.login.domain.validation
 
 sealed interface EmailValidationError {
     data object Required : EmailValidationError
+
     data object Invalid : EmailValidationError
 }
 
 sealed interface PasswordValidationError {
     data object Required : PasswordValidationError
+
     data object TooShort : PasswordValidationError
 }
 
 sealed interface UsernameValidationError {
     data object Required : UsernameValidationError
+
     data object TooShort : UsernameValidationError
 }
 

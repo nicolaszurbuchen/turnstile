@@ -19,17 +19,20 @@ class CredentialEditorStoreFactory(
     private val saveCredential: SaveCredentialUseCase,
 ) {
     fun create(credentialId: String?): CredentialEditorStore =
-        object : CredentialEditorStore, Store<CredentialEditorIntent, CredentialEditorState, CredentialEditorLabel> by storeFactory.create(
-            name = "CredentialEditorStore",
-            initialState = if (credentialId != null) {
-                CredentialEditorState(initialLoad = InitialLoad.Loading)
-            } else {
-                CredentialEditorState()
-            },
-            bootstrapper = BootstrapperImpl(),
-            executorFactory = { ExecutorImpl(credentialId) },
-            reducer = ReducerImpl,
-        ) {}
+        object :
+            CredentialEditorStore,
+            Store<CredentialEditorIntent, CredentialEditorState, CredentialEditorLabel> by storeFactory.create(
+                name = "CredentialEditorStore",
+                initialState =
+                    if (credentialId != null) {
+                        CredentialEditorState(initialLoad = InitialLoad.Loading)
+                    } else {
+                        CredentialEditorState()
+                    },
+                bootstrapper = BootstrapperImpl(),
+                executorFactory = { ExecutorImpl(credentialId) },
+                reducer = ReducerImpl,
+            ) {}
 
     private class BootstrapperImpl : CoroutineBootstrapper<CredentialEditorAction>() {
         override fun invoke() {
@@ -37,7 +40,15 @@ class CredentialEditorStoreFactory(
         }
     }
 
-    private inner class ExecutorImpl(private val credentialId: String?) : CoroutineExecutor<CredentialEditorIntent, CredentialEditorAction, CredentialEditorState, CredentialEditorMessage, CredentialEditorLabel>() {
+    private inner class ExecutorImpl(
+        private val credentialId: String?,
+    ) : CoroutineExecutor<
+            CredentialEditorIntent,
+            CredentialEditorAction,
+            CredentialEditorState,
+            CredentialEditorMessage,
+            CredentialEditorLabel,
+        >() {
         override fun executeAction(action: CredentialEditorAction) {
             when (action) {
                 is CredentialEditorAction.LoadCredential -> loadCredential()
@@ -46,17 +57,54 @@ class CredentialEditorStoreFactory(
 
         override fun executeIntent(intent: CredentialEditorIntent) {
             when (intent) {
-                is CredentialEditorIntent.MemoChanged -> dispatch(CredentialEditorMessage.CredentialLoaded(state().toDomain().copy(memo = intent.value)))
-                is CredentialEditorIntent.PasswordChanged -> dispatch(CredentialEditorMessage.CredentialLoaded(state().toDomain().copy(password = intent.value)))
-                is CredentialEditorIntent.TitleChanged -> dispatch(CredentialEditorMessage.CredentialLoaded(state().toDomain().copy(title = intent.value)))
-                is CredentialEditorIntent.UsernameChanged -> dispatch(CredentialEditorMessage.CredentialLoaded(state().toDomain().copy(username = intent.value)))
-                CredentialEditorIntent.CancelClicked -> publish(CredentialEditorLabel.NavigateBack)
-                CredentialEditorIntent.SaveClicked -> save()
+                is CredentialEditorIntent.MemoChanged -> {
+                    dispatch(
+                        CredentialEditorMessage.CredentialLoaded(
+                            state().toDomain().copy(memo = intent.value),
+                        ),
+                    )
+                }
+
+                is CredentialEditorIntent.PasswordChanged -> {
+                    dispatch(
+                        CredentialEditorMessage.CredentialLoaded(
+                            state().toDomain().copy(password = intent.value),
+                        ),
+                    )
+                }
+
+                is CredentialEditorIntent.TitleChanged -> {
+                    dispatch(
+                        CredentialEditorMessage.CredentialLoaded(
+                            state().toDomain().copy(title = intent.value),
+                        ),
+                    )
+                }
+
+                is CredentialEditorIntent.UsernameChanged -> {
+                    dispatch(
+                        CredentialEditorMessage.CredentialLoaded(
+                            state().toDomain().copy(username = intent.value),
+                        ),
+                    )
+                }
+
+                CredentialEditorIntent.CancelClicked -> {
+                    publish(CredentialEditorLabel.NavigateBack)
+                }
+
+                CredentialEditorIntent.SaveClicked -> {
+                    save()
+                }
+
                 CredentialEditorIntent.Retry -> {
                     dispatch(CredentialEditorMessage.ResetToLoading)
                     loadCredential()
                 }
-                CredentialEditorIntent.DismissSaveError -> dispatch(CredentialEditorMessage.DismissSaveError)
+
+                CredentialEditorIntent.DismissSaveError -> {
+                    dispatch(CredentialEditorMessage.DismissSaveError)
+                }
             }
         }
 
@@ -71,7 +119,16 @@ class CredentialEditorStoreFactory(
                             dispatch(CredentialEditorMessage.InitialLoadFailed(AppError("Credential not found")))
                         }
                     }
-                    .onFailure { dispatch(CredentialEditorMessage.InitialLoadFailed(AppError(it.message ?: "Unknown error", it))) }
+                    .onFailure {
+                        dispatch(
+                            CredentialEditorMessage.InitialLoadFailed(
+                                AppError(
+                                    it.message ?: "Unknown error",
+                                    it,
+                                ),
+                            ),
+                        )
+                    }
             }
         }
 
@@ -91,7 +148,16 @@ class CredentialEditorStoreFactory(
                     .onSuccess {
                         publish(CredentialEditorLabel.NavigateBack)
                     }
-                    .onFailure { dispatch(CredentialEditorMessage.SaveFailed(AppError(it.message ?: "Unknown error", it))) }
+                    .onFailure {
+                        dispatch(
+                            CredentialEditorMessage.SaveFailed(
+                                AppError(
+                                    it.message ?: "Unknown error",
+                                    it,
+                                ),
+                            ),
+                        )
+                    }
             }
         }
     }
@@ -99,40 +165,63 @@ class CredentialEditorStoreFactory(
     private object ReducerImpl : Reducer<CredentialEditorState, CredentialEditorMessage> {
         override fun CredentialEditorState.reduce(msg: CredentialEditorMessage): CredentialEditorState =
             when (msg) {
-                is CredentialEditorMessage.CredentialLoaded -> copy(
-                    id = msg.credential.id,
-                    title = msg.credential.title,
-                    username = msg.credential.username,
-                    password = msg.credential.password,
-                    memo = msg.credential.memo,
-                    usernameError = null,
-                    passwordError = null,
-                    initialLoad = InitialLoad.Loaded,
-                )
-                is CredentialEditorMessage.InitialLoadFailed -> copy(
-                    initialLoad = InitialLoad.Failed(msg.error),
-                )
-                CredentialEditorMessage.Saving -> copy(
-                    isSaving = true,
-                    saveError = null,
-                )
-                CredentialEditorMessage.Saved -> copy(
-                    isSaving = false,
-                )
-                is CredentialEditorMessage.SaveFailed -> copy(
-                    isSaving = false,
-                    saveError = msg.error,
-                )
-                CredentialEditorMessage.ResetToLoading -> copy(
-                    initialLoad = InitialLoad.Loading,
-                )
-                CredentialEditorMessage.DismissSaveError -> copy(
-                    saveError = null,
-                )
-                is CredentialEditorMessage.ValidationFailed -> copy(
-                    usernameError = msg.usernameError,
-                    passwordError = msg.passwordError,
-                )
+                is CredentialEditorMessage.CredentialLoaded -> {
+                    copy(
+                        id = msg.credential.id,
+                        title = msg.credential.title,
+                        username = msg.credential.username,
+                        password = msg.credential.password,
+                        memo = msg.credential.memo,
+                        usernameError = null,
+                        passwordError = null,
+                        initialLoad = InitialLoad.Loaded,
+                    )
+                }
+
+                is CredentialEditorMessage.InitialLoadFailed -> {
+                    copy(
+                        initialLoad = InitialLoad.Failed(msg.error),
+                    )
+                }
+
+                CredentialEditorMessage.Saving -> {
+                    copy(
+                        isSaving = true,
+                        saveError = null,
+                    )
+                }
+
+                CredentialEditorMessage.Saved -> {
+                    copy(
+                        isSaving = false,
+                    )
+                }
+
+                is CredentialEditorMessage.SaveFailed -> {
+                    copy(
+                        isSaving = false,
+                        saveError = msg.error,
+                    )
+                }
+
+                CredentialEditorMessage.ResetToLoading -> {
+                    copy(
+                        initialLoad = InitialLoad.Loading,
+                    )
+                }
+
+                CredentialEditorMessage.DismissSaveError -> {
+                    copy(
+                        saveError = null,
+                    )
+                }
+
+                is CredentialEditorMessage.ValidationFailed -> {
+                    copy(
+                        usernameError = msg.usernameError,
+                        passwordError = msg.passwordError,
+                    )
+                }
             }
     }
 }

@@ -15,19 +15,34 @@ class ForgotPasswordStoreFactory(
     private val sendPasswordResetEmail: SendPasswordResetEmailUseCase,
 ) {
     fun create(): ForgotPasswordStore =
-        object : ForgotPasswordStore, Store<ForgotPasswordIntent, ForgotPasswordState, ForgotPasswordLabel> by storeFactory.create(
-            name = "ForgotPasswordStore",
-            initialState = ForgotPasswordState(),
-            executorFactory = ::ExecutorImpl,
-            reducer = ReducerImpl,
-        ) {}
+        object :
+            ForgotPasswordStore,
+            Store<ForgotPasswordIntent, ForgotPasswordState, ForgotPasswordLabel> by storeFactory.create(
+                name = "ForgotPasswordStore",
+                initialState = ForgotPasswordState(),
+                executorFactory = ::ExecutorImpl,
+                reducer = ReducerImpl,
+            ) {}
 
-    private inner class ExecutorImpl : CoroutineExecutor<ForgotPasswordIntent, ForgotPasswordAction, ForgotPasswordState, ForgotPasswordMessage, ForgotPasswordLabel>() {
+    private inner class ExecutorImpl :
+        CoroutineExecutor<ForgotPasswordIntent, ForgotPasswordAction, ForgotPasswordState, ForgotPasswordMessage, ForgotPasswordLabel>() {
         override fun executeIntent(intent: ForgotPasswordIntent) {
             when (intent) {
-                is ForgotPasswordIntent.EmailChanged -> dispatch(ForgotPasswordMessage.EmailChanged(intent.value))
-                ForgotPasswordIntent.Submit -> sendResetEmail()
-                ForgotPasswordIntent.BackClicked -> publish(ForgotPasswordLabel.NavigateBack)
+                is ForgotPasswordIntent.EmailChanged -> {
+                    dispatch(
+                        ForgotPasswordMessage.EmailChanged(
+                            intent.value,
+                        ),
+                    )
+                }
+
+                ForgotPasswordIntent.Submit -> {
+                    sendResetEmail()
+                }
+
+                ForgotPasswordIntent.BackClicked -> {
+                    publish(ForgotPasswordLabel.NavigateBack)
+                }
             }
         }
 
@@ -47,7 +62,13 @@ class ForgotPasswordStoreFactory(
                     .onSuccess {
                         dispatch(ForgotPasswordMessage.ResetEmailSent)
                     }
-                    .onFailure { dispatch(ForgotPasswordMessage.ResetFailed(it.message ?: "Unknown error")) }
+                    .onFailure {
+                        dispatch(
+                            ForgotPasswordMessage.ResetFailed(
+                                it.message ?: "Unknown error",
+                            ),
+                        )
+                    }
             }
         }
     }
@@ -55,11 +76,32 @@ class ForgotPasswordStoreFactory(
     private object ReducerImpl : Reducer<ForgotPasswordState, ForgotPasswordMessage> {
         override fun ForgotPasswordState.reduce(msg: ForgotPasswordMessage): ForgotPasswordState =
             when (msg) {
-                is ForgotPasswordMessage.EmailChanged -> copy(email = msg.value, emailError = null, submitError = null)
-                is ForgotPasswordMessage.SetError -> copy(emailError = msg.error)
-                ForgotPasswordMessage.StartedLoading -> copy(loading = true, submitError = null)
-                ForgotPasswordMessage.ResetEmailSent -> copy(loading = false, submitted = true)
-                is ForgotPasswordMessage.ResetFailed -> copy(loading = false, submitError = msg.message)
+                is ForgotPasswordMessage.EmailChanged -> {
+                    copy(
+                        email = msg.value,
+                        emailError = null,
+                        submitError = null,
+                    )
+                }
+
+                is ForgotPasswordMessage.SetError -> {
+                    copy(emailError = msg.error)
+                }
+
+                ForgotPasswordMessage.StartedLoading -> {
+                    copy(loading = true, submitError = null)
+                }
+
+                ForgotPasswordMessage.ResetEmailSent -> {
+                    copy(loading = false, submitted = true)
+                }
+
+                is ForgotPasswordMessage.ResetFailed -> {
+                    copy(
+                        loading = false,
+                        submitError = msg.message,
+                    )
+                }
             }
     }
 }

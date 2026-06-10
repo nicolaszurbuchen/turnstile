@@ -15,12 +15,14 @@ class SignInStoreFactory(
     private val signInWithEmail: SignInWithEmailUseCase,
 ) {
     fun create(): SignInStore =
-        object : SignInStore, Store<SignInIntent, SignInState, SignInLabel> by storeFactory.create(
-            name = "SignInStore",
-            initialState = SignInState(),
-            executorFactory = ::ExecutorImpl,
-            reducer = ReducerImpl,
-        ) {}
+        object :
+            SignInStore,
+            Store<SignInIntent, SignInState, SignInLabel> by storeFactory.create(
+                name = "SignInStore",
+                initialState = SignInState(),
+                executorFactory = ::ExecutorImpl,
+                reducer = ReducerImpl,
+            ) {}
 
     private inner class ExecutorImpl : CoroutineExecutor<SignInIntent, SignInAction, SignInState, SignInMessage, SignInLabel>() {
         override fun executeIntent(intent: SignInIntent) {
@@ -57,7 +59,13 @@ class SignInStoreFactory(
                         dispatch(SignInMessage.LoginSucceeded)
                         publish(SignInLabel.NavigateHome)
                     }
-                    .onFailure { dispatch(SignInMessage.LoginFailed(it.message ?: "Unknown error")) }
+                    .onFailure {
+                        dispatch(
+                            SignInMessage.LoginFailed(
+                                it.message ?: "Unknown error",
+                            ),
+                        )
+                    }
             }
         }
     }
@@ -65,12 +73,40 @@ class SignInStoreFactory(
     private object ReducerImpl : Reducer<SignInState, SignInMessage> {
         override fun SignInState.reduce(msg: SignInMessage): SignInState =
             when (msg) {
-                is SignInMessage.EmailChanged -> copy(email = msg.value, emailError = null, submitError = null)
-                is SignInMessage.PasswordChanged -> copy(password = msg.value, passwordError = null, submitError = null)
-                is SignInMessage.SetErrors -> copy(emailError = msg.emailError, passwordError = msg.passwordError)
-                SignInMessage.StartedLoading -> copy(loading = true, submitError = null)
-                SignInMessage.LoginSucceeded -> copy(loading = false)
-                is SignInMessage.LoginFailed -> copy(loading = false, submitError = msg.message)
+                is SignInMessage.EmailChanged -> {
+                    copy(
+                        email = msg.value,
+                        emailError = null,
+                        submitError = null,
+                    )
+                }
+
+                is SignInMessage.PasswordChanged -> {
+                    copy(
+                        password = msg.value,
+                        passwordError = null,
+                        submitError = null,
+                    )
+                }
+
+                is SignInMessage.SetErrors -> {
+                    copy(
+                        emailError = msg.emailError,
+                        passwordError = msg.passwordError,
+                    )
+                }
+
+                SignInMessage.StartedLoading -> {
+                    copy(loading = true, submitError = null)
+                }
+
+                SignInMessage.LoginSucceeded -> {
+                    copy(loading = false)
+                }
+
+                is SignInMessage.LoginFailed -> {
+                    copy(loading = false, submitError = msg.message)
+                }
             }
     }
 }

@@ -23,13 +23,15 @@ class CredentialListStoreFactory(
     private val signOut: SignOutUseCase,
 ) {
     fun create(): CredentialListStore =
-        object : CredentialListStore, Store<CredentialListIntent, CredentialListState, CredentialListLabel> by storeFactory.create(
-            name = "CredentialListStore",
-            initialState = CredentialListState(),
-            bootstrapper = BootstrapperImpl(),
-            executorFactory = ::ExecutorImpl,
-            reducer = ReducerImpl,
-        ) {}
+        object :
+            CredentialListStore,
+            Store<CredentialListIntent, CredentialListState, CredentialListLabel> by storeFactory.create(
+                name = "CredentialListStore",
+                initialState = CredentialListState(),
+                bootstrapper = BootstrapperImpl(),
+                executorFactory = ::ExecutorImpl,
+                reducer = ReducerImpl,
+            ) {}
 
     private class BootstrapperImpl : CoroutineBootstrapper<CredentialListAction>() {
         override fun invoke() {
@@ -37,7 +39,8 @@ class CredentialListStoreFactory(
         }
     }
 
-    private inner class ExecutorImpl : CoroutineExecutor<CredentialListIntent, CredentialListAction, CredentialListState, CredentialListMessage, CredentialListLabel>() {
+    private inner class ExecutorImpl :
+        CoroutineExecutor<CredentialListIntent, CredentialListAction, CredentialListState, CredentialListMessage, CredentialListLabel>() {
         private var observationJob: Job? = null
 
         override fun executeAction(action: CredentialListAction) {
@@ -48,10 +51,26 @@ class CredentialListStoreFactory(
 
         override fun executeIntent(intent: CredentialListIntent) {
             when (intent) {
-                is CredentialListIntent.EntryClicked -> publish(CredentialListLabel.NavigateToDetail(intent.id))
-                CredentialListIntent.CreateClicked -> publish(CredentialListLabel.NavigateToCreate)
-                CredentialListIntent.SignOutClicked -> performSignOut()
-                CredentialListIntent.DismissStreamError -> dispatch(CredentialListMessage.DismissStreamError)
+                is CredentialListIntent.EntryClicked -> {
+                    publish(
+                        CredentialListLabel.NavigateToDetail(
+                            intent.id,
+                        ),
+                    )
+                }
+
+                CredentialListIntent.CreateClicked -> {
+                    publish(CredentialListLabel.NavigateToCreate)
+                }
+
+                CredentialListIntent.SignOutClicked -> {
+                    performSignOut()
+                }
+
+                CredentialListIntent.DismissStreamError -> {
+                    dispatch(CredentialListMessage.DismissStreamError)
+                }
+
                 CredentialListIntent.RetryInitialLoad -> {
                     dispatch(CredentialListMessage.ResetToLoading)
                     observeEntries()
@@ -61,17 +80,18 @@ class CredentialListStoreFactory(
 
         private fun observeEntries() {
             observationJob?.cancel()
-            observationJob = getCredentials()
-                .onEach { dispatch(CredentialListMessage.EntriesLoaded(it)) }
-                .catch { error ->
-                    val appError = AppError(error.message ?: "Unknown error", error)
-                    if (state().initialLoad !is InitialLoad.Loaded) {
-                        dispatch(CredentialListMessage.InitialLoadFailed(appError))
-                    } else {
-                        dispatch(CredentialListMessage.StreamErrored(appError))
+            observationJob =
+                getCredentials()
+                    .onEach { dispatch(CredentialListMessage.EntriesLoaded(it)) }
+                    .catch { error ->
+                        val appError = AppError(error.message ?: "Unknown error", error)
+                        if (state().initialLoad !is InitialLoad.Loaded) {
+                            dispatch(CredentialListMessage.InitialLoadFailed(appError))
+                        } else {
+                            dispatch(CredentialListMessage.StreamErrored(appError))
+                        }
                     }
-                }
-                .launchIn(scope)
+                    .launchIn(scope)
         }
 
         private fun performSignOut() {
@@ -85,27 +105,37 @@ class CredentialListStoreFactory(
     private object ReducerImpl : Reducer<CredentialListState, CredentialListMessage> {
         override fun CredentialListState.reduce(msg: CredentialListMessage): CredentialListState =
             when (msg) {
-                is CredentialListMessage.EntriesLoaded -> copy(
-                    entries = msg.entries.toUiModels(),
-                    initialLoad = InitialLoad.Loaded,
-                    streamError = null,
-                )
+                is CredentialListMessage.EntriesLoaded -> {
+                    copy(
+                        entries = msg.entries.toUiModels(),
+                        initialLoad = InitialLoad.Loaded,
+                        streamError = null,
+                    )
+                }
 
-                is CredentialListMessage.InitialLoadFailed -> copy(
-                    initialLoad = InitialLoad.Failed(msg.error),
-                )
+                is CredentialListMessage.InitialLoadFailed -> {
+                    copy(
+                        initialLoad = InitialLoad.Failed(msg.error),
+                    )
+                }
 
-                is CredentialListMessage.StreamErrored -> copy(
-                    streamError = msg.error,
-                )
+                is CredentialListMessage.StreamErrored -> {
+                    copy(
+                        streamError = msg.error,
+                    )
+                }
 
-                CredentialListMessage.DismissStreamError -> copy(
-                    streamError = null,
-                )
+                CredentialListMessage.DismissStreamError -> {
+                    copy(
+                        streamError = null,
+                    )
+                }
 
-                CredentialListMessage.ResetToLoading -> copy(
-                    initialLoad = InitialLoad.Loading,
-                )
+                CredentialListMessage.ResetToLoading -> {
+                    copy(
+                        initialLoad = InitialLoad.Loading,
+                    )
+                }
             }
     }
 }

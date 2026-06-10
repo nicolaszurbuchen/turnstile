@@ -17,13 +17,15 @@ class SplashStoreFactory(
     private val resolveSession: ResolveSessionUseCase,
 ) {
     fun create(): SplashStore =
-        object : SplashStore, Store<SplashIntent, SplashState, SplashLabel> by storeFactory.create(
-            name = "SplashStore",
-            initialState = SplashState(),
-            bootstrapper = BootstrapperImpl(),
-            executorFactory = ::ExecutorImpl,
-            reducer = ReducerImpl,
-        ) {}
+        object :
+            SplashStore,
+            Store<SplashIntent, SplashState, SplashLabel> by storeFactory.create(
+                name = "SplashStore",
+                initialState = SplashState(),
+                bootstrapper = BootstrapperImpl(),
+                executorFactory = ::ExecutorImpl,
+                reducer = ReducerImpl,
+            ) {}
 
     private class BootstrapperImpl : CoroutineBootstrapper<SplashAction>() {
         override fun invoke() {

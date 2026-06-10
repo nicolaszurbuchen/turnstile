@@ -5,34 +5,70 @@ import io.nicolaszurbuchen.turnstile.infra.ui.AppError
 import io.nicolaszurbuchen.turnstile.infra.ui.InitialLoad
 
 sealed interface CredentialEditorIntent {
-    data class TitleChanged(val value: String) : CredentialEditorIntent
-    data class UsernameChanged(val value: String) : CredentialEditorIntent
-    data class PasswordChanged(val value: String) : CredentialEditorIntent
-    data class MemoChanged(val value: String) : CredentialEditorIntent
+    data class TitleChanged(
+        val value: String,
+    ) : CredentialEditorIntent
+
+    data class UsernameChanged(
+        val value: String,
+    ) : CredentialEditorIntent
+
+    data class PasswordChanged(
+        val value: String,
+    ) : CredentialEditorIntent
+
+    data class MemoChanged(
+        val value: String,
+    ) : CredentialEditorIntent
+
     data object SaveClicked : CredentialEditorIntent
+
     data object CancelClicked : CredentialEditorIntent
+
     data object Retry : CredentialEditorIntent
+
     data object DismissSaveError : CredentialEditorIntent
 }
 
 sealed interface CredentialEditorLabel {
     data object NavigateBack : CredentialEditorLabel
-    data class ShowError(val error: AppError) : CredentialEditorLabel
+
+    data class ShowError(
+        val error: AppError,
+    ) : CredentialEditorLabel
 }
 
 sealed interface CredentialEditorAction {
-    data class LoadCredential(val id: String) : CredentialEditorAction
+    data class LoadCredential(
+        val id: String,
+    ) : CredentialEditorAction
 }
 
 sealed interface CredentialEditorMessage {
-    data class CredentialLoaded(val credential: Credential) : CredentialEditorMessage
-    data class InitialLoadFailed(val error: AppError) : CredentialEditorMessage
+    data class CredentialLoaded(
+        val credential: Credential,
+    ) : CredentialEditorMessage
+
+    data class InitialLoadFailed(
+        val error: AppError,
+    ) : CredentialEditorMessage
+
     data object Saving : CredentialEditorMessage
+
     data object Saved : CredentialEditorMessage
-    data class SaveFailed(val error: AppError) : CredentialEditorMessage
+
+    data class SaveFailed(
+        val error: AppError,
+    ) : CredentialEditorMessage
+
     data object ResetToLoading : CredentialEditorMessage
+
     data object DismissSaveError : CredentialEditorMessage
-    data class ValidationFailed(val usernameError: String?, val passwordError: String?) : CredentialEditorMessage
+
+    data class ValidationFailed(
+        val usernameError: String?,
+        val passwordError: String?,
+    ) : CredentialEditorMessage
 }
 
 data class CredentialEditorState(
@@ -50,10 +86,11 @@ data class CredentialEditorState(
     val canSave: Boolean get() = title.isNotBlank() && username.isNotBlank() && password.isNotBlank() && !isSaving
 }
 
-fun CredentialEditorState.toDomain() = Credential(
-    id = id,
-    title = title,
-    username = username,
-    password = password,
-    memo = memo,
-)
+fun CredentialEditorState.toDomain() =
+    Credential(
+        id = id,
+        title = title,
+        username = username,
+        password = password,
+        memo = memo,
+    )

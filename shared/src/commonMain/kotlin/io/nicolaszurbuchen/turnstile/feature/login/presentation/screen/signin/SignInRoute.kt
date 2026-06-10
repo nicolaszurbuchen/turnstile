@@ -35,11 +35,11 @@ fun SignInRoute(
 
     SignInScreen(
         state = state,
-        onEmailChanged = { viewModel.onIntent(SignInIntent.EmailChanged(it)) },
-        onPasswordChanged = { viewModel.onIntent(SignInIntent.PasswordChanged(it)) },
+        onEmailChange = { viewModel.onIntent(SignInIntent.EmailChanged(it)) },
+        onPasswordChange = { viewModel.onIntent(SignInIntent.PasswordChanged(it)) },
         onSubmit = { viewModel.onIntent(SignInIntent.Submit) },
-        onSignUpClicked = { viewModel.onIntent(SignInIntent.SignUpClicked) },
-        onForgotPasswordClicked = { viewModel.onIntent(SignInIntent.ForgotPasswordClicked) },
+        onSignUpClick = { viewModel.onIntent(SignInIntent.SignUpClicked) },
+        onForgotPasswordClick = { viewModel.onIntent(SignInIntent.ForgotPasswordClicked) },
         onNavigateBack = onNavigateBack,
         modifier = modifier,
     )

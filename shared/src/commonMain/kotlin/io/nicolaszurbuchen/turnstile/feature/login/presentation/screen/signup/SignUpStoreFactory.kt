@@ -15,12 +15,14 @@ class SignUpStoreFactory(
     private val signUpWithEmail: SignUpWithEmailUseCase,
 ) {
     fun create(): SignUpStore =
-        object : SignUpStore, Store<SignUpIntent, SignUpState, SignUpLabel> by storeFactory.create(
-            name = "SignUpStore",
-            initialState = SignUpState(),
-            executorFactory = ::ExecutorImpl,
-            reducer = ReducerImpl,
-        ) {}
+        object :
+            SignUpStore,
+            Store<SignUpIntent, SignUpState, SignUpLabel> by storeFactory.create(
+                name = "SignUpStore",
+                initialState = SignUpState(),
+                executorFactory = ::ExecutorImpl,
+                reducer = ReducerImpl,
+            ) {}
 
     private inner class ExecutorImpl : CoroutineExecutor<SignUpIntent, SignUpAction, SignUpState, SignUpMessage, SignUpLabel>() {
         override fun executeIntent(intent: SignUpIntent) {
@@ -59,7 +61,13 @@ class SignUpStoreFactory(
                         dispatch(SignUpMessage.RegisterSucceeded)
                         publish(SignUpLabel.NavigateHome)
                     }
-                    .onFailure { dispatch(SignUpMessage.RegisterFailed(it.message ?: "Unknown error")) }
+                    .onFailure {
+                        dispatch(
+                            SignUpMessage.RegisterFailed(
+                                it.message ?: "Unknown error",
+                            ),
+                        )
+                    }
             }
         }
     }
@@ -67,21 +75,37 @@ class SignUpStoreFactory(
     private object ReducerImpl : Reducer<SignUpState, SignUpMessage> {
         override fun SignUpState.reduce(msg: SignUpMessage): SignUpState =
             when (msg) {
-                is SignUpMessage.UsernameChanged ->
+                is SignUpMessage.UsernameChanged -> {
                     copy(username = msg.value, usernameError = null, submitError = null)
-                is SignUpMessage.EmailChanged ->
+                }
+
+                is SignUpMessage.EmailChanged -> {
                     copy(email = msg.value, emailError = null, submitError = null)
-                is SignUpMessage.PasswordChanged ->
+                }
+
+                is SignUpMessage.PasswordChanged -> {
                     copy(password = msg.value, passwordError = null, submitError = null)
-                is SignUpMessage.SetErrors ->
+                }
+
+                is SignUpMessage.SetErrors -> {
                     copy(
                         usernameError = msg.usernameError,
                         emailError = msg.emailError,
                         passwordError = msg.passwordError,
                     )
-                SignUpMessage.StartedLoading -> copy(loading = true, submitError = null)
-                SignUpMessage.RegisterSucceeded -> copy(loading = false)
-                is SignUpMessage.RegisterFailed -> copy(loading = false, submitError = msg.message)
+                }
+
+                SignUpMessage.StartedLoading -> {
+                    copy(loading = true, submitError = null)
+                }
+
+                SignUpMessage.RegisterSucceeded -> {
+                    copy(loading = false)
+                }
+
+                is SignUpMessage.RegisterFailed -> {
+                    copy(loading = false, submitError = msg.message)
+                }
             }
     }
 }

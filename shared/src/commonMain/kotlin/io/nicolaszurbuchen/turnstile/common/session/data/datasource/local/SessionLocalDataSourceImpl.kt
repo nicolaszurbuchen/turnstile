@@ -8,6 +8,5 @@ class SessionLocalDataSourceImpl(
 ) : SessionLocalDataSource {
     override fun getCurrentUserId(): String? = auth.currentUser?.uid
 
-    override suspend fun awaitCurrentUserId(): String? =
-        auth.authStateChanged.first()?.uid
+    override suspend fun awaitCurrentUserId(): String? = auth.authStateChanged.first()?.uid
 }

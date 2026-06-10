@@ -70,7 +70,14 @@ fun CredentialEditorScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = if (state.id.isEmpty()) stringResource(Res.string.vault_editor_title_new) else stringResource(Res.string.vault_editor_title_edit),
+                        text =
+                            if (state.id.isEmpty()) {
+                                stringResource(Res.string.vault_editor_title_new)
+                            } else {
+                                stringResource(
+                                    Res.string.vault_editor_title_edit,
+                                )
+                            },
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.turnstileColors.textPrimary,
@@ -94,7 +101,12 @@ fun CredentialEditorScreen(
                             Icon(
                                 imageVector = Icons.Default.Done,
                                 contentDescription = null,
-                                tint = if (state.canSave) MaterialTheme.turnstileColors.accent else MaterialTheme.turnstileColors.textDisabled,
+                                tint =
+                                    if (state.canSave) {
+                                        MaterialTheme.turnstileColors.accent
+                                    } else {
+                                        MaterialTheme.turnstileColors.textDisabled
+                                    },
                             )
                         }
                     }
@@ -109,6 +121,7 @@ fun CredentialEditorScreen(
             is InitialLoad.Loading -> {
                 // TODO: Skeleton
             }
+
             is InitialLoad.Failed -> {
                 TurnstileErrorView(
                     message = initialLoad.error.message,
@@ -116,6 +129,7 @@ fun CredentialEditorScreen(
                     modifier = Modifier.padding(padding),
                 )
             }
+
             is InitialLoad.Loaded -> {
                 Column(
                     modifier =
@@ -156,9 +170,10 @@ fun CredentialEditorScreen(
                         errorMessage = if (state.username.isEmpty()) state.usernameError else null,
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                         keyboardActions = KeyboardActions(onNext = { passwordFocus.requestFocus() }),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .focusRequester(usernameFocus),
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .focusRequester(usernameFocus),
                     )
                     Spacer(Modifier.height(MaterialTheme.spacing.md))
 
@@ -173,9 +188,10 @@ fun CredentialEditorScreen(
                         errorMessage = if (state.password.isEmpty()) state.passwordError else null,
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                         keyboardActions = KeyboardActions(onNext = { memoFocus.requestFocus() }),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .focusRequester(passwordFocus),
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .focusRequester(passwordFocus),
                     )
                     Spacer(Modifier.height(MaterialTheme.spacing.md))
 
@@ -186,10 +202,11 @@ fun CredentialEditorScreen(
                         hint = stringResource(Res.string.vault_memo),
                         leadingIcon = Icons.AutoMirrored.Filled.Notes,
                         singleLine = false,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(120.dp)
-                            .focusRequester(memoFocus),
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .height(120.dp)
+                                .focusRequester(memoFocus),
                     )
                 }
             }

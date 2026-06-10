@@ -56,12 +56,14 @@ fun CredentialListSkeleton(modifier: Modifier = Modifier) {
                 .padding(top = spacing.lg),
     ) {
         // Title placeholder
-        Box(modifier = Modifier
-            .padding(horizontal = spacing.md)
-            .width(160.dp)
-            .height(24.dp)
-            .clip(RoundedCornerShape(6.dp))
-            .background(turnstileColors.surface.copy(alpha = shimmerAlpha)),
+        Box(
+            modifier =
+                Modifier
+                    .padding(horizontal = spacing.md)
+                    .width(160.dp)
+                    .height(24.dp)
+                    .clip(RoundedCornerShape(6.dp))
+                    .background(turnstileColors.surface.copy(alpha = shimmerAlpha)),
         )
         Spacer(Modifier.height(spacing.lg))
 
@@ -92,32 +94,39 @@ private fun SkeletonItem(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = MaterialTheme.spacing.md,
-                vertical = MaterialTheme.spacing.sm
-            ),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = MaterialTheme.spacing.md,
+                    vertical = MaterialTheme.spacing.sm,
+                ),
     ) {
-        Box(modifier = Modifier
-            .size(44.dp)
-            .clip(CircleShape)
-            .background(MaterialTheme.turnstileColors.surface.copy(alpha = shimmerAlpha)),
+        Box(
+            modifier =
+                Modifier
+                    .size(44.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.turnstileColors.surface.copy(alpha = shimmerAlpha)),
         )
         Spacer(Modifier.width(12.dp))
         Column {
-            Box(modifier = Modifier
-                .fillMaxWidth(primaryWidth)
-                .height(14.dp)
-                .clip(RoundedCornerShape(4.dp))
-                .background(MaterialTheme.turnstileColors.surface.copy(alpha = shimmerAlpha)),
+            Box(
+                modifier =
+                    Modifier
+                        .fillMaxWidth(primaryWidth)
+                        .height(14.dp)
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(MaterialTheme.turnstileColors.surface.copy(alpha = shimmerAlpha)),
             )
             Spacer(Modifier.height(6.dp))
-            Box(modifier = Modifier
-                .fillMaxWidth(secondaryWidth)
-                .height(12.dp)
-                .clip(RoundedCornerShape(4.dp))
-                .background(MaterialTheme.turnstileColors.surface.copy(alpha = shimmerAlpha * 0.7f)),
+            Box(
+                modifier =
+                    Modifier
+                        .fillMaxWidth(secondaryWidth)
+                        .height(12.dp)
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(MaterialTheme.turnstileColors.surface.copy(alpha = shimmerAlpha * 0.7f)),
             )
         }
     }
