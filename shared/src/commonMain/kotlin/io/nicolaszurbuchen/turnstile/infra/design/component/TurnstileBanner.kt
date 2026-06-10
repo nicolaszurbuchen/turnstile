@@ -28,14 +28,11 @@ import androidx.compose.ui.unit.sp
 import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
 import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
 
-enum class BannerStyle { Card }
-
 enum class BannerSeverity { Error, Warning, Success }
 
 @Composable
-fun AppBanner(
+fun TurnstileBanner(
     message: String,
-    style: BannerStyle = BannerStyle.Card,
     severity: BannerSeverity = BannerSeverity.Error,
     actionLabel: String? = null,
     onAction: (() -> Unit)? = null,
@@ -65,17 +62,16 @@ fun AppBanner(
         }
 
     Card(
-        modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(containerColor = containerColor),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+        modifier = modifier.fillMaxWidth(),
     ) {
         Row(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = spacing.md, vertical = spacing.sm),
             verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = spacing.md, vertical = spacing.sm),
         ) {
             Icon(
                 imageVector = icon,

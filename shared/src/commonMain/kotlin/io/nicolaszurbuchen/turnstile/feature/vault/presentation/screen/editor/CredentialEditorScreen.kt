@@ -6,11 +6,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Notes
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Notes
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Title
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,11 +25,14 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.nicolaszurbuchen.turnstile.infra.design.component.AppBanner
-import io.nicolaszurbuchen.turnstile.infra.design.component.AppErrorView
+import io.nicolaszurbuchen.turnstile.infra.design.component.TurnstileBanner
+import io.nicolaszurbuchen.turnstile.infra.design.component.TurnstileErrorView
 import io.nicolaszurbuchen.turnstile.infra.design.component.TurnstileTextField
 import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
 import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
@@ -56,8 +61,9 @@ fun CredentialEditorScreen(
     onDismissSaveError: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val turnstileColors = MaterialTheme.turnstileColors
-    val spacing = MaterialTheme.spacing
+    val usernameFocus = FocusRequester()
+    val passwordFocus = FocusRequester()
+    val memoFocus = FocusRequester()
 
     Scaffold(
         topBar = {
@@ -67,7 +73,7 @@ fun CredentialEditorScreen(
                         text = if (state.id.isEmpty()) stringResource(Res.string.vault_editor_title_new) else stringResource(Res.string.vault_editor_title_edit),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
-                        color = turnstileColors.textPrimary,
+                        color = MaterialTheme.turnstileColors.textPrimary,
                     )
                 },
                 navigationIcon = {
@@ -75,7 +81,7 @@ fun CredentialEditorScreen(
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = null,
-                            tint = turnstileColors.textPrimary,
+                            tint = MaterialTheme.turnstileColors.textPrimary,
                         )
                     }
                 },
@@ -88,15 +94,15 @@ fun CredentialEditorScreen(
                             Icon(
                                 imageVector = Icons.Default.Done,
                                 contentDescription = null,
-                                tint = if (state.canSave) turnstileColors.accent else turnstileColors.textDisabled,
+                                tint = if (state.canSave) MaterialTheme.turnstileColors.accent else MaterialTheme.turnstileColors.textDisabled,
                             )
                         }
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = turnstileColors.background),
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.turnstileColors.background),
             )
         },
-        containerColor = turnstileColors.background,
+        containerColor = MaterialTheme.turnstileColors.background,
         modifier = modifier.fillMaxSize(),
     ) { padding ->
         when (val initialLoad = state.initialLoad) {
@@ -104,7 +110,7 @@ fun CredentialEditorScreen(
                 // TODO: Skeleton
             }
             is InitialLoad.Failed -> {
-                AppErrorView(
+                TurnstileErrorView(
                     message = initialLoad.error.message,
                     onRetry = onRetry,
                     modifier = Modifier.padding(padding),
@@ -116,17 +122,17 @@ fun CredentialEditorScreen(
                         Modifier
                             .padding(padding)
                             .fillMaxSize()
-                            .padding(horizontal = spacing.md),
+                            .padding(horizontal = MaterialTheme.spacing.md),
                 ) {
                     state.saveError?.let { error ->
-                        AppBanner(
+                        TurnstileBanner(
                             message = error.message,
                             onDismiss = onDismissSaveError,
-                            modifier = Modifier.padding(vertical = spacing.sm),
+                            modifier = Modifier.padding(vertical = MaterialTheme.spacing.sm),
                         )
                     }
 
-                    Spacer(Modifier.height(spacing.md))
+                    Spacer(Modifier.height(MaterialTheme.spacing.md))
 
                     EditLabel(stringResource(Res.string.vault_editor_title_label))
                     TurnstileTextField(
@@ -134,10 +140,11 @@ fun CredentialEditorScreen(
                         onValueChange = onTitleChange,
                         hint = stringResource(Res.string.vault_editor_title_hint),
                         leadingIcon = Icons.Default.Title,
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                        keyboardActions = KeyboardActions(onNext = { usernameFocus.requestFocus() }),
                         modifier = Modifier.fillMaxWidth(),
                     )
-
-                    Spacer(Modifier.height(spacing.md))
+                    Spacer(Modifier.height(MaterialTheme.spacing.md))
 
                     EditLabel(stringResource(Res.string.common_username))
                     TurnstileTextField(
@@ -147,10 +154,13 @@ fun CredentialEditorScreen(
                         leadingIcon = Icons.Default.Person,
                         isError = state.username.isEmpty() && state.usernameError != null,
                         errorMessage = if (state.username.isEmpty()) state.usernameError else null,
-                        modifier = Modifier.fillMaxWidth(),
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                        keyboardActions = KeyboardActions(onNext = { passwordFocus.requestFocus() }),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .focusRequester(usernameFocus),
                     )
-
-                    Spacer(Modifier.height(spacing.md))
+                    Spacer(Modifier.height(MaterialTheme.spacing.md))
 
                     EditLabel(stringResource(Res.string.common_password))
                     TurnstileTextField(
@@ -161,19 +171,25 @@ fun CredentialEditorScreen(
                         isPassword = true,
                         isError = state.password.isEmpty() && state.passwordError != null,
                         errorMessage = if (state.password.isEmpty()) state.passwordError else null,
-                        modifier = Modifier.fillMaxWidth(),
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                        keyboardActions = KeyboardActions(onNext = { memoFocus.requestFocus() }),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .focusRequester(passwordFocus),
                     )
-
-                    Spacer(Modifier.height(spacing.md))
+                    Spacer(Modifier.height(MaterialTheme.spacing.md))
 
                     EditLabel(stringResource(Res.string.vault_memo))
                     TurnstileTextField(
                         value = state.memo.orEmpty(),
                         onValueChange = onMemoChange,
                         hint = stringResource(Res.string.vault_memo),
-                        leadingIcon = Icons.Default.Notes,
+                        leadingIcon = Icons.AutoMirrored.Filled.Notes,
                         singleLine = false,
-                        modifier = Modifier.fillMaxWidth().height(120.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(120.dp)
+                            .focusRequester(memoFocus),
                     )
                 }
             }

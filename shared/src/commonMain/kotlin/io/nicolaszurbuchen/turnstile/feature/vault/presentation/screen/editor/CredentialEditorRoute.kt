@@ -23,7 +23,7 @@ fun CredentialEditorRoute(
             when (label) {
                 CredentialEditorLabel.NavigateBack -> onNavigateBackUpdated()
                 is CredentialEditorLabel.ShowError -> {
-                    // This could be a toast or snackbar
+                    // TODO: This could be a toast or snackbar
                 }
             }
         }

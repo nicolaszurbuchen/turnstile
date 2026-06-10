@@ -38,12 +38,8 @@ fun CredentialListRoute(
     CredentialListScreen(
         state = state,
         onEntryClick = { id -> viewModel.onIntent(CredentialListIntent.EntryClicked(id)) },
-        onCopyUsername = { username ->
-            clipboardManager.setText(AnnotatedString(username))
-        },
-        onCopyPassword = { password ->
-            clipboardManager.setText(AnnotatedString(password))
-        },
+        onCopyUsername = { username -> clipboardManager.setText(AnnotatedString(username)) },
+        onCopyPassword = { password -> clipboardManager.setText(AnnotatedString(password)) },
         onCreateClick = { viewModel.onIntent(CredentialListIntent.CreateClicked) },
         onSignOutClick = { viewModel.onIntent(CredentialListIntent.SignOutClicked) },
         onRetryInitialLoad = { viewModel.onIntent(CredentialListIntent.RetryInitialLoad) },

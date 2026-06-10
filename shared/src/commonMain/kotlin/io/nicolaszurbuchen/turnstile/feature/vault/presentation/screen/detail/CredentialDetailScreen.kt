@@ -30,7 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.nicolaszurbuchen.turnstile.infra.design.component.AppErrorView
+import io.nicolaszurbuchen.turnstile.infra.design.component.TurnstileErrorView
 import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
 import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
 import io.nicolaszurbuchen.turnstile.infra.ui.InitialLoad
@@ -99,7 +99,7 @@ fun CredentialDetailScreen(
                 // TODO: Skeleton
             }
             is InitialLoad.Failed -> {
-                AppErrorView(
+                TurnstileErrorView(
                     message = initialLoad.error.message,
                     onRetry = onRetry,
                     modifier = Modifier.padding(padding),

@@ -43,9 +43,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.nicolaszurbuchen.turnstile.infra.design.component.AppBanner
-import io.nicolaszurbuchen.turnstile.infra.design.component.AppEmptyView
-import io.nicolaszurbuchen.turnstile.infra.design.component.AppErrorView
+import io.nicolaszurbuchen.turnstile.infra.design.component.TurnstileBanner
+import io.nicolaszurbuchen.turnstile.infra.design.component.TurnstileEmptyView
+import io.nicolaszurbuchen.turnstile.infra.design.component.TurnstileErrorView
 import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
 import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
 import io.nicolaszurbuchen.turnstile.infra.ui.InitialLoad
@@ -121,7 +121,7 @@ fun CredentialListScreen(
                 }
 
                 is InitialLoad.Failed -> {
-                    AppErrorView(
+                    TurnstileErrorView(
                         message = initialLoad.error.message,
                         onRetry = onRetryInitialLoad,
                     )
@@ -130,7 +130,7 @@ fun CredentialListScreen(
                 is InitialLoad.Loaded -> {
                     Column(modifier = Modifier.fillMaxSize()) {
                         state.streamError?.let { error ->
-                            AppBanner(
+                            TurnstileBanner(
                                 message = error.message,
                                 onDismiss = onDismissStreamError,
                                 modifier = Modifier
@@ -142,7 +142,7 @@ fun CredentialListScreen(
                         }
 
                         if (state.isEmpty) {
-                            AppEmptyView(
+                            TurnstileEmptyView(
                                 title = stringResource(Res.string.vault_list_empty_title),
                                 subtitle = stringResource(Res.string.vault_list_empty_subtitle),
                             )

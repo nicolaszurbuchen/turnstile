@@ -23,48 +23,44 @@ import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
 import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
 
 @Composable
-fun AppEmptyView(
+fun TurnstileEmptyView(
     title: String,
     subtitle: String? = null,
     action: (@Composable () -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
-    val turnstileColors = MaterialTheme.turnstileColors
-    val spacing = MaterialTheme.spacing
-
     Column(
-        modifier =
-            modifier
-                .fillMaxSize()
-                .padding(spacing.xl),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
+        modifier = modifier
+            .fillMaxSize()
+            .padding(MaterialTheme.spacing.xl),
     ) {
         Icon(
             imageVector = Icons.Outlined.Lock,
             contentDescription = null,
-            tint = turnstileColors.textTertiary,
+            tint = MaterialTheme.turnstileColors.textTertiary,
             modifier = Modifier.size(52.dp),
         )
-        Spacer(Modifier.height(spacing.md))
+        Spacer(Modifier.height(MaterialTheme.spacing.md))
         Text(
             text = title,
             fontSize = 18.sp,
             fontWeight = FontWeight.SemiBold,
-            color = turnstileColors.textPrimary,
+            color = MaterialTheme.turnstileColors.textPrimary,
             textAlign = TextAlign.Center,
         )
         if (subtitle != null) {
-            Spacer(Modifier.height(spacing.xs))
+            Spacer(Modifier.height(MaterialTheme.spacing.xs))
             Text(
                 text = subtitle,
                 fontSize = 14.sp,
-                color = turnstileColors.textSecondary,
+                color = MaterialTheme.turnstileColors.textSecondary,
                 textAlign = TextAlign.Center,
             )
         }
         if (action != null) {
-            Spacer(Modifier.height(spacing.lg))
+            Spacer(Modifier.height(MaterialTheme.spacing.lg))
             action()
         }
     }

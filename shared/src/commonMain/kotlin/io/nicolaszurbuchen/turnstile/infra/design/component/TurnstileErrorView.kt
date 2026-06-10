@@ -26,54 +26,51 @@ import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
 import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
 
 @Composable
-fun AppErrorView(
+fun TurnstileErrorView(
     message: String,
     onRetry: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
-    val turnstileColors = MaterialTheme.turnstileColors
-    val spacing = MaterialTheme.spacing
     Column(
-        modifier =
-            modifier
-                .fillMaxSize()
-                .padding(spacing.xl),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
+        modifier = modifier
+            .fillMaxSize()
+            .padding(MaterialTheme.spacing.xl),
     ) {
         Icon(
             imageVector = Icons.Outlined.CloudOff,
             contentDescription = null,
-            tint = turnstileColors.textTertiary,
+            tint = MaterialTheme.turnstileColors.textTertiary,
             modifier = Modifier.size(52.dp),
         )
-        Spacer(Modifier.height(spacing.md))
+        Spacer(Modifier.height(MaterialTheme.spacing.md))
         Text(
             text = "Something went wrong",
             fontSize = 18.sp,
             fontWeight = FontWeight.SemiBold,
-            color = turnstileColors.textPrimary,
+            color = MaterialTheme.turnstileColors.textPrimary,
             textAlign = TextAlign.Center,
         )
-        Spacer(Modifier.height(spacing.xs))
+        Spacer(Modifier.height(MaterialTheme.spacing.xs))
         Text(
             text = message,
             fontSize = 14.sp,
-            color = turnstileColors.textSecondary,
+            color = MaterialTheme.turnstileColors.textSecondary,
             textAlign = TextAlign.Center,
         )
         if (onRetry != null) {
-            Spacer(Modifier.height(spacing.lg))
+            Spacer(Modifier.height(MaterialTheme.spacing.lg))
             Button(
                 onClick = onRetry,
-                colors = ButtonDefaults.buttonColors(containerColor = turnstileColors.accent),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.turnstileColors.accent),
                 shape = RoundedCornerShape(12.dp),
             ) {
                 Text(
                     text = "Try again",
                     fontSize = 15.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = turnstileColors.onAccent,
+                    color = MaterialTheme.turnstileColors.onAccent,
                 )
             }
         }
