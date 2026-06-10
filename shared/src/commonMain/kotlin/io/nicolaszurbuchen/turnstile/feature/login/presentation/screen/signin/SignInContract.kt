@@ -4,10 +4,10 @@ import io.nicolaszurbuchen.turnstile.feature.login.domain.validation.EmailValida
 import io.nicolaszurbuchen.turnstile.feature.login.domain.validation.PasswordValidationError
 import org.jetbrains.compose.resources.StringResource
 import turnstile.shared.generated.resources.Res
-import turnstile.shared.generated.resources.auth_error_email_invalid
-import turnstile.shared.generated.resources.auth_error_email_required
-import turnstile.shared.generated.resources.auth_error_password_required
-import turnstile.shared.generated.resources.auth_error_password_too_short
+import turnstile.shared.generated.resources.login_error_email_invalid
+import turnstile.shared.generated.resources.login_error_email_required
+import turnstile.shared.generated.resources.login_error_password_required
+import turnstile.shared.generated.resources.login_error_password_too_short
 
 sealed interface SignInIntent {
     data class EmailChanged(val value: String) : SignInIntent
@@ -49,12 +49,12 @@ data class SignInState(
 
 fun EmailValidationError.asStringResource(): StringResource =
     when (this) {
-        EmailValidationError.Required -> Res.string.auth_error_email_required
-        EmailValidationError.Invalid -> Res.string.auth_error_email_invalid
+        EmailValidationError.Required -> Res.string.login_error_email_required
+        EmailValidationError.Invalid -> Res.string.login_error_email_invalid
     }
 
 fun PasswordValidationError.asStringResource(): StringResource =
     when (this) {
-        PasswordValidationError.Required -> Res.string.auth_error_password_required
-        PasswordValidationError.TooShort -> Res.string.auth_error_password_too_short
+        PasswordValidationError.Required -> Res.string.login_error_password_required
+        PasswordValidationError.TooShort -> Res.string.login_error_password_too_short
     }

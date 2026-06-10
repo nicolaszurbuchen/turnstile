@@ -1,53 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- App -->
-    <string name="app_name">Turnstile</string>
-
-    <!-- Common -->
+    <!-- common -->
+    <string name="common_app_name">Turnstile</string>
     <string name="common_email">Email</string>
     <string name="common_password">Password</string>
+    <string name="common_username">Username</string>
 
-    <!-- Auth — shared -->
-    <string name="auth_sign_in">Sign In</string>
-    <string name="auth_sign_up">Sign Up</string>
+    <!-- login / shared -->
+    <string name="login_sign_in">Sign In</string>
+    <string name="login_sign_up">Sign Up</string>
 
-    <!-- Welcome -->
-    <string name="auth_tagline">Your gateway to everything</string>
-    <string name="auth_create_account">Create an account</string>
+    <!-- login / sign in -->
+    <string name="login_signin_title">Welcome Back</string>
+    <string name="login_signin_subtitle">Login to your account</string>
+    <string name="login_signin_no_account">Don't have an account?</string>
 
-    <!-- Sign In -->
-    <string name="auth_signin_title">Welcome Back</string>
-    <string name="auth_signin_subtitle">Login to your account</string>
-    <string name="auth_signin_submit">Login</string>
-    <string name="auth_signin_no_account">Don't have an account?</string>
+    <!-- login / sign up -->
+    <string name="login_signup_title">Register</string>
+    <string name="login_signup_subtitle">Create your new account</string>
+    <string name="login_signup_has_account">Already have an account?</string>
 
-    <!-- Sign Up -->
-    <string name="auth_signup_title">Register</string>
-    <string name="auth_signup_subtitle">Create your new account</string>
-    <string name="auth_username">Username</string>
-    <string name="auth_signup_has_account">Already have an account?</string>
+    <!-- login / forgot password -->
+    <string name="login_forgot_password">Forgot Password?</string>
+    <string name="login_forgot_subtitle">Enter your email and we'll send you a reset link</string>
+    <string name="login_forgot_submit">Send Reset Link</string>
+    <string name="login_forgot_success_title">Check Your Email</string>
+    <string name="login_forgot_success_body">We've sent a password reset link to your inbox. Check your email and follow the instructions.</string>
+    <string name="login_forgot_back_to_signin">Back to Sign In</string>
 
-    <!-- Forgot Password -->
-    <string name="auth_forgot_password">Forgot Password?</string>
-    <string name="auth_forgot_subtitle">Enter your email and we'll send you a reset link</string>
-    <string name="auth_forgot_submit">Send Reset Link</string>
-    <string name="auth_forgot_success_title">Check Your Email</string>
-    <string name="auth_forgot_success_body">We've sent a password reset link to your inbox. Check your email and follow the instructions.</string>
-    <string name="auth_forgot_back_to_signin">Back to Sign In</string>
+    <!-- login / validation errors -->
+    <string name="login_error_email_required">Email is required</string>
+    <string name="login_error_email_invalid">Invalid email</string>
+    <string name="login_error_password_required">Password is required</string>
+    <string name="login_error_password_too_short">Password must be at least 8 characters</string>
+    <string name="login_error_username_required">Username is required</string>
+    <string name="login_error_username_too_short">Username is too short</string>
 
-    <!-- Dashboard -->
-    <string name="dashboard_title">My Passwords</string>
-    <string name="dashboard_empty_title">No passwords saved yet</string>
-    <string name="dashboard_empty_subtitle">Tap + to add your first entry</string>
-    <string name="dashboard_error_generic">Something went wrong</string>
-    <string name="dashboard_retry">Try again</string>
-    <string name="dashboard_banner_retry">Retry</string>
+    <!-- vault / shared -->
+    <string name="vault_memo">Memo</string>
 
-    <!-- Validation errors -->§
-    <string name="auth_error_email_required">Email is required</string>
-    <string name="auth_error_email_invalid">Invalid email</string>
-    <string name="auth_error_password_required">Password is required</string>
-    <string name="auth_error_password_too_short">Password must be at least 8 characters</string>
-    <string name="auth_error_username_required">Username is required</string>
-    <string name="auth_error_username_too_short">Username is too short</string>
+    <!-- vault / list -->
+    <string name="vault_list_title">My Vault</string>
+    <string name="vault_list_empty_title">Your vault is empty</string>
+    <string name="vault_list_empty_subtitle">Tap + to add your first credential</string>
+    <string name="vault_list_copy_username">Copy username</string>
+    <string name="vault_list_copy_password">Copy password</string>
+
+    <!-- vault / detail -->
+    <string name="vault_detail_none">None</string>
+
+    <!-- vault / editor -->
+    <string name="vault_editor_title_new">New Credential</string>
+    <string name="vault_editor_title_edit">Edit Credential</string>
+    <string name="vault_editor_title_hint">e.g. Google</string>
+    <string name="vault_editor_title_label">Title</string>
 </resources>

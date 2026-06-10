@@ -26,13 +26,13 @@ import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
 import io.nicolaszurbuchen.turnstile.infra.ui.UiText
 import org.jetbrains.compose.resources.stringResource
 import turnstile.shared.generated.resources.Res
-import turnstile.shared.generated.resources.auth_forgot_back_to_signin
-import turnstile.shared.generated.resources.auth_forgot_password
-import turnstile.shared.generated.resources.auth_forgot_submit
-import turnstile.shared.generated.resources.auth_forgot_subtitle
-import turnstile.shared.generated.resources.auth_forgot_success_body
-import turnstile.shared.generated.resources.auth_forgot_success_title
 import turnstile.shared.generated.resources.common_email
+import turnstile.shared.generated.resources.login_forgot_back_to_signin
+import turnstile.shared.generated.resources.login_forgot_password
+import turnstile.shared.generated.resources.login_forgot_submit
+import turnstile.shared.generated.resources.login_forgot_subtitle
+import turnstile.shared.generated.resources.login_forgot_success_body
+import turnstile.shared.generated.resources.login_forgot_success_title
 
 @Composable
 fun ForgotPasswordScreen(
@@ -71,8 +71,8 @@ private fun FormContent(
 
     Column(modifier = modifier) {
         LoginHeading(
-            title = UiText.Resource(Res.string.auth_forgot_password),
-            subtitle = UiText.Resource(Res.string.auth_forgot_subtitle),
+            title = UiText.Resource(Res.string.login_forgot_password),
+            subtitle = UiText.Resource(Res.string.login_forgot_subtitle),
         )
         Spacer(Modifier.height(MaterialTheme.spacing.lg))
 
@@ -102,7 +102,7 @@ private fun FormContent(
         Spacer(Modifier.weight(1f))
 
         TurnstilePrimaryButton(
-            text = UiText.Resource(id = Res.string.auth_forgot_submit),
+            text = UiText.Resource(id = Res.string.login_forgot_submit),
             onClick = onSubmit,
             enabled = state.canSubmit,
             loading = state.loading,
@@ -117,13 +117,13 @@ private fun SuccessContent(
 ) {
     Column(modifier = modifier) {
         LoginHeading(
-            title = UiText.Resource(Res.string.auth_forgot_success_title),
-            subtitle = UiText.Resource(Res.string.auth_forgot_success_body),
+            title = UiText.Resource(Res.string.login_forgot_success_title),
+            subtitle = UiText.Resource(Res.string.login_forgot_success_body),
         )
         Spacer(Modifier.weight(1f))
 
         TurnstilePrimaryButton(
-            text = UiText.Resource(id = Res.string.auth_forgot_back_to_signin),
+            text = UiText.Resource(id = Res.string.login_forgot_back_to_signin),
             onClick = onNavigateBack,
         )
     }

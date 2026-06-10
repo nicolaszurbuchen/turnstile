@@ -3,8 +3,8 @@ package io.nicolaszurbuchen.turnstile.feature.login.presentation.screen.forgotpa
 import io.nicolaszurbuchen.turnstile.feature.login.domain.validation.EmailValidationError
 import org.jetbrains.compose.resources.StringResource
 import turnstile.shared.generated.resources.Res
-import turnstile.shared.generated.resources.auth_error_email_invalid
-import turnstile.shared.generated.resources.auth_error_email_required
+import turnstile.shared.generated.resources.login_error_email_invalid
+import turnstile.shared.generated.resources.login_error_email_required
 
 sealed interface ForgotPasswordIntent {
     data class EmailChanged(val value: String) : ForgotPasswordIntent
@@ -39,6 +39,6 @@ data class ForgotPasswordState(
 
 fun EmailValidationError.asStringResource(): StringResource =
     when (this) {
-        EmailValidationError.Required -> Res.string.auth_error_email_required
-        EmailValidationError.Invalid -> Res.string.auth_error_email_invalid
+        EmailValidationError.Required -> Res.string.login_error_email_required
+        EmailValidationError.Invalid -> Res.string.login_error_email_invalid
     }

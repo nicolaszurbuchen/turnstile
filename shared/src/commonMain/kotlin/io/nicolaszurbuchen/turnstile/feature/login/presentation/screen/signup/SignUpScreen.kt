@@ -35,14 +35,14 @@ import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
 import io.nicolaszurbuchen.turnstile.infra.ui.UiText
 import org.jetbrains.compose.resources.stringResource
 import turnstile.shared.generated.resources.Res
-import turnstile.shared.generated.resources.auth_sign_in
-import turnstile.shared.generated.resources.auth_sign_up
-import turnstile.shared.generated.resources.auth_signup_has_account
-import turnstile.shared.generated.resources.auth_signup_subtitle
-import turnstile.shared.generated.resources.auth_signup_title
-import turnstile.shared.generated.resources.auth_username
 import turnstile.shared.generated.resources.common_email
 import turnstile.shared.generated.resources.common_password
+import turnstile.shared.generated.resources.common_username
+import turnstile.shared.generated.resources.login_sign_in
+import turnstile.shared.generated.resources.login_sign_up
+import turnstile.shared.generated.resources.login_signup_has_account
+import turnstile.shared.generated.resources.login_signup_subtitle
+import turnstile.shared.generated.resources.login_signup_title
 
 @Composable
 fun SignUpScreen(
@@ -65,15 +65,15 @@ fun SignUpScreen(
 
         LoginModalView {
             LoginHeading(
-                title = UiText.Resource(Res.string.auth_signup_title),
-                subtitle = UiText.Resource(Res.string.auth_signup_subtitle),
+                title = UiText.Resource(Res.string.login_signup_title),
+                subtitle = UiText.Resource(Res.string.login_signup_subtitle),
             )
             Spacer(Modifier.height(MaterialTheme.spacing.lg))
 
             TurnstileTextField(
                 value = state.username,
                 onValueChange = onUsernameChanged,
-                hint = stringResource(Res.string.auth_username),
+                hint = stringResource(Res.string.common_username),
                 leadingIcon = Icons.Filled.Person,
                 isError = state.usernameError != null,
                 errorMessage = state.usernameError?.let { stringResource(it) },
@@ -128,7 +128,7 @@ fun SignUpScreen(
             Spacer(Modifier.weight(1f))
 
             TurnstilePrimaryButton(
-                text = UiText.Resource(id = Res.string.auth_sign_up),
+                text = UiText.Resource(id = Res.string.login_sign_up),
                 onClick = onSubmit,
                 enabled = state.canSubmit,
                 loading = state.loading,
@@ -141,7 +141,7 @@ fun SignUpScreen(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = stringResource(Res.string.auth_signup_has_account),
+                    text = stringResource(Res.string.login_signup_has_account),
                     fontSize = 14.sp,
                     color = MaterialTheme.turnstileColors.textSecondary,
                 )
@@ -149,7 +149,7 @@ fun SignUpScreen(
                     onClick = onSignInClicked,
                 ) {
                     Text(
-                        text = stringResource(Res.string.auth_sign_in),
+                        text = stringResource(Res.string.login_sign_in),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.turnstileColors.accent,

@@ -34,14 +34,14 @@ import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
 import io.nicolaszurbuchen.turnstile.infra.ui.UiText
 import org.jetbrains.compose.resources.stringResource
 import turnstile.shared.generated.resources.Res
-import turnstile.shared.generated.resources.auth_forgot_password
-import turnstile.shared.generated.resources.auth_sign_up
-import turnstile.shared.generated.resources.auth_signin_no_account
-import turnstile.shared.generated.resources.auth_signin_submit
-import turnstile.shared.generated.resources.auth_signin_subtitle
-import turnstile.shared.generated.resources.auth_signin_title
 import turnstile.shared.generated.resources.common_email
 import turnstile.shared.generated.resources.common_password
+import turnstile.shared.generated.resources.login_forgot_password
+import turnstile.shared.generated.resources.login_sign_in
+import turnstile.shared.generated.resources.login_sign_up
+import turnstile.shared.generated.resources.login_signin_no_account
+import turnstile.shared.generated.resources.login_signin_subtitle
+import turnstile.shared.generated.resources.login_signin_title
 
 @Composable
 fun SignInScreen(
@@ -65,8 +65,8 @@ fun SignInScreen(
 
         LoginModalView {
             LoginHeading(
-                title = UiText.Resource(Res.string.auth_signin_title),
-                subtitle = UiText.Resource(Res.string.auth_signin_subtitle),
+                title = UiText.Resource(Res.string.login_signin_title),
+                subtitle = UiText.Resource(Res.string.login_signin_subtitle),
             )
             Spacer(Modifier.height(MaterialTheme.spacing.lg))
 
@@ -119,7 +119,7 @@ fun SignInScreen(
             ) {
                 TextButton(onClick = onForgotPasswordClicked) {
                     Text(
-                        text = stringResource(Res.string.auth_forgot_password),
+                        text = stringResource(Res.string.login_forgot_password),
                         fontSize = 12.sp,
                         color = MaterialTheme.turnstileColors.accent,
                     )
@@ -128,7 +128,7 @@ fun SignInScreen(
             Spacer(Modifier.weight(1f))
 
             TurnstilePrimaryButton(
-                text = UiText.Resource(id = Res.string.auth_signin_submit),
+                text = UiText.Resource(id = Res.string.login_sign_in),
                 onClick = onSubmit,
                 enabled = state.canSubmit,
                 loading = state.loading,
@@ -141,13 +141,13 @@ fun SignInScreen(
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Text(
-                    text = stringResource(Res.string.auth_signin_no_account),
+                    text = stringResource(Res.string.login_signin_no_account),
                     fontSize = 14.sp,
                     color = MaterialTheme.turnstileColors.textSecondary,
                 )
                 TextButton(onClick = onSignUpClicked) {
                     Text(
-                        text = stringResource(Res.string.auth_sign_up),
+                        text = stringResource(Res.string.login_sign_up),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.turnstileColors.accent,

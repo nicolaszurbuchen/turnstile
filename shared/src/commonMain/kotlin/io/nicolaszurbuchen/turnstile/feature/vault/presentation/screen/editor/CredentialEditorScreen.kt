@@ -32,6 +32,15 @@ import io.nicolaszurbuchen.turnstile.infra.design.component.TurnstileTextField
 import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
 import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
 import io.nicolaszurbuchen.turnstile.infra.ui.InitialLoad
+import org.jetbrains.compose.resources.stringResource
+import turnstile.shared.generated.resources.Res
+import turnstile.shared.generated.resources.common_password
+import turnstile.shared.generated.resources.common_username
+import turnstile.shared.generated.resources.vault_editor_title_edit
+import turnstile.shared.generated.resources.vault_editor_title_hint
+import turnstile.shared.generated.resources.vault_editor_title_label
+import turnstile.shared.generated.resources.vault_editor_title_new
+import turnstile.shared.generated.resources.vault_memo
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,7 +64,7 @@ fun CredentialEditorScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = if (state.id.isEmpty()) "New Credential" else "Edit Credential",
+                        text = if (state.id.isEmpty()) stringResource(Res.string.vault_editor_title_new) else stringResource(Res.string.vault_editor_title_edit),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
                         color = turnstileColors.textPrimary,
@@ -63,13 +72,24 @@ fun CredentialEditorScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onCancelClick) {
-                        Icon(Icons.Default.Close, contentDescription = "Cancel", tint = turnstileColors.textPrimary)
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = null,
+                            tint = turnstileColors.textPrimary,
+                        )
                     }
                 },
                 actions = {
                     if (state.initialLoad is InitialLoad.Loaded) {
-                        IconButton(onClick = onSaveClick, enabled = state.canSave) {
-                            Icon(Icons.Default.Done, contentDescription = "Save", tint = if (state.canSave) turnstileColors.accent else turnstileColors.textDisabled)
+                        IconButton(
+                            onClick = onSaveClick,
+                            enabled = state.canSave,
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Done,
+                                contentDescription = null,
+                                tint = if (state.canSave) turnstileColors.accent else turnstileColors.textDisabled,
+                            )
                         }
                     }
                 },
@@ -108,22 +128,22 @@ fun CredentialEditorScreen(
 
                     Spacer(Modifier.height(spacing.md))
 
-                    EditLabel("Title")
+                    EditLabel(stringResource(Res.string.vault_editor_title_label))
                     TurnstileTextField(
                         value = state.title,
                         onValueChange = onTitleChange,
-                        hint = "e.g. Google",
+                        hint = stringResource(Res.string.vault_editor_title_hint),
                         leadingIcon = Icons.Default.Title,
                         modifier = Modifier.fillMaxWidth(),
                     )
 
                     Spacer(Modifier.height(spacing.md))
 
-                    EditLabel("Username")
+                    EditLabel(stringResource(Res.string.common_username))
                     TurnstileTextField(
                         value = state.username,
                         onValueChange = onUsernameChange,
-                        hint = "Username",
+                        hint = stringResource(Res.string.common_username),
                         leadingIcon = Icons.Default.Person,
                         isError = state.username.isEmpty() && state.usernameError != null,
                         errorMessage = if (state.username.isEmpty()) state.usernameError else null,
@@ -132,11 +152,11 @@ fun CredentialEditorScreen(
 
                     Spacer(Modifier.height(spacing.md))
 
-                    EditLabel("Password")
+                    EditLabel(stringResource(Res.string.common_password))
                     TurnstileTextField(
                         value = state.password,
                         onValueChange = onPasswordChange,
-                        hint = "Password",
+                        hint = stringResource(Res.string.common_password),
                         leadingIcon = Icons.Default.Lock,
                         isPassword = true,
                         isError = state.password.isEmpty() && state.passwordError != null,
@@ -146,11 +166,11 @@ fun CredentialEditorScreen(
 
                     Spacer(Modifier.height(spacing.md))
 
-                    EditLabel("Memo")
+                    EditLabel(stringResource(Res.string.vault_memo))
                     TurnstileTextField(
                         value = state.memo.orEmpty(),
                         onValueChange = onMemoChange,
-                        hint = "Memo",
+                        hint = stringResource(Res.string.vault_memo),
                         leadingIcon = Icons.Default.Notes,
                         singleLine = false,
                         modifier = Modifier.fillMaxWidth().height(120.dp),

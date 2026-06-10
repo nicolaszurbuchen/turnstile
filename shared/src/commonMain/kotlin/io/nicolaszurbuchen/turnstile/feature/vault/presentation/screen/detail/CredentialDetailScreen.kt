@@ -1,5 +1,6 @@
 package io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.detail
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,7 +13,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -33,6 +34,12 @@ import io.nicolaszurbuchen.turnstile.infra.design.component.AppErrorView
 import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
 import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
 import io.nicolaszurbuchen.turnstile.infra.ui.InitialLoad
+import org.jetbrains.compose.resources.stringResource
+import turnstile.shared.generated.resources.Res
+import turnstile.shared.generated.resources.common_password
+import turnstile.shared.generated.resources.common_username
+import turnstile.shared.generated.resources.vault_detail_none
+import turnstile.shared.generated.resources.vault_memo
 
 @Composable
 fun CredentialDetailScreen(
@@ -45,34 +52,46 @@ fun CredentialDetailScreen(
     onRetry: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val turnstileColors = MaterialTheme.turnstileColors
-    val spacing = MaterialTheme.spacing
-
     Scaffold(
-        topBar = {
+        topBar =             {
             Row(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .statusBarsPadding()
-                        .padding(horizontal = spacing.sm, vertical = spacing.sm),
                 verticalAlignment = Alignment.CenterVertically,
-            ) {
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .statusBarsPadding()
+                    .padding(
+                        horizontal = MaterialTheme.spacing.sm,
+                        vertical = MaterialTheme.spacing.sm,
+                    ),
+                ) {
                 IconButton(onClick = onBackClick) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = turnstileColors.textPrimary)
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = null,
+                        tint = MaterialTheme.turnstileColors.textPrimary,
+                    )
                 }
                 Spacer(Modifier.weight(1f))
+
                 if (state.initialLoad is InitialLoad.Loaded) {
                     IconButton(onClick = onEditClick) {
-                        Icon(Icons.Default.Edit, contentDescription = "Edit", tint = turnstileColors.textPrimary)
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = null,
+                            tint = MaterialTheme.turnstileColors.textPrimary,
+                        )
                     }
                     IconButton(onClick = onDeleteClick) {
-                        Icon(Icons.Default.Delete, contentDescription = "Delete", tint = turnstileColors.textPrimary)
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = null,
+                            tint = MaterialTheme.turnstileColors.textPrimary,
+                        )
                     }
                 }
             }
         },
-        containerColor = turnstileColors.background,
+        containerColor = MaterialTheme.turnstileColors.background,
         modifier = modifier.fillMaxSize(),
     ) { padding ->
         when (val initialLoad = state.initialLoad) {
@@ -88,59 +107,58 @@ fun CredentialDetailScreen(
             }
             is InitialLoad.Loaded -> {
                 state.credential?.let { credential ->
-                    Column(
-                        modifier =
-                            Modifier
-                                .padding(padding)
-                                .fillMaxSize()
-                                .padding(horizontal = spacing.md),
+                    Column(modifier = Modifier
+                        .padding(padding)
+                        .fillMaxSize()
+                        .padding(horizontal = MaterialTheme.spacing.md),
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Card(
                                 shape = CircleShape,
-                                colors = CardDefaults.cardColors(containerColor = turnstileColors.surfaceRaised),
+                                colors = CardDefaults.cardColors(containerColor = MaterialTheme.turnstileColors.surfaceRaised),
                                 modifier = Modifier.size(64.dp),
                             ) {
                                 Column(
                                     modifier = Modifier.fillMaxSize(),
                                     horizontalAlignment = Alignment.CenterHorizontally,
-                                    verticalArrangement = androidx.compose.foundation.layout.Arrangement.Center,
+                                    verticalArrangement = Arrangement.Center,
                                 ) {
                                     Text(
                                         text = credential.title.firstOrNull()?.uppercase() ?: "?",
                                         fontSize = 24.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = turnstileColors.textSecondary,
+                                        color = MaterialTheme.turnstileColors.textSecondary,
                                     )
                                 }
                             }
-                            Spacer(Modifier.width(spacing.md))
+                            Spacer(Modifier.width(MaterialTheme.spacing.md))
                             Text(
                                 text = credential.title,
                                 fontSize = 22.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = turnstileColors.textPrimary,
+                                color = MaterialTheme.turnstileColors.textPrimary,
                             )
                         }
 
-                        Spacer(Modifier.height(spacing.xl))
+                        Spacer(Modifier.height(MaterialTheme.spacing.xl))
 
                         DetailField(
-                            label = "Username",
+                            label = stringResource(Res.string.common_username),
                             value = credential.username,
                             onCopy = { onCopyUsername(credential.username) },
                         )
-                        Spacer(Modifier.height(spacing.lg))
+                        Spacer(Modifier.height(MaterialTheme.spacing.lg))
+
                         DetailField(
-                            label = "Password",
+                            label = stringResource(Res.string.common_password),
                             value = credential.password,
                             isPassword = true,
                             onCopy = { onCopyPassword(credential.password) },
                         )
+                        Spacer(Modifier.height(MaterialTheme.spacing.lg))
 
-                        Spacer(Modifier.height(spacing.lg))
                         DetailField(
-                            label = "Memo",
+                            label = stringResource(Res.string.vault_memo),
                             value = credential.memo ?: "",
                         )
                     }
@@ -157,25 +175,23 @@ private fun DetailField(
     isPassword: Boolean = false,
     onCopy: (() -> Unit)? = null,
 ) {
-    val turnstileColors = MaterialTheme.turnstileColors
-    val spacing = MaterialTheme.spacing
-
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
             text = label,
             fontSize = 13.sp,
-            color = turnstileColors.textTertiary,
+            color = MaterialTheme.turnstileColors.textTertiary,
             fontWeight = FontWeight.Medium,
         )
-        Spacer(Modifier.height(spacing.xs))
+        Spacer(Modifier.height(MaterialTheme.spacing.xs))
+
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text(
-                text = if (isPassword) "••••••••" else value.ifBlank { "None" },
+                text = if (isPassword) "••••••••" else value.ifBlank { stringResource(Res.string.vault_detail_none) },
                 fontSize = 16.sp,
-                color = if (value.isBlank()) turnstileColors.textDisabled else turnstileColors.textPrimary,
+                color = if (value.isBlank()) MaterialTheme.turnstileColors.textDisabled else MaterialTheme.turnstileColors.textPrimary,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.weight(1f),
             )
@@ -186,8 +202,8 @@ private fun DetailField(
                 ) {
                     Icon(
                         imageVector = Icons.Default.ContentCopy,
-                        contentDescription = "Copy $label",
-                        tint = turnstileColors.accent,
+                        contentDescription = null,
+                        tint = MaterialTheme.turnstileColors.accent,
                         modifier = Modifier.size(16.dp),
                     )
                 }

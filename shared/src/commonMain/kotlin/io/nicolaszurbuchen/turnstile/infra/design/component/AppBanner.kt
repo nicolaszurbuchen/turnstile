@@ -108,7 +108,7 @@ fun AppBanner(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = "Dismiss",
+                        contentDescription = null,
                         tint = contentColor,
                         modifier = Modifier.size(16.dp),
                     )

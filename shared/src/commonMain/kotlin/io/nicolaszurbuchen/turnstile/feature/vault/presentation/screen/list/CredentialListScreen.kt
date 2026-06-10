@@ -1,9 +1,9 @@
 package io.nicolaszurbuchen.turnstile.feature.vault.presentation.screen.list
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,7 +30,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -50,6 +49,13 @@ import io.nicolaszurbuchen.turnstile.infra.design.component.AppErrorView
 import io.nicolaszurbuchen.turnstile.infra.design.theme.spacing
 import io.nicolaszurbuchen.turnstile.infra.design.theme.turnstileColors
 import io.nicolaszurbuchen.turnstile.infra.ui.InitialLoad
+import org.jetbrains.compose.resources.stringResource
+import turnstile.shared.generated.resources.Res
+import turnstile.shared.generated.resources.vault_list_copy_password
+import turnstile.shared.generated.resources.vault_list_copy_username
+import turnstile.shared.generated.resources.vault_list_empty_subtitle
+import turnstile.shared.generated.resources.vault_list_empty_title
+import turnstile.shared.generated.resources.vault_list_title
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,33 +72,28 @@ fun CredentialListScreen(
 ) {
     Scaffold(
         topBar = {
-            Surface(
-                shadowElevation = 4.dp,
-                color = MaterialTheme.turnstileColors.surfaceRaised,
-            ) {
-                TopAppBar(
-                    title = {
-                        Text(
-                            text = "My Vault",
-                            fontWeight = FontWeight.Bold,
+            TopAppBar(
+                title = {
+                    Text(
+                        text = stringResource(Res.string.vault_list_title),
+                        fontWeight = FontWeight.Bold,
+                    )
+                },
+                actions = {
+                    IconButton(onClick = onSignOutClick) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.Logout,
+                            contentDescription = null,
                         )
-                    },
-                    actions = {
-                        IconButton(onClick = onSignOutClick) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.Logout,
-                                contentDescription = "Sign Out",
-                            )
-                        }
-                    },
-                    colors =
-                        TopAppBarDefaults.topAppBarColors(
-                            containerColor = MaterialTheme.turnstileColors.surfaceRaised,
-                            titleContentColor = MaterialTheme.turnstileColors.textPrimary,
-                            actionIconContentColor = MaterialTheme.turnstileColors.textPrimary,
-                        ),
-                )
-            }
+                    }
+                },
+                colors =
+                    TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.turnstileColors.surfaceRaised,
+                        titleContentColor = MaterialTheme.turnstileColors.textPrimary,
+                        actionIconContentColor = MaterialTheme.turnstileColors.textPrimary,
+                    ),
+            )
         },
         floatingActionButton = {
             FloatingActionButton(
@@ -101,17 +102,18 @@ fun CredentialListScreen(
                 contentColor = MaterialTheme.turnstileColors.onAccent,
                 shape = CircleShape,
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Add Credential")
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = null,
+                )
             }
         },
         containerColor = MaterialTheme.turnstileColors.background,
         modifier = modifier.fillMaxSize(),
     ) { padding ->
-        Column(
-            modifier =
-                Modifier
-                    .padding(padding)
-                    .fillMaxSize(),
+        Column(modifier = Modifier
+            .padding(padding)
+            .fillMaxSize(),
         ) {
             when (val initialLoad = state.initialLoad) {
                 is InitialLoad.Loading -> {
@@ -131,23 +133,30 @@ fun CredentialListScreen(
                             AppBanner(
                                 message = error.message,
                                 onDismiss = onDismissStreamError,
-                                modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.sm),
+                                modifier = Modifier
+                                    .padding(
+                                        horizontal = MaterialTheme.spacing.md,
+                                        vertical = MaterialTheme.spacing.sm,
+                                    ),
                             )
                         }
 
                         if (state.isEmpty) {
                             AppEmptyView(
-                                title = "Your vault is empty",
-                                subtitle = "Tap + to add your first credential",
+                                title = stringResource(Res.string.vault_list_empty_title),
+                                subtitle = stringResource(Res.string.vault_list_empty_subtitle),
                             )
                         } else {
                             LazyColumn(
-                                modifier =
-                                    Modifier
-                                        .fillMaxSize()
-                                        .navigationBarsPadding(),
+                                contentPadding = PaddingValues(MaterialTheme.spacing.md),
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .navigationBarsPadding(),
                             ) {
-                                items(items = state.entries, key = { it.id }) { entry ->
+                                items(
+                                    items = state.entries,
+                                    key = { it.id },
+                                ) { entry ->
                                     CredentialListItem(
                                         entry = entry,
                                         onClick = { onEntryClick(entry.id) },
@@ -173,37 +182,34 @@ private fun CredentialListItem(
     onCopyPassword: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val turnstileColors = MaterialTheme.turnstileColors
-    val spacing = MaterialTheme.spacing
     var showMenu by remember { mutableStateOf(false) }
 
     Card(
         onClick = onClick,
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .padding(horizontal = spacing.md, vertical = 4.dp),
         shape = MaterialTheme.shapes.small,
-        colors = CardDefaults.cardColors(containerColor = turnstileColors.surface),
-        border = BorderStroke(1.dp, turnstileColors.borderSubtle),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.turnstileColors.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(
+                vertical = 4.dp,
+            ),
     ) {
         Row(
-            modifier = Modifier.padding(spacing.md),
+            modifier = Modifier.padding(MaterialTheme.spacing.md),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Box(
-                modifier =
-                    Modifier
-                        .size(44.dp)
-                        .background(turnstileColors.accentSubtle, CircleShape),
                 contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .size(44.dp)
+                    .background(MaterialTheme.turnstileColors.accentSubtle, CircleShape),
             ) {
                 Text(
                     text = entry.title.firstOrNull()?.uppercase() ?: "?",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = turnstileColors.onAccentSubtle,
+                    color = MaterialTheme.turnstileColors.onAccentSubtle,
                 )
             }
             Spacer(Modifier.width(12.dp))
@@ -212,13 +218,13 @@ private fun CredentialListItem(
                     text = entry.title,
                     fontSize = 15.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = turnstileColors.textPrimary,
+                    color = MaterialTheme.turnstileColors.textPrimary,
                 )
-                Spacer(Modifier.height(spacing.xs))
+                Spacer(Modifier.height(MaterialTheme.spacing.xs))
                 Text(
                     text = entry.username,
                     fontSize = 13.sp,
-                    color = turnstileColors.textSecondary,
+                    color = MaterialTheme.turnstileColors.textSecondary,
                 )
             }
 
@@ -228,8 +234,8 @@ private fun CredentialListItem(
                 IconButton(onClick = { showMenu = true }) {
                     Icon(
                         imageVector = Icons.Default.MoreVert,
-                        contentDescription = "More",
-                        tint = turnstileColors.textSecondary,
+                        contentDescription = null,
+                        tint = MaterialTheme.turnstileColors.textSecondary,
                     )
                 }
 
@@ -238,14 +244,14 @@ private fun CredentialListItem(
                     onDismissRequest = { showMenu = false },
                 ) {
                     DropdownMenuItem(
-                        text = { Text("Copy username") },
+                        text = { Text(stringResource(Res.string.vault_list_copy_username)) },
                         onClick = {
                             onCopyUsername(entry.username)
                             showMenu = false
                         },
                     )
                     DropdownMenuItem(
-                        text = { Text("Copy password") },
+                        text = { Text(stringResource(Res.string.vault_list_copy_password)) },
                         onClick = {
                             onCopyPassword(entry.password)
                             showMenu = false

@@ -5,12 +5,12 @@ import io.nicolaszurbuchen.turnstile.feature.login.domain.validation.PasswordVal
 import io.nicolaszurbuchen.turnstile.feature.login.domain.validation.UsernameValidationError
 import org.jetbrains.compose.resources.StringResource
 import turnstile.shared.generated.resources.Res
-import turnstile.shared.generated.resources.auth_error_email_invalid
-import turnstile.shared.generated.resources.auth_error_email_required
-import turnstile.shared.generated.resources.auth_error_password_required
-import turnstile.shared.generated.resources.auth_error_password_too_short
-import turnstile.shared.generated.resources.auth_error_username_required
-import turnstile.shared.generated.resources.auth_error_username_too_short
+import turnstile.shared.generated.resources.login_error_email_invalid
+import turnstile.shared.generated.resources.login_error_email_required
+import turnstile.shared.generated.resources.login_error_password_required
+import turnstile.shared.generated.resources.login_error_password_too_short
+import turnstile.shared.generated.resources.login_error_username_required
+import turnstile.shared.generated.resources.login_error_username_too_short
 
 sealed interface SignUpIntent {
     data class UsernameChanged(val value: String) : SignUpIntent
@@ -57,18 +57,18 @@ data class SignUpState(
 
 fun UsernameValidationError.asStringResource(): StringResource =
     when (this) {
-        UsernameValidationError.Required -> Res.string.auth_error_username_required
-        UsernameValidationError.TooShort -> Res.string.auth_error_username_too_short
+        UsernameValidationError.Required -> Res.string.login_error_username_required
+        UsernameValidationError.TooShort -> Res.string.login_error_username_too_short
     }
 
 fun EmailValidationError.asStringResource(): StringResource =
     when (this) {
-        EmailValidationError.Required -> Res.string.auth_error_email_required
-        EmailValidationError.Invalid -> Res.string.auth_error_email_invalid
+        EmailValidationError.Required -> Res.string.login_error_email_required
+        EmailValidationError.Invalid -> Res.string.login_error_email_invalid
     }
 
 fun PasswordValidationError.asStringResource(): StringResource =
     when (this) {
-        PasswordValidationError.Required -> Res.string.auth_error_password_required
-        PasswordValidationError.TooShort -> Res.string.auth_error_password_too_short
+        PasswordValidationError.Required -> Res.string.login_error_password_required
+        PasswordValidationError.TooShort -> Res.string.login_error_password_too_short
     }
