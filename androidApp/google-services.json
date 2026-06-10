@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "593893669907",
+    "project_id": "turnstile-56e56",
+    "storage_bucket": "turnstile-56e56.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:593893669907:android:04c955295b5030905413e6",
+        "android_client_info": {
+          "package_name": "io.nicolaszurbuchen.turnstile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "593893669907-qq380penjvks2e63n1jffl877i5sm4dc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtVekf3A-DBFNE79itZyIT1jC8fJ4C0EQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "593893669907-qq380penjvks2e63n1jffl877i5sm4dc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
