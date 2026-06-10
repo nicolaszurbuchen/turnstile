@@ -200,6 +200,6 @@ A dedicated `konsist/` module enforces all structural rules as unit tests. Rules
 
 ## 🧑‍💻 Author
 
-**Nicolas Zurbuchen**
-Android Software Engineer based in Tokyo, Japan
+**Nicolas Zurbuchen**  
+Android Software Engineer based in Tokyo, Japan  
 Contact: [nicolas.zurbuchen@outlook.com](mailto:nicolas.zurbuchen@outlook.com)
